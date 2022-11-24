@@ -10,7 +10,7 @@ export const AuthAPI = {
             password: password 
         }
 
-        return axios.post(APISettings.baseURL + '/users/login', data).then((response) => {
+        return axios.post(APISettings.baseURL + '/usuarios/login', data).then((response) => {
             console.log(response)
             if (response.status == 200) {
                 return response.data;

@@ -1,23 +1,25 @@
 <template>
     <Navbar sticky class="w-full">
         <template #logo>
-            <NavbarLogo link="/" alt="communo3 logo"
-                image-url="https://flowbite.com/docs/images/logo.svg">
+            <NavbarLogo link="/" alt="communo3 logo" image-url="https://flowbite.com/docs/images/logo.svg">
                 communo3
             </NavbarLogo>
         </template>
         <template #default="{ isShowMenu }">
-            <NavbarCollapse :isShowMenu="isShowMenu">
-                <NavbarLink link='/' is-active @click="onNavbarLinkClick(e)">Inicio</NavbarLink>
-                <NavbarLink link='/#about' :on-click="onNavbarLinkClick">Quienes somos</NavbarLink>
-                <NavbarLink link='/#howto' :on-click="onNavbarLinkClick">¿Que tengo que hacer?</NavbarLink>
+            <NavbarCollapse :isShowMenu="{ isShowMenu }">
+                <NavbarLink link='/' is-active @click="onNavbarLinkClick">Inicio</NavbarLink>
+                <NavbarLink link='/#about' :click="onNavbarLinkClick">Quienes somos</NavbarLink>
+                <NavbarLink link='/#howto' @on-click="onNavbarLinkClick">¿Que tengo que hacer?</NavbarLink>
                 <NavbarLink link='/#contact' :on-click="onNavbarLinkClick">Contacto</NavbarLink>
-                <NavbarLink link='/login' :on-click="onNavbarLinkClick">Iniciar sesión</NavbarLink>                
+                <NavbarLink link='/login' v-if="!isLogged" :on-click="onNavbarLinkClick">Iniciar sesión</NavbarLink>
+                <NavbarLink link="/" v-if="isLogged" @click="handleLogoutButtonClick">Cerrar sesión</NavbarLink>
             </NavbarCollapse>
         </template>
         <template #right-side>
             <div class="flex flex-auto gap-8">
-                {{ isShowMenud }}
+                <div v-if="isLogged">
+                    {{ user?.nickname }}
+                </div>
                 <router-link to="/home" type="button"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Quiero unirme
@@ -41,15 +43,36 @@
 </template>
 
 <script setup>
+
 import { Navbar, NavbarLogo, NavbarCollapse, NavbarLink } from 'flowbite-vue'
-import { onMounted, ref } from 'vue';
 
-const isShowMenud = ref(false);
+import router from '@/router';
+import { storeToRefs } from 'pinia';
+import { onMounted, ref, computed } from 'vue';
 
-const onNavbarLinkClick = (e) => {
-    isShowMenud.value = true;
-    console.log(e)
+import { useSessionStore } from '@/store/session'
+
+
+const menuStado = ref("cerrao");
+
+const sessionStore = useSessionStore()
+const { user } = storeToRefs(sessionStore)
+
+const onNavbarLinkClick = () => {
+    menuStado.value = "pulsado";
+    console.log("click")
 }
+
+const handleLogoutButtonClick = async () => {
+    sessionStore.logout();
+    router.push("/login")
+}
+
+const isLogged = computed(() => {
+    return sessionStore.isLogged
+})
+
+
 
 onMounted(() => {
     var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -93,6 +116,7 @@ onMounted(() => {
 
     });
 })
+
 
 
 
