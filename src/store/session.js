@@ -20,9 +20,9 @@ export const useSessionStore = defineStore('session', {
         try {
           this.user = await AuthAPI.login(email, password)
           window.sessionStorage.setItem("user", JSON.stringify(this.user))
-          return true    
-        } catch (error) {
-          console.log(error)          
+          return true
+        } catch (error) {         
+          console.log(error)         
           return false
         }
       },

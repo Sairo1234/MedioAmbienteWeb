@@ -1,36 +1,46 @@
 <template>
-  <link href="https://unpkg.com/primevue/resources/themes/fluent-light/theme.css" rel="stylesheet">
+  <!-- <link href="https://unpkg.com/primevue/resources/themes/fluent-light/theme.css" rel="stylesheet">
   <nav>
     <router-link to="/">Home</router-link>
     <router-link to="/about">About</router-link>
     <router-link v-if="isLogged" to="/mediciones">Mediciones ({{ medicionesTotales }})</router-link>
     <router-link v-if="!isLogged" to="/login">Login</router-link>
-    <div v-if="isLogged">{{ user }}</div>
+    <div id="user-info" v-if="isLogged">
+      <img v-bind:src="user.profile_photo_url"/>
+      <div>
+        <b>{{ user.nickname }}</b>
+        <br>
+        <span>{{ user.email }}</span>
+      </div>
+    </div>
     <PrimeButton v-if="isLogged" @click="handleLogoutButtonClick">Cerrar sesión</PrimeButton>
   </nav>
-  <router-view />
+  <router-view /> -->
+
+  <div id="app">
+    <NavBar></NavBar>
+    <router-view class="pt-20"/>
+  </div>
 
 </template>
 
 <script>
 
-import { io } from 'socket.io-client'
+import NavBar from './components/NavBar.vue';
 
 import { defineComponent } from 'vue'
 import { useSessionStore } from '@/store/session'
-import { useMedicionesStore } from '@/store/mediciones'
-import { storeToRefs } from 'pinia'
 import router from './router'
 
 export default defineComponent({
 
+  components: {
+    NavBar
+  },
+
   setup() {
 
-    const medicionesStore = useMedicionesStore()
-    medicionesStore.cargarMediciones()
-
     const sessionStore = useSessionStore()
-    const { user } = storeToRefs(sessionStore)
 
     if (sessionStore.tryAutoLogin()) router.push("/")
 
@@ -39,36 +49,11 @@ export default defineComponent({
       router.push("/login")
     }
 
-    /********* start sockets  *********/
-
-    const socket = io("http://localhost:3000")
-    // callbacks que se ejecutan cuando se emite un evento desde el servidor
-
-    //cuando se conecta al servidor
-    socket.on("connect", () => {
-      console.log("socket connected")
-    })
-
-    //cuando se desconecta al servidor
-    socket.on("disconnect", () => {
-      console.log("socket disconnected")
-    })
-
-    //cuando se crea una nueva medicion en el servidor
-    socket.on("nuevaMedicion", (medicion) => {
-      console.log('this method was fired by the socket server: io.emit("nuevaMedicion", data)', medicion)
-      medicionesStore.cargarMediciones()
-    })
-    /********* end sockets  *********/
-
-
     return {
-      sessionStore,
-      medicionesStore,
-      user,
       handleLogoutButtonClick
     }
   },
+
   computed: {
     isLogged() {
       return this.sessionStore.isLogged
@@ -77,6 +62,7 @@ export default defineComponent({
       return this.medicionesStore.medicionesTotales
     },
   },
+
 })
 
 
@@ -87,23 +73,12 @@ export default defineComponent({
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
+  min-height: 100vh;
 }
 
-nav {
-  padding: 30px;
-  display: flex;
-  justify-content: center;
-  gap: 12px;
+html {
+  scroll-padding-top: calc(40px + 20px); /* 40px + height of sticky header */
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #0078D4;
-}
 </style>

@@ -12,7 +12,8 @@
     "core-js": "^3.26.0",
     "dayjs": "^1.11.6",
     "element-plus": "^2.2.19",
-    "flowbite": "^1.5.3",
+    "flowbite": "^1.5.4",
+    "flowbite-vue": "^0.0.7",
     "pinia": "^2.0.23",
     "primeflex": "^3.2.1",
     "primeicons": "^6.0.1",
@@ -31,10 +32,11 @@
     "@vue/cli-plugin-router": "^5.0.8",
     "@vue/cli-plugin-vuex": "^5.0.8",
     "@vue/cli-service": "~5.0.0",
-    "autoprefixer": "^10.4.12",
+    "autoprefixer": "^10.4.13",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
-    "postcss": "^8.4.18"
+    "postcss": "^8.4.19",
+    "tailwindcss": "^3.2.4"
   },
   "eslintConfig": {
     "root": true,
