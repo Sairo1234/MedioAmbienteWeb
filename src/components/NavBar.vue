@@ -1,29 +1,47 @@
 <template>
     <Navbar sticky class="w-full">
         <template #logo>
-            <NavbarLogo link="/" alt="communo3 logo" image-url="https://flowbite.com/docs/images/logo.svg">
+            <router-link to='/' class="flex gap-2 items-center">
+                <img class="object-contain h-12 w-12" src="../../public/logoco3_mini.png" alt="logo">
+                <h1 class="font-bold text-lg">CommunO3</h1>
+            </router-link>                   
+            <!-- <NavbarLogo link="/" alt="communo3 logo" image-url="https://flowbite.com/docs/images/logo.svg">
                 communo3
-            </NavbarLogo>
+            </NavbarLogo> -->
         </template>
         <template #default="{ isShowMenu }">
-            <NavbarCollapse :isShowMenu="{ isShowMenu }">
-                <NavbarLink link='/' is-active @click="onNavbarLinkClick">Inicio</NavbarLink>
-                <NavbarLink link='/#about' :click="onNavbarLinkClick">Quienes somos</NavbarLink>
-                <NavbarLink link='/#howto' @on-click="onNavbarLinkClick">¿Que tengo que hacer?</NavbarLink>
-                <NavbarLink link='/#contact' :on-click="onNavbarLinkClick">Contacto</NavbarLink>
-                <NavbarLink link='/login' v-if="!isLogged" :on-click="onNavbarLinkClick">Iniciar sesión</NavbarLink>
-                <NavbarLink link="/" v-if="isLogged" @click="handleLogoutButtonClick">Cerrar sesión</NavbarLink>
+            <NavbarCollapse v-if="!isLogged" :isShowMenu="isShowMenu">
+                <NavbarLink link='/' @click="onNavbarLinkClick">Inicio</NavbarLink>
+                <NavbarLink link='/#about' @click="onNavbarLinkClick(e)">Quienes somos</NavbarLink>
+                <NavbarLink link='/#howto' @click="onNavbarLinkClick(e)">¿Que tengo que hacer?</NavbarLink>
+                <NavbarLink link='/#contact' @click="onNavbarLinkClick(e)">Contacto</NavbarLink>
+            </NavbarCollapse>
+            <NavbarCollapse v-if="isLogged" :isShowMenu="isShowMenu">
+                <NavbarLink link='/' @click="onNavbarLinkClick(e)">Inicio</NavbarLink>
+                <NavbarLink link='/#misdatos' @click="onNavbarLinkClick(e)">Mis datos</NavbarLink>
+                <NavbarLink link='/ajustes' @click="onNavbarLinkClick(e)">Ajustes</NavbarLink>
             </NavbarCollapse>
         </template>
         <template #right-side>
             <div class="flex flex-auto gap-8">
-                <div v-if="isLogged">
-                    {{ user?.nickname }}
+                <div v-if="isLogged" class="flex flex-auto gap-8">
+                    <Avatar status="online" bordered rounded :img="user?.profile_photo_url" />
+                    <div class="flex flex-col">
+                        <p class="text-gray-500 dark:text-gray-400 font-bold">{{ user?.nickname }}</p>
+                        <p class="text-gray-500 dark:text-gray-400">{{ user?.email }}</p>
+                    </div>
                 </div>
-                <router-link to="/home" type="button"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Quiero unirme
-                </router-link>
+                <div class="flex gap-6 items-center">
+                    <router-link to="/home" type="button" v-if="!isLogged"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Quiero unirme
+                    </router-link>
+                    <router-link to='/login' class="dark:text-gray-400" v-if="!isLogged">Iniciar sesión</router-link>
+                    <button class="dark:text-gray-400" v-if="isLogged" @click="handleLogoutButtonClick">
+                        Cerrar sesión</button>
+
+                </div>
+
                 <button id="theme-toggle" type="button"
                     class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                     <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -44,28 +62,24 @@
 
 <script setup>
 
-import { Navbar, NavbarLogo, NavbarCollapse, NavbarLink } from 'flowbite-vue'
+import { Navbar, NavbarCollapse, NavbarLink, Avatar } from 'flowbite-vue'
 
 import router from '@/router';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 
 import { useSessionStore } from '@/store/session'
-
-
-const menuStado = ref("cerrao");
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
 
 const onNavbarLinkClick = () => {
-    menuStado.value = "pulsado";
     console.log("click")
 }
 
 const handleLogoutButtonClick = async () => {
     sessionStore.logout();
-    router.push("/login")
+    router.push("/")
 }
 
 const isLogged = computed(() => {
@@ -75,6 +89,7 @@ const isLogged = computed(() => {
 
 
 onMounted(() => {
+
     var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
@@ -115,6 +130,17 @@ onMounted(() => {
         }
 
     });
+
+    if (localStorage.getItem('color-theme')) {
+        if (localStorage.getItem('color-theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
+        }
+    }
+
 })
 
 

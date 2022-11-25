@@ -19,9 +19,8 @@
 
   <div id="app">
     <NavBar></NavBar>
-    <router-view class="pt-20"/>
+    <router-view class="pt-20" />
   </div>
-
 </template>
 
 <script>
@@ -31,6 +30,7 @@ import NavBar from './components/NavBar.vue';
 import { defineComponent } from 'vue'
 import { useSessionStore } from '@/store/session'
 import router from './router'
+import { computed } from '@vue/reactivity';
 
 export default defineComponent({
 
@@ -49,19 +49,15 @@ export default defineComponent({
       router.push("/login")
     }
 
+    const isLogged = computed(() => {
+      return sessionStore.isLogged
+    })
+
     return {
+      isLogged,
       handleLogoutButtonClick
     }
-  },
-
-  computed: {
-    isLogged() {
-      return this.sessionStore.isLogged
-    },
-    medicionesTotales() {
-      return this.medicionesStore.medicionesTotales
-    },
-  },
+  }
 
 })
 
@@ -70,7 +66,7 @@ export default defineComponent({
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Poppins, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -78,7 +74,7 @@ export default defineComponent({
 }
 
 html {
-  scroll-padding-top: calc(40px + 20px); /* 40px + height of sticky header */
+  scroll-padding-top: calc(40px + 20px);
+  /* 40px + height of sticky header */
 }
-
 </style>

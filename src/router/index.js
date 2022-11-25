@@ -24,17 +24,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
+  },
+  {
     path: '/mediciones',
     name: 'mediciones',
     component: () => import(/* webpackChunkName: "about" */ '../views/MedicionesView.vue'),
     beforeEnter(to) {
       return isLoggedMiddleware(to)
     }
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
   }
 ]
 
