@@ -2,26 +2,32 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LandingView from '../views/LandingView.vue'
 
-import isLoggedMiddleware from '../middleware/auth';
+import { useSessionStore } from '@/store/session'
+
 
 const routes = [
   {
-    path: '/',
-    name: 'landing',
-    component: LandingView
-  },
-  {
     path: '/home',
     name: 'home',
-    component: HomeView
+    component: HomeView,
+    beforeEnter: checkAuth
   },
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path: '/ajustes',
+    name: 'ajustes',
+    beforeEnter: checkAuth,
+    component: () => import(/* webpackChunkName: "about" */ '../views/AjustesUsuarioView.vue')
+  },
+  {
+    path: '/mediciones',
+    name: 'mediciones',
+    beforeEnter: checkAuth,
+    component: () => import(/* webpackChunkName: "about" */ '../views/MedicionesView.vue')
   },
   {
     path: '/login',
@@ -29,13 +35,10 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
   },
   {
-    path: '/mediciones',
-    name: 'mediciones',
-    component: () => import(/* webpackChunkName: "about" */ '../views/MedicionesView.vue'),
-    beforeEnter(to) {
-      return isLoggedMiddleware(to)
-    }
-  }
+    path: '/',
+    name: 'landing',
+    component: LandingView
+  },
 ]
 
 const router = createRouter({
@@ -43,5 +46,10 @@ const router = createRouter({
   routes
 })
 
+function checkAuth(to, from, next) 
+{
+    if (useSessionStore().isLogged) next();
+    else next("/login");
+}
 
 export default router

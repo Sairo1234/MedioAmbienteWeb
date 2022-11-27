@@ -1,7 +1,9 @@
 <template>
-    <div class=".container">        
-        <h1>Mediciones</h1>
-        <MedicionesTabla />       
+    <div>
+        <div class="container">
+            <h1>Mediciones</h1>
+            <MedicionesTabla />
+        </div>
     </div>
 </template>
   
@@ -11,7 +13,7 @@ import MedicionesTabla from '@/components/MedicionesTabla.vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'DashboardView',
+    name: 'MedicionesView',
     components: {
         MedicionesTabla
     }

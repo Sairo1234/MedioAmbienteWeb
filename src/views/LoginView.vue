@@ -49,15 +49,15 @@
                                 <Input :disabled="loading" v-model="email" type="email" class="w-full"
                                     placeholder="Correo electrónico" />
                                 <Input :disabled="loading" v-model="password" class="w-full " placeholder="Contraseña"
-                                    type="password" />
+                                    type="password">
+                                <!----------Link contraseña olvidada---------->
+                                <template #helper>
+                                    <a class="text-sm text-blue-600 hover:underline" href="./forgot-password.html">
+                                        ¿Has olvidado tu contraseña?
+                                    </a>
+                                </template>
+                                </Input>
                             </div>
-
-                            <!----------Link contraseña olvidada---------->
-                            <p class="mt-4">
-                                <a class="text-sm text-blue-600 hover:underline" href="./forgot-password.html">
-                                    ¿Has olvidado tu contraseña?
-                                </a>
-                            </p>
 
                             <!----------Boton Iniciar Sesión---------->
                             <button type="submit" @click="handleLoginButtonClick"
@@ -68,8 +68,7 @@
 
                         </form>
 
-                        <span v-if="error" class="text-rose-500 text-sm">No existe un usuario con estas
-                            credenciales.</span>
+                        <span v-if="error" class="text-rose-500 text-sm">{{ error }}</span>
 
 
 
@@ -101,7 +100,7 @@ export default defineComponent({
 
         const loading = ref(false)
 
-        const error = ref(false)
+        const error = ref("")
 
         const email = ref("")
         const password = ref("")
@@ -112,19 +111,22 @@ export default defineComponent({
 
             e.preventDefault()
 
-            if(email.value == "" || password.value == "") return;
+            try {
 
-            loading.value = true;
-            //check login
-            const logged = await sessionStore.login(email.value, password.value);
-            loading.value = false;
-            if (logged) {
-                error.value = false;
+                loading.value = true;
+
+                //check login
+                await sessionStore.login(email.value, password.value);
+
                 router.push("/")
-            } else {
-                //cannot login
-                console.log("Cannot login.")
-                error.value = true;
+
+            } catch (errors) {
+                error.value = errors[0].msg
+
+            } finally {
+
+                loading.value = false;
+
             }
 
         }

@@ -17,9 +17,9 @@
   </nav>
   <router-view /> -->
 
-  <div id="app">
+  <div id="app" class="dark:bg-slate-800">
     <NavBar></NavBar>
-    <router-view class="pt-20" />
+    <router-view class="pt-16 md:pt-20" />
   </div>
 </template>
 
@@ -38,7 +38,7 @@ export default defineComponent({
     NavBar
   },
 
-  setup() {
+  setup() {    
 
     const sessionStore = useSessionStore()
 
@@ -64,6 +64,7 @@ export default defineComponent({
 
 </script>
 
+
 <style>
 #app {
   font-family: Poppins, Helvetica, Arial, sans-serif;
@@ -76,5 +77,11 @@ export default defineComponent({
 html {
   scroll-padding-top: calc(40px + 20px);
   /* 40px + height of sticky header */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 </style>

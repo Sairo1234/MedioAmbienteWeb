@@ -46,7 +46,7 @@ export default defineComponent({
 
         //se ejecuta despues de que se ha creado el componente
         onMounted(() => {
-            console.log("MedicionesView : mounted")           
+            console.log("MedicionesTabla : mounted")           
         })        
 
         const eliminarMedicion = (id) => {
@@ -56,7 +56,7 @@ export default defineComponent({
         
         //se ejecuta despues de que se ha creado el componente
         onUnmounted(() => {
-            console.log("MedicionesView : unmounted")
+            console.log("MedicionesTabla : unmounted")
             //socket.disconnect()
         })
 

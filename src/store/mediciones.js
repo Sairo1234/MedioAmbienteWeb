@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import { MedicionesAPI } from '@/api/resources/mediciones'
+import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 
 export const useMedicionesStore = defineStore('mediciones', {
 
