@@ -123,7 +123,7 @@ const isLogged = computed(() => {
 
 const handleProfileDropdownClick = () => {
     const profileDropdownButton = document.querySelector("#profile-dropdown div[role='menu']");
-    if (profileDropdownButton.classList.contains("hidden")) profileDropdownButton.classList.remove("hidden")
+    if (profileDropdownButton?.classList.contains("hidden")) profileDropdownButton.classList.remove("hidden")
     else profileDropdownButton.classList.add("hidden")
 }
 

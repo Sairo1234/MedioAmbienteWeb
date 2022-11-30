@@ -5,7 +5,7 @@ import { logicaFakeAuth } from '@/logicaFake/resources/auth'
 export const useSessionStore = defineStore('session', {
 
   state: () => ({
-    user: null,  //user: { nickname, email }
+    user: null,  //user: { nickname, email, profile_photo_url, rol }
   }),
 
   getters: {
@@ -40,7 +40,14 @@ export const useSessionStore = defineStore('session', {
       else {
         return false;
       }
-    }
+    },
+
+    async cambiarContrasenya(currentPassword, newPassword) {
+
+      const res = await logicaFakeAuth.cambiarContrasenya(this.user?.nickname, currentPassword, newPassword)
+      return res;
+
+    },
 
   },
 })

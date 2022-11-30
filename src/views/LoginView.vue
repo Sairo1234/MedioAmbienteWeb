@@ -113,6 +113,11 @@ export default defineComponent({
 
             try {
 
+                var timeout = setTimeout(() => {
+                    error.value = "Connection timeout."
+                    return;
+                }, 5000);
+                
                 loading.value = true;
 
                 //check login
@@ -121,12 +126,12 @@ export default defineComponent({
                 router.push("/")
 
             } catch (errors) {
-                error.value = errors[0].msg
+                if(errors.length > 0) error.value = errors[0].msg
+                else error.value = "Connection error."
 
             } finally {
-
+                clearTimeout(timeout)
                 loading.value = false;
-
             }
 
         }

@@ -1,6 +1,6 @@
 <template>
     <div class="m-auto w-full md:w-3/4">
-        <tabs variant="underline" v-model="activeTab" class="p-5">
+        <tabs variant="underline" v-model="activeTab" class="p-4">
             <!-- class appends to content DIV for all tabs -->
             <tab name="first" title="Editar perfil">
                 <Avatar class="hover:grayscale transition-1 w-fit" size="xl" rounded bordered
@@ -27,22 +27,24 @@
                 <!-----Cambiar contraseña------>
                 <div class="flex flex-col gap-2 w-full md:w-1/2">
                     <!----------Texto---------->
-                    <h1 class="mb-4 mt-2 text-2xl font-bold text-gray-700">
+                    <h1 class="mb-4 mt-2 text-2xl font-bold text-gray-700  dark:text-white">
                         Cambiar contraseña
                     </h1>
 
                     <Input :disabled="loading" class="placeholder-gray-200" placeholder="enter your current password"
-                        label="Contraseña antigua" type="password" />
-                    <Input :disabled="loading" class="placeholder-gray-200" placeholder="enter your new password" label="Contraseña nueva"
-                        type="password" />
+                        label="Contraseña antigua" type="password" v-model="passwordForm.currentPassword" />
+                    <Input :disabled="loading" class="placeholder-gray-200" placeholder="enter your new password"
+                        label="Contraseña nueva" type="password" v-model="passwordForm.newPassword" />
                     <Input :disabled="loading" class="placeholder-gray-200" placeholder="repeat your new password"
-                        label="Confirmar nueva contraseña" type="password" />
+                        label="Confirmar nueva contraseña" type="password"
+                        v-model="passwordForm.repeatNewPassword" />
 
                     <!----------Boton Aceptar---------->
-                    <button type="button" :disabled="loading" @click="cambiarContrasenya"
+                    <button type="button" :disabled="loading" @click="handleCambiarContrasenyaButton"
                         class="disabled:bg-gray-600 mt-6 px-4 py-2 text-sm font-medium  text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Cambiar contraseña
                     </button>
+                    <span v-if="error" class="text-rose-500 text-sm">{{ error }}</span>
                     <spinner v-if="loading" class="ml-4 self-end w-full" size="4" />
 
                 </div>
@@ -50,7 +52,7 @@
             <tab name="third" title="Mi sensor">
                 <div class="flex flex-col gap-2 w-full md:w-1/2">
                     <!----------Texto---------->
-                    <h1 class="mb-4 mt-2 text-2xl font-bold text-gray-700">
+                    <h1 class="mb-4 mt-2 text-2xl font-bold text-gray-700 dark:text-white">
                         Mi sensor
                     </h1>
                     <div v-for="(sensor, index) in sensores" :key="index"
@@ -81,13 +83,34 @@
 
 import { Input, Avatar, Tabs, Tab, Spinner } from 'flowbite-vue'
 
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 import { storeToRefs } from 'pinia';
 import { useSessionStore } from '@/store/session'
 
-const editando = ref(false)
+const sessionStore = useSessionStore()
+const { user } = storeToRefs(sessionStore)
+
 const loading = ref(false)
+const error = ref("")
+
+//editar perfil
+const editando = ref(false)
+
+const passwordForm = reactive({
+    currentPassword: "",
+    newPassword: "",
+    repeatNewPassword: "",
+})
+
+//sensores
+const activeTab = ref('first')
+const sensores = ref([
+    {
+        uuid: "2f8eec06-6ded-11ed-a1eb-0242ac120002",
+        activo: true,
+    }
+])
 
 const toggleEdit = (toggle) => {
     editando.value = toggle
@@ -100,24 +123,47 @@ const toggleEdit = (toggle) => {
     }
 }
 
-const cambiarContrasenya = () => {
-    loading.value = true
-    //cambiar contrasenya
-    setTimeout(() => {
-        loading.value = false
-    }, 1000)
+const handleCambiarContrasenyaButton = async () => {
+
+    if(passwordForm.newPassword !== passwordForm.repeatNewPassword) {
+        error.value = "Las contraseñas no coinciden";
+        return;
+    }
+
+    try {
+        
+        var timeout = setTimeout(() => {
+            error.value = "Connection timeout."
+            return;
+        }, 5000);
+
+        loading.value = true;
+
+        //cambiar contrasenya
+        const res = await sessionStore.cambiarContrasenya(passwordForm.currentPassword, passwordForm.newPassword)
+        if(res.success) {
+            Object.keys(passwordForm).forEach(v => passwordForm[v] = "")
+            error.value = ""
+            alert(res.msg)           
+        } else {
+            error.value = res.msg
+        }
+
+    } catch (errors) {
+        if (errors.length > 0) error.value = errors[0].msg
+        else error.value = "Connection error."
+
+    } finally {
+        clearTimeout(timeout)
+        loading.value = false;
+    }
+
+
 }
 
-const activeTab = ref('first')
-const sensores = ref([
-    {
-        uuid: "2f8eec06-6ded-11ed-a1eb-0242ac120002",
-        activo: true,
-    }
-])
 
-const sessionStore = useSessionStore()
-const { user } = storeToRefs(sessionStore)
+
+
 
 
 

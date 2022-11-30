@@ -14,11 +14,10 @@
 
                 <!--Texto principal-->
                 <div class="flex justify-center flex-col items-center mb-20">
-                    <h1 class="text-5xl font-bold text-blue-900 text-center mb-6 dark:text-white">Recoge datos y ayuda a
-                        tu
-                        ciudad</h1>
+                    <h1 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">
+                        Recoge datos y ayuda a tu ciudad</h1>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor, sit amet
+                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor, sit amet
                         consectetur
                         adipisicing elit.
                         Reprehenderit aut ratione, ut, voluptatum commodi ducimus enim nobis ad ex excepturi eaque amet
@@ -41,9 +40,9 @@
 
                 <!--Texto secundario-->
                 <div class="flex justify-center flex-col items-center my-20">
-                    <h2 class="text-5xl font-bold text-blue-900 text-center mb-6 dark:text-white">¿Cómo funciona?</h2>
+                    <h2 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">¿Cómo funciona?</h2>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-2/3 md:w-1/4 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit amet
+                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit amet
                         consectetur adipisicing elit. Tenetur
                         reiciendis
                         eveniet eligendi molestias necessitatibus.</p>
@@ -65,7 +64,7 @@
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16">
 
-                            <h3 class="text-3xl font-bold text-blue-900 dark:text-white mb-6 md:w-full">Paso 1</h3>
+                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">Paso 1</h3>
                             <!--Poner algo de texto más tarde-->
                             <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Lorem ipsum
                                 dolor sit amet consectetur adipisicing
@@ -87,7 +86,7 @@
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16 md:col-start-1 md:row-start-1">
 
-                            <h3 class="text-3xl font-bold text-blue-900 dark:text-white mb-6 md:w-full">Paso 1</h3>
+                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">Paso 2</h3>
                             <!--Poner algo de texto más tarde-->
                             <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Lorem ipsum
                                 dolor sit amet consectetur adipisicing
@@ -110,7 +109,7 @@
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16">
 
-                            <h3 class="text-3xl font-bold text-blue-900 dark:text-white mb-6 md:w-full">Paso 3</h3>
+                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">Paso 3</h3>
                             <!--Poner algo de texto más tarde-->
                             <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Lorem ipsum
                                 dolor sit amet consectetur adipisicing
@@ -132,7 +131,7 @@
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16 md:col-start-1 md:row-start-1">
 
-                            <h3 class="text-3xl font-bold text-blue-900 dark:text-white md:w-full">Paso 4</h3>
+                            <h3 class="text-3xl text-blue-900 dark:text-white md:w-full">Paso 4</h3>
                             <!--Poner algo de texto más tarde-->
                             <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Lorem ipsum
                                 dolor sit amet consectetur adipisicing
