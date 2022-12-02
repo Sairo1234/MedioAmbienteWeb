@@ -115,6 +115,7 @@ export default defineComponent({
 
                 var timeout = setTimeout(() => {
                     error.value = "Connection timeout."
+                    loading.value = false;
                     return;
                 }, 5000);
                 
