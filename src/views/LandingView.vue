@@ -509,13 +509,50 @@ let mymap
 
 onMounted(() => {
 
-    mymap = leaflet.map('map').setView([51.505, -0.09], 13);
+    mymap = leaflet.map('map').setView([51.505, -0.09], 13);   
 
     leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(mymap);
+
+    var geojsonFeature = {
+        "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -0.2238331677726535,
+              51.520400571786155
+            ],
+            [
+              -0.16032274928051038,
+              51.52017610721899
+            ],
+            [
+              -0.18810521082227183,
+              51.53561952504725
+            ],
+            [
+              -0.22932469612581485,
+              51.54167210642507
+            ],
+            [
+              -0.2238331677726535,
+              51.520400571786155
+            ]
+          ]
+        ],
+        "type": "Polygon"
+    }
+    };
+
+    leaflet.geoJSON(geojsonFeature).addTo(mymap) 
 })
+
+//var myLayer = leaflet.geoJSON().addTo(mymap);
+//myLayer.addData(geojsonFeature);
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
