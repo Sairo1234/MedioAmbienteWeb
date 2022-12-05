@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
 
-        <div id="map">
+        <div id="map" class="h-full z-10">
             <a v-if="isLogged"
                 class="absolute absolute m-auto left-0 right-0 bottom-5 w-fit backdrop-blur-sm bg-white/30 px-12 py-2 rounded-md border-2 border-blue-800"
                 href="#misdatos">Ver mis datos</a>
@@ -17,7 +17,8 @@
                     <h1 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">
                         Recoge datos y ayuda a tu ciudad</h1>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor, sit amet
+                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor, sit
+                        amet
                         consectetur
                         adipisicing elit.
                         Reprehenderit aut ratione, ut, voluptatum commodi ducimus enim nobis ad ex excepturi eaque amet
@@ -40,9 +41,11 @@
 
                 <!--Texto secundario-->
                 <div class="flex justify-center flex-col items-center my-20">
-                    <h2 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">¿Cómo funciona?</h2>
+                    <h2 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">¿Cómo
+                        funciona?</h2>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit amet
+                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit
+                        amet
                         consectetur adipisicing elit. Tenetur
                         reiciendis
                         eveniet eligendi molestias necessitatibus.</p>
@@ -495,9 +498,24 @@
 
 import { TheCard } from 'flowbite-vue'
 
+import leaflet from "leaflet"
+import { onMounted } from 'vue'
+
 import { storeToRefs } from 'pinia'
 import { useSessionStore } from '@/store/session'
 import { computed } from 'vue';
+
+let mymap
+
+onMounted(() => {
+
+    mymap = leaflet.map('map').setView([51.505, -0.09], 13);
+
+    leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(mymap);
+})
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
@@ -513,7 +531,6 @@ const isLogged = computed(() => {
     box-shadow: inset 0 0 80px rgb(87, 87, 87);
     width: 100%;
     height: 100vh;
-    background: url("../../public/gmaps.png");
 }
 
 .sections section {
