@@ -47,7 +47,14 @@
                             <!----------Cajas correo y contraseña---------->
                             <div class="flex flex-col gap-4">
                                 <Input :disabled="loading" v-model="email" type="email" class="w-full"
-                                    placeholder="Correo electrónico" />
+                                    placeholder="Correo electrónico" name="">
+                                <!----------Link contraseña olvidada---------->
+                                <template #helper>
+                                    <a class="text-sm text-blue-600 hover:underline" href="./forgot-password.html">
+                                        ¿Has olvidado tu contraseña?
+                                    </a>
+                                </template>
+                                </Input>
                                 <Input :disabled="loading" v-model="password" class="w-full " placeholder="Contraseña"
                                     type="password">
                                 <!----------Link contraseña olvidada---------->
@@ -118,7 +125,7 @@ export default defineComponent({
                     loading.value = false;
                     return;
                 }, 5000);
-                
+
                 loading.value = true;
 
                 //check login
@@ -127,7 +134,10 @@ export default defineComponent({
                 router.push("/")
 
             } catch (errors) {
-                if(errors.length > 0) error.value = errors[0].msg
+                if (errors.length > 0) {
+                    //for to print all errors                    
+                    error.value = errors[0].msg
+                }
                 else error.value = "Connection error."
 
             } finally {

@@ -1,10 +1,10 @@
 <template>
-    <div class="m-auto w-full md:w-3/4">
+    <div class="m-auto w-screen md:w-3/4">
         <tabs variant="underline" v-model="activeTab" class="p-4">
             <!-- class appends to content DIV for all tabs -->
             <tab name="first" title="Editar perfil">
                 <Avatar class="hover:grayscale transition-1 w-fit" size="xl" rounded bordered
-                    :img="user.profile_photo_url" />
+                    :img="user?.profile_photo_url" />
                 <div class="flex flex-col gap-2 w-full md:w-1/3 mt-12">
                     <Input class="placeholder-gray-200" placeholder="your nickname" label="nickname"
                         v-model="user.nickname" :disabled="!editando" />
@@ -161,11 +161,8 @@ const handleCambiarContrasenyaButton = async () => {
 
 }
 
-
-
-
-
-
-
-
 </script>
+
+<style scoped>
+
+</style>

@@ -13,27 +13,21 @@ export const logicaFakeAuth = {
         try {
 
             var response = await axios.post(logicaFakeSettings.baseURL + '/usuarios/login', data)
+            let payload = response.data;
+            return payload;
 
-        } catch (err) {
-            // errors = [{msg: string}]     
-            const errors = [{ msg: err.response.data.msg }]
+        } catch (error) {
+            let payload = error.response.data            
+            let errors; // errors = [{msg: string}]   
+            if (payload.errors) {  
+                errors = payload.errors 
+            }
+            else {
+                errors = [{ msg: payload.msg }]
+            }            
             throw errors;
         }
 
-        //                
-
-        if (response.data.errors) {
-
-            // errors = [{msg: string}]     
-            const errors = response.data.errors
-            throw errors;
-
-        } else if (response.status == 200) {
-
-            //return user data
-            return response.data
-
-        }
 
     },
 
