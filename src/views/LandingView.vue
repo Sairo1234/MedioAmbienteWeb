@@ -512,6 +512,7 @@ import { computed } from 'vue';
 ///////////////////////////////////////////////////////////////////
 
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
+import { random } from 'lodash'
 
 let mymap;
 
@@ -528,41 +529,1262 @@ onMounted(async () => {
     // Para que sea el de hoy, solo hay que quitar los números
     var instante = new Date(2022, 11, 5, 23, 52, 2).getTime;
     var medicionesDelAyuntamiento = await MedicionesAPI.obtenerTodasMedicionesDelDia(instante)
+    console.log(medicionesDelAyuntamiento)
+
+    var json =
+    [
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 48,
+         "lng": 2
+      },
+      {
+         "lat": 49,
+         "lng": 1
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 48,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      },
+      {
+         "lat": 49,
+         "lng": 2
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 56,
+         "lng": 1
+      },
+      {
+         "lat": 52,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 2
+      },
+      {
+         "lat": 55,
+         "lng": 2
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 51,
+         "lng": 1
+      },
+      {
+         "lat": 50,
+         "lng": 1
+      },
+      {
+         "lat": 53,
+         "lng": 2
+      },
+      {
+         "lat": 54,
+         "lng": 1
+      }
+   ]
+
+   var features = []
+   
+   json.forEach(function(j) 
+    {
+        var coordenadas = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordenadas": [j["lat"], j["lng"]],
+            },
+            "properties":
+            {
+                "value": random(0.0, 0.9)
+            }  
+        }
+
+        features.push(coordenadas)
+    })
 
     var geojsonFeature =
     {
-        "type": "Feature",
-        "properties": {},
-        "geometry": {
-            "coordinates":
-                [
-                    medicionesDelAyuntamiento[0].lat,
-                    medicionesDelAyuntamiento[0].lng
-                ],
-            "type": "Point"
-        }
+        "type": "FeatureCollection",
+        "features" : features
     };
 
-    var heat = L.heatLayer(
-        [
-            [medicionesDelAyuntamiento[0].lat, medicionesDelAyuntamiento[0].lng, 0.9], // lat, lng, intensity
-            [50.6, 30.4, 0.5],
-            [51.30, -0.093, 0.9], // lat, lng, intensity
-            [51.50, -0.092, 0.6],
-            [51.00, -0.090, 0.9],
-            [51.51, -0.089, 0.3],
-            [51.50, -0.0891, 0.6],
-            [51.50, -0.092, 0.6],
-        ], 
+    /*
+       Opciones del heatmap:
+
+        minOpacity - La mínima opcidad en la que el heat puede empezar (datos despreciables)
+        maxZoom - zoom level where the points reach maximum intensity (as intensity scales with zoom), equals maxZoom of the map by default
+        max - maximum point intensity, 1.0 by default
+        radius - radius of each "point" of the heatmap, 25 by default
+        blur - amount of blur, 15 by default
+        gradient - color gradient config, e.g. {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+    */
+
+    var heatMapPoints = []
+
+    geojsonFeature.features.forEach(function(feature)
+    {
+        heatMapPoints.push([feature.geometry.coordenadas[0], feature.geometry.coordenadas[1], feature.properties.value])
+    })
+
+    L.heatLayer(
+        heatMapPoints, 
         {
-            radius: 25,
+            radius: 10,
             minOpacity: 0.4,
             gradient: {0.4: 'blue', 0.5: 'lime', 0.9: 'red'}
         }).addTo(mymap);
-
-    console.log(heat)
-    
-    L.geoJSON(geojsonFeature).addTo(mymap)
 })
 
 //var myLayer = L.geoJSON().addTo(mymap);
@@ -585,6 +1807,11 @@ const isLogged = computed(() => {
     box-shadow: inset 0 0 80px rgb(87, 87, 87);
     width: 100%;
     height: 100vh;
+}
+
+#map a{
+
+    z-index: -999;
 }
 
 .sections section {
