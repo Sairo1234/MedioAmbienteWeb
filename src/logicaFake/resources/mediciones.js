@@ -50,5 +50,23 @@ export const MedicionesAPI = {
                     return response.json();
                 }
             });
+    },
+
+    async obtenerTodasMedicionesDelDia(instante)
+    {
+        logicaFakeSettings.headers.set('Content-Type', 'multipart/form-data');
+
+        console.log(instante)
+        return await fetch(logicaFakeSettings.baseURL + '/mediciones/day/' + instante, 
+        {
+            method: 'GET',
+            headers: logicaFakeSettings.headers
+        })
+            .then(function (response) 
+            {
+                console.log(response)
+                if (response.status != 200) throw response.status
+                else return response.json()
+            });
     }
 }

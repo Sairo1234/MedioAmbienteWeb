@@ -496,63 +496,80 @@
 
 <script setup>
 
+import '../lib/leaflet-heat.js'
 import { TheCard } from 'flowbite-vue'
 
-import leaflet from "leaflet"
+import L from "leaflet"
 import { onMounted } from 'vue'
 
 import { storeToRefs } from 'pinia'
 import { useSessionStore } from '@/store/session'
 import { computed } from 'vue';
 
-let mymap
+//TODO ESTO DEBERÍA DE ESTAR EN OTRO ARCHIVO
 
-onMounted(() => {
+//////////////////////////////////////////////////////////////////77
+///////////////////////////////////////////////////////////////////
 
-    mymap = leaflet.map('map').setView([51.505, -0.09], 13);   
+import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 
-    leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+let mymap;
+
+onMounted(async () => {
+
+    mymap = L.map('map').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(mymap);
 
-    var geojsonFeature = {
+    // Para que sea el de hoy, solo hay que quitar los números
+    var instante = new Date(2022, 11, 5, 23, 52, 2).getTime;
+    var medicionesDelAyuntamiento = await MedicionesAPI.obtenerTodasMedicionesDelDia(instante)
+
+    var geojsonFeature =
+    {
         "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "coordinates": [
-          [
-            [
-              -0.2238331677726535,
-              51.520400571786155
-            ],
-            [
-              -0.16032274928051038,
-              51.52017610721899
-            ],
-            [
-              -0.18810521082227183,
-              51.53561952504725
-            ],
-            [
-              -0.22932469612581485,
-              51.54167210642507
-            ],
-            [
-              -0.2238331677726535,
-              51.520400571786155
-            ]
-          ]
-        ],
-        "type": "Polygon"
-    }
+        "properties": {},
+        "geometry": {
+            "coordinates":
+                [
+                    medicionesDelAyuntamiento[0].lat,
+                    medicionesDelAyuntamiento[0].lng
+                ],
+            "type": "Point"
+        }
     };
 
-    leaflet.geoJSON(geojsonFeature).addTo(mymap) 
+    var heat = L.heatLayer(
+        [
+            [medicionesDelAyuntamiento[0].lat, medicionesDelAyuntamiento[0].lng, 0.9], // lat, lng, intensity
+            [50.6, 30.4, 0.5],
+            [51.30, -0.093, 0.9], // lat, lng, intensity
+            [51.50, -0.092, 0.6],
+            [51.00, -0.090, 0.9],
+            [51.51, -0.089, 0.3],
+            [51.50, -0.0891, 0.6],
+            [51.50, -0.092, 0.6],
+        ], 
+        {
+            radius: 25,
+            minOpacity: 0.4,
+            gradient: {0.4: 'blue', 0.5: 'lime', 0.9: 'red'}
+        }).addTo(mymap);
+
+    console.log(heat)
+    
+    L.geoJSON(geojsonFeature).addTo(mymap)
 })
 
-//var myLayer = leaflet.geoJSON().addTo(mymap);
+//var myLayer = L.geoJSON().addTo(mymap);
 //myLayer.addData(geojsonFeature);
+
+//////////////////////////////////////////////////////////////////77
+///////////////////////////////////////////////////////////////////
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
