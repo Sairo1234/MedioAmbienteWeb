@@ -2,24 +2,31 @@
     <div class="m-auto w-screen md:w-3/4">
         <tabs variant="underline" v-model="activeTab" class="p-4">
             <!-- class appends to content DIV for all tabs -->
-            <tab name="first" title="Editar perfil">
+            <tab name="first" title="Perfil">
+
                 <Avatar class="hover:grayscale transition-1 w-fit" size="xl" rounded bordered
-                    :img="user?.profile_photo_url" />
+                    :img="userEdit?.profile_photo_url" />
                 <div class="flex flex-col gap-2 w-full md:w-1/3 mt-12">
                     <Input class="placeholder-gray-200" placeholder="your nickname" label="nickname"
-                        v-model="user.nickname" :disabled="!editando" />
-                    <Input class="placeholder-gray-200" placeholder="your email" label="email" v-model="user.email"
+                        v-model="userEdit.nickname" :disabled="!editando" />
+                    <Input class="placeholder-gray-200" placeholder="your email" label="email" v-model="userEdit.email"
                         :disabled="!editando" />
                     <!----------Boton Editar ---------->
-                    <button type="button" :disabled="loading" @click="toggleEdit(true)" v-if="!editando"
+                    <button type="button" @click="toggleEdit(true)" v-if="!editando" :disabled="loading"
                         class="disabled:bg-gray-600 mt-6 px-4 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Editar perfil
                     </button>
-                    <!----------Boton Aceptar---------->
+                    <!----------Boton Guardar ---------->
                     <button @click="toggleEdit(false)" v-if="editando"
                         class="mt-6 px-4 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Guardar cambios
                     </button>
+                    <!----------Boton Cancelar ---------->
+                    <button @click="cancelarEdicion" v-if="editando"
+                        class="px-4 py-2 text-sm font-medium text-center text-gray-400 transition-colors duration-150 rounded-lg active:bg-white/20  hover:bg-gray-100 dark:hover:bg-white/5 focus:outline-none focus:shadow-outline-blue">
+                        Cancelar
+                    </button>
+                    <span v-if="error" class="text-rose-500 text-sm">{{ error }}</span>
                     <spinner v-if="loading" class="ml-4 self-end w-full" size="4" />
                 </div>
             </tab>
@@ -36,8 +43,7 @@
                     <Input :disabled="loading" class="placeholder-gray-200" placeholder="enter your new password"
                         label="Contraseña nueva" type="password" v-model="passwordForm.newPassword" />
                     <Input :disabled="loading" class="placeholder-gray-200" placeholder="repeat your new password"
-                        label="Confirmar nueva contraseña" type="password"
-                        v-model="passwordForm.repeatNewPassword" />
+                        label="Confirmar nueva contraseña" type="password" v-model="passwordForm.repeatNewPassword" />
 
                     <!----------Boton Aceptar---------->
                     <button type="button" :disabled="loading" @click="handleCambiarContrasenyaButton"
@@ -83,13 +89,21 @@
 
 import { Input, Avatar, Tabs, Tab, Spinner } from 'flowbite-vue'
 
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 import { storeToRefs } from 'pinia';
 import { useSessionStore } from '@/store/session'
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
+
+const activeTab = ref('first')
+
+watch(activeTab, () => {
+    if (editando.value) alert("¡Cuidado! Tienes cambios sin guardar.")
+    editando.value = false
+    error.value = ""
+})
 
 const loading = ref(false)
 const error = ref("")
@@ -103,8 +117,12 @@ const passwordForm = reactive({
     repeatNewPassword: "",
 })
 
+const userEdit = ref({
+    ...user.value
+})
+
+
 //sensores
-const activeTab = ref('first')
 const sensores = ref([
     {
         uuid: "2f8eec06-6ded-11ed-a1eb-0242ac120002",
@@ -112,26 +130,73 @@ const sensores = ref([
     }
 ])
 
-const toggleEdit = (toggle) => {
+const cancelarEdicion = () => {
+    editando.value = false
+    userEdit.value = {
+        ...sessionStore.user
+    }
+}
+
+const toggleEdit = async (toggle) => {
+
     editando.value = toggle
+
     if (!toggle) {
-        loading.value = true
-        //guardar usuario
-        setTimeout(() => {
-            loading.value = false
-        }, 1000)
+
+        const newData = {}
+
+        //comprobar si ha cambiado el nickname
+        if (userEdit.value.nickname !== sessionStore.user.nickname) newData.nickname = userEdit.value.nickname
+        //comprobar si ha cambiado el email
+        if (userEdit.value.email !== sessionStore.user.email) newData.email = userEdit.value.email
+
+        //si no se ha cambiado nada - cancelar guardar
+        if(JSON.stringify(newData) === '{}') return
+
+        
+
+        try {
+
+            var timeout = setTimeout(() => {
+                error.value = "Connection timeout."
+                return;
+            }, 5000);
+
+            loading.value = true;
+
+            //editar datos del usuario
+            const res = await sessionStore.editarPerfil(newData)
+            if (res.success) {
+
+                //actualizar datos usuario de la web
+                sessionStore.user.nickname = res.data.nickname
+                sessionStore.user.email = res.data.email
+
+                error.value = ""
+                alert("Perfil guardado con exito.")
+            }
+
+        } catch (errors) {
+            if (errors.length > 0) error.value = errors[0].msg
+            else error.value = "Connection error."
+
+        } finally {
+            clearTimeout(timeout)
+            loading.value = false;
+        }
+
     }
 }
 
 const handleCambiarContrasenyaButton = async () => {
 
-    if(passwordForm.newPassword !== passwordForm.repeatNewPassword) {
+    if (passwordForm.newPassword !== passwordForm.repeatNewPassword) {
         error.value = "Las contraseñas no coinciden";
         return;
     }
 
     try {
-        
+
         var timeout = setTimeout(() => {
             error.value = "Connection timeout."
             return;
@@ -141,10 +206,10 @@ const handleCambiarContrasenyaButton = async () => {
 
         //cambiar contrasenya
         const res = await sessionStore.cambiarContrasenya(passwordForm.currentPassword, passwordForm.newPassword)
-        if(res.success) {
+        if (res.success) {
             Object.keys(passwordForm).forEach(v => passwordForm[v] = "")
             error.value = ""
-            alert(res.msg)           
+            alert(res.msg)
         } else {
             error.value = res.msg
         }

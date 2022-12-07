@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 import { logicaFakeAuth } from '@/logicaFake/resources/auth'
+import { logicaFakeUsuario } from '@/logicaFake/resources/usuario'
 
 export const useSessionStore = defineStore('session', {
 
@@ -48,6 +49,13 @@ export const useSessionStore = defineStore('session', {
       return res;
 
     },
+
+    async editarPerfil(newData) {
+
+      const res = await logicaFakeUsuario.editarPerfil(this.user?.nickname, newData)
+      return res;
+      
+    }
 
   },
 })

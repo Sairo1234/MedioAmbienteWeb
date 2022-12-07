@@ -41,30 +41,22 @@ export const logicaFakeAuth = {
         try {
 
             var response = await axios.post(logicaFakeSettings.baseURL + '/usuarios/' + nickname + '/cambiarContrasenya', data)
+            let payload = response.data;
+            return payload;
 
-        } catch (err) {
-
-            //                
-
-            if (err.response.data.errors) {
-
-                // errors = [{msg: string}] 
-                const errors = err.response.data.errors
-                throw errors;
-
+        } catch (error) {
+            let payload = error.response.data            
+            let errors; // errors = [{msg: string}]   
+            if (payload.errors) {  
+                errors = payload.errors 
             }
-
-            // errors = [{msg: string}]     
-            const errors = [{ msg: err.response.data.msg }]
+            else {
+                errors = [{ msg: payload.msg }]
+            }            
             throw errors;
         }
 
-        if (response.status == 200) {
-
-            //return user data
-            return response.data
-
-        }
+        
 
     }
 

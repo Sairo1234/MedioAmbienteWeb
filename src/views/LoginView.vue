@@ -48,12 +48,6 @@
                             <div class="flex flex-col gap-4">
                                 <Input :disabled="loading" v-model="email" type="email" class="w-full"
                                     placeholder="Correo electrónico" name="">
-                                <!----------Link contraseña olvidada---------->
-                                <template #helper>
-                                    <a class="text-sm text-blue-600 hover:underline" href="./forgot-password.html">
-                                        ¿Has olvidado tu contraseña?
-                                    </a>
-                                </template>
                                 </Input>
                                 <Input :disabled="loading" v-model="password" class="w-full " placeholder="Contraseña"
                                     type="password">

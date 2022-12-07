@@ -19,7 +19,7 @@
 
   <div id="app" class="dark:bg-slate-800">
     <NavBar></NavBar>
-    <router-view class="pt-16 md:pt-18" />
+    <router-view class="pt-20 md:pt-18" />
   </div>
 </template>
 
