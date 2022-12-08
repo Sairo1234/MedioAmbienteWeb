@@ -1,21 +1,5 @@
 <template>
-    <!-- <div class="login-container">
-
-        <form name="login" onSubmit="handleLoginButtonClick" class="login-form">
-            <h1 class="text-4xl font-extrabold dark:text-white">Iniciar sesión</h1>
-            <Input placeholder="Correo electrónico" label="Correo electrónico" v-model="email"/>
-            <Input placeholder="Contraseña" label="Contraseña" type="password" v-model="password"/>
-            <span v-if="error" style="color: red">No existe un usuario con estas credenciales.</span>
-            <button v-on:click="handleLoginButtonClick" type="button"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Iniciar sesión
-                </button>
-            <p>
-                { "email" : {{ email }}, "password": {{ password }} }
-            </p>
-        </form>
-    </div> -->
-
+    
     <div class="flex items-center min-h-screen bg-white dark:bg-slate-800 rounded-xl">
         <div class="flex-1 h-full max-w-4xl mx-auto bg-white shadow sm:shadow-xl rounded-xl">
 
@@ -53,9 +37,10 @@
                                     type="password">
                                 <!----------Link contraseña olvidada---------->
                                 <template #helper>
-                                    <a class="text-sm text-blue-600 hover:underline" href="./forgot-password.html">
-                                        ¿Has olvidado tu contraseña?
+                                    <a class="text-sm text-blue-600 hover:underline">
+                                        <router-link to='/forgot-password'>¿Has olvidado tu contraseña?</router-link>
                                     </a>
+
                                 </template>
                                 </Input>
                             </div>

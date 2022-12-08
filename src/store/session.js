@@ -55,7 +55,8 @@ export const useSessionStore = defineStore('session', {
       const res = await logicaFakeUsuario.editarPerfil(this.user?.nickname, newData)
       return res;
       
-    }
+    },
+
 
   },
 })
