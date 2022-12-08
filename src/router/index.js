@@ -44,6 +44,10 @@ const routes = [
     name: 'landing',
     component: LandingView
   },
+  {
+    path: "/:catchAll(.*)",
+    component: () => import(/* webpackChunkName: "about" */ '../views/NotFound.vue')
+  },
 ]
 
 const router = createRouter({
