@@ -11,23 +11,43 @@
         </template>
         <template #default="{ isShowMenu }">
             <NavbarCollapse v-if="!isLogged" :isShowMenu="isShowMenu">
-                <NavbarLink link='/'>Ver mapa</NavbarLink>
-                <NavbarLink link='/#about'>Quienes somos</NavbarLink>
-                <NavbarLink link='/#howto'>¿Que tengo que hacer?</NavbarLink>
-                <NavbarLink link='/#contact'>Contacto</NavbarLink>
+                <NavbarLink link='/'>
+                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                        <MapIcon class="h-5 w-5 mr-2" />
+                        Ver mapa
+                    </div>
+                </NavbarLink>
+                <NavbarLink link='/#about'>
+                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                        <InformationCircleIcon class="h-5 w-5 mr-2" />
+                        Quienes somos
+                    </div>
+                </NavbarLink>
+                <NavbarLink link='/#howto'>
+                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                        <QuestionMarkCircleIcon class="h-5 w-5 mr-2" />
+                        ¿Que tengo que hacer?
+                    </div>
+                </NavbarLink>
+                <NavbarLink link='/#contact'>
+                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                        <EnvelopeIcon class="h-5 w-5 mr-2" />
+                        Contacto
+                    </div>
+                </NavbarLink>
                 <NavbarLink v-if="isShowMenu">
-                    <router-link to='/login' v-if="!isLogged">Iniciar sesión</router-link>
+                    <div class="flex items-center p-3 bg-gray-100 hover:bg-gray-200 dark:hover:bg-white/20 rounded-2xl">
+                        <UserCircleIcon class="h-5 w-5 mr-2" />
+                        <router-link to='/login' class="dark:text-gray-400">Iniciar sesión</router-link>
+                    </div>
                 </NavbarLink>
             </NavbarCollapse>
             <NavbarCollapse v-if="isLogged" :isShowMenu="isShowMenu">
-                <NavbarLink link='/'>Ver mapa</NavbarLink>
-                <NavbarLink v-if="isShowMenu">
-                    <router-link to="/ajustes">Ajustes</router-link>
-                </NavbarLink>
-                <NavbarLink v-if="isShowMenu && isLogged">
-                    <button @click="handleLogoutButtonClick"
-                        class="text-left text-red-500 block px-4 py-2 text-sm hover:bg-slate-100 inline-block w-full"
-                        role="menuitem" tabindex="-1" id="menu-item-1">Cerrar sesión</button>
+                <NavbarLink link='/'>
+                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                        <MapIcon class="h-5 w-5 mr-2" />
+                        Ver mapa
+                    </div>
                 </NavbarLink>
             </NavbarCollapse>
         </template>
@@ -56,43 +76,62 @@
                         </button>
                     </div>
                     <div @click="handleProfileDropdownClick"
-                        class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5"
+                        class="hidden absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-slate-800"
                         role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                         <div class="py-1" role="none">
                             <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                             <router-link to="/ajustes"
-                                class="text-gray-700 block px-4 py-2 text-sm hover:bg-slate-100 inline-block w-full"
-                                role="menuitem" tabindex="-1" id="menu-item-0">Ajustes</router-link>
+                                class="flex items-center text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 inline-block w-full"
+                                role="menuitem" tabindex="-1" id="menu-item-0">
+                                <AdjustmentsHorizontalIcon class="h-5 w-5 mr-2" />
+                                Ajustes
+                            </router-link>
+
                             <button @click="handleLogoutButtonClick"
-                                class="text-left text-red-500 block px-4 py-2 text-sm hover:bg-slate-100 inline-block w-full"
-                                role="menuitem" tabindex="-1" id="menu-item-1">Cerrar sesión</button>
+                                class="flex items-center text-left text-red-500 block px-4 py-2 text-sm hover:bg-slate-100 inline-block w-full"
+                                role="menuitem" tabindex="-1" id="menu-item-1">
+                                <ArrowLeftOnRectangleIcon class="h-5 w-5 mr-2" />
+                                Cerrar sesión
+                            </button>
+
                         </div>
                     </div>
                 </div>
 
                 <!-- Landing buttons -->
                 <div class="flex gap-6 items-center">
-                    <a href="#howto" v-if="!isLogged"
-                        class="text-white bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:">
-                        Quiero unirme
-                    </a>
-                    <router-link to='/login' class="dark:text-gray-400" v-if="!isLogged">Iniciar sesión</router-link>
-                </div>
+                    <NavbarCollapse  v-if="!isLogged">
+                        <NavbarLink link='/#howto'>
+                            <div
+                                class="text-white bg-blue-700 hover:bg-blue-800 fnt-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700">
+                                Quiero unirme
+                            </div>
+                        </NavbarLink>
+                        <NavbarLink class="flex items-center">
+                            <router-link to='/login' class="dark:text-gray-400">
+                                <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                                    <UserCircleIcon class="h-5 w-5 mr-2" />
+                                    Iniciar sesión
+                                </div>
+                            </router-link>
+                        </NavbarLink>
 
-                <!-- Toggle theme button -->
-                <button id="theme-toggle" type="button"
-                    class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700  dark: rounded-lg text-sm p-2.5">
-                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                    </svg>
-                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                            fill-rule="evenodd" clip-rule="evenodd"></path>
-                    </svg>
-                </button>
+                    </NavbarCollapse>
+                    <!-- Toggle theme button -->
+                <div>
+                    <button id="theme-toggle" type="button"
+                        class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 dark:hover:bg-gray-700 rounded-lg p-2">
+                        <div id="theme-toggle-dark-icon" class="hidden">
+                            <MoonIcon class="h-5 w-5" />
+                        </div>
+                        <div id="theme-toggle-light-icon" class="hidden">
+                            <SunIcon class="h-5 w-5" />
+                        </div>
+                    </button>
+                </div>
+                </div>
+                
+
             </div>
         </template>
     </Navbar>
@@ -100,6 +139,7 @@
 
 <script setup>
 
+import { MapIcon, ArrowLeftOnRectangleIcon, AdjustmentsHorizontalIcon, InformationCircleIcon, QuestionMarkCircleIcon, EnvelopeIcon, UserCircleIcon, MoonIcon, SunIcon } from '@heroicons/vue/24/outline'
 
 import { Navbar, NavbarCollapse, NavbarLink, Avatar } from 'flowbite-vue'
 

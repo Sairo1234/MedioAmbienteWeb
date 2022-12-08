@@ -1,7 +1,7 @@
 <template>
-    
+
     <div class="flex items-center min-h-screen bg-white dark:bg-slate-800 rounded-xl">
-        <div class="flex-1 h-full max-w-4xl mx-auto bg-white shadow sm:shadow-xl rounded-xl">
+        <div class="flex-1 h-full max-w-4xl mx-auto bg-white shadow-xl sm:shadow-xl rounded-xl">
 
             <div class="flex flex-col md:flex-row rounder-xl">
 
@@ -30,24 +30,29 @@
                         <form>
                             <!----------Cajas correo y contraseña---------->
                             <div class="flex flex-col gap-4">
-                                <Input :disabled="loading" v-model="email" type="email" class="w-full"
+                                <Input :disabled="loading" v-model="email" type="email" class="w-full dark:text-gray-400"
                                     placeholder="Correo electrónico" name="">
+                                <template #prefix>
+                                    <AtSymbolIcon class="h-5 w-5 mr-2" />
+                                </template>
                                 </Input>
-                                <Input :disabled="loading" v-model="password" class="w-full " placeholder="Contraseña"
+                                <Input :disabled="loading" v-model="password" class="w-full dark:text-gray-400" placeholder="Contraseña"
                                     type="password">
+                                <template #prefix>
+                                    <KeyIcon class="h-5 w-5 mr-2" />
+                                </template>
                                 <!----------Link contraseña olvidada---------->
                                 <template #helper>
                                     <a class="text-sm text-blue-600 hover:underline">
                                         <router-link to='/forgot-password'>¿Has olvidado tu contraseña?</router-link>
                                     </a>
-
                                 </template>
                                 </Input>
                             </div>
 
                             <!----------Boton Iniciar Sesión---------->
                             <button type="submit" @click="handleLoginButtonClick"
-                                class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-blue-600 w-full border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+                                class="w-full mt-6 text-white bg-blue-700 hover:bg-blue-800 fnt-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700"
                                 href="#">
                                 Inicia sesión
                             </button>
@@ -72,16 +77,21 @@
 
 <script>
 
+
 import router from "@/router";
 import { defineComponent, ref } from "vue";
 import { useSessionStore } from '@/store/session'
 
 import { Input, Spinner } from 'flowbite-vue'
+import { AtSymbolIcon, KeyIcon } from "@heroicons/vue/20/solid";
 
 export default defineComponent({
     components: {
-        Input, Spinner
-    },
+    Input,
+    Spinner,
+    AtSymbolIcon,
+    KeyIcon
+},
     setup() {
 
         const loading = ref(false)

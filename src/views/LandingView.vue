@@ -2,9 +2,35 @@
     <div class="w-full">
 
         <div id="map">
-            <a v-if="isLogged"
-                class="absolute absolute m-auto left-0 right-0 bottom-5 w-fit backdrop-blur-sm bg-white/30 px-12 py-2 rounded-md border-2 border-blue-800"
-                href="#misdatos">Ver mis datos</a>
+            <div class="absolute m-auto right-28 bottom-12 w-fit flex flex-col gap-4">
+                <div class="bg-white/20 backdrop-blur-sm dark:bg-slate-900 p-5 rounded-md shadow-lg">
+                    <!-- <h3 class="font-bold mb-3 dark:text-white">Filtrar por gas</h3> -->
+                    <div class="flex flex-col gap-2 text-blue-800">
+                        <div class="flex items-center">
+                            <input id="o3-checkbox" type="checkbox" value="o3" v-model="checkedGasses"
+                                class="w-5 h-5 disabled:border-gray-100 bg-gray-100 rounded border-gray-300 focus:ring-blue-500/20 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="o3-checkbox"
+                                class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-300">Ozono (O3)</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input disabled id="co2-checkbox" type="checkbox" value="co2" v-model="checkedGasses"
+                                class="w-5 h-5 disabled:border-gray-100 bg-gray-100 rounded border-gray-300 focus:ring-blue-500/20 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="co2-checkbox"
+                                class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-300">Dióxido de carbono
+                                (CO2)</label>
+                        </div>
+                        <span>Checked gasses: {{ checkedGasses }}</span>
+                    </div>
+                </div>
+                <a v-if="isLogged"
+                    class="w-full dark:bg-slate-800 bg-white hover:bg-gray-100 dark:hover:bg-slate-700 px-12 py-2 rounded-md shadow-lg text-blue-800 dark:text-white font-bold"
+                    href="#misdatos">
+                    <div class="flex items-center">
+                        <PresentationChartLineIcon class="h-5 w-5 mr-2" />
+                        Ver mis estadisticas
+                    </div>
+                </a>
+            </div>
 
         </div>
 
@@ -17,7 +43,8 @@
                     <h1 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">
                         Recoge datos y ayuda a tu ciudad</h1>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor, sit amet
+                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor, sit
+                        amet
                         consectetur
                         adipisicing elit.
                         Reprehenderit aut ratione, ut, voluptatum commodi ducimus enim nobis ad ex excepturi eaque amet
@@ -40,9 +67,11 @@
 
                 <!--Texto secundario-->
                 <div class="flex justify-center flex-col items-center my-20">
-                    <h2 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">¿Cómo funciona?</h2>
+                    <h2 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">¿Cómo
+                        funciona?</h2>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit amet
+                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor sit
+                        amet
                         consectetur adipisicing elit. Tenetur
                         reiciendis
                         eveniet eligendi molestias necessitatibus.</p>
@@ -493,11 +522,13 @@
 
 <script setup>
 
+import { PresentationChartLineIcon } from '@heroicons/vue/24/outline'
+
 import { TheCard } from 'flowbite-vue'
 
 import { storeToRefs } from 'pinia'
 import { useSessionStore } from '@/store/session'
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
@@ -505,6 +536,8 @@ const { user } = storeToRefs(sessionStore)
 const isLogged = computed(() => {
     return sessionStore.isLogged
 })
+
+const checkedGasses = ref([])
 
 </script>
 

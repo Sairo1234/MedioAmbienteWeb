@@ -19,7 +19,7 @@
 
   <div id="app" class="dark:bg-slate-800">
     <NavBar></NavBar>
-    <router-view class="pt-20 md:pt-18" />
+    <router-view class="pt-24 md:pt-18" />
   </div>
 </template>
 
@@ -75,7 +75,8 @@ export default defineComponent({
 }
 
 html {
-  scroll-padding-top: calc(40px + 20px);
+  scroll-padding-top: calc(40px + 50px);
+  scroll-behavior: smooth;
   /* 40px + height of sticky header */
 }
 
