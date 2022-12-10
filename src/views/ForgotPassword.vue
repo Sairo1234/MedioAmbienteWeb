@@ -2,9 +2,9 @@
     <div class="m-auto w-screen md:w-3/4 flex justify-center items-center">
         <div v-if="!done" class="w-full md:w-1/2 p-8 md:p-0">
             <!-----Recuoperar contraseña------>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2 mt-10">
                 <!----------Texto---------->
-                <h1 class="mb-4 mt-2 text-2xl font-bold text-gray-700 dark:text-white">
+                <h1 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">
                     Contraseña olvidada
                 </h1>
 
@@ -19,12 +19,12 @@
                     class="disabled:bg-gray-600 mt-6 px-4 py-2 text-sm font-medium  text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                     Enviar
                 </button>
-                <span v-if="error" class="text-rose-500 text-sm">{{ error }}</span>
+                <span v-if="error" class="flex gap-1 text-rose-500 text-sm"><ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}</span>
                 <spinner v-if="loading" class="ml-4 self-end w-full" size="4" />
 
             </div>
         </div>
-        <div v-if="done" class="w-full md:w-1/2 p-8">
+        <div v-if="done" class="w-full md:w-1/2 p-8 mt-6">
             <p class="text-gray-800 dark:text-gray-500 mb-8">Se ha enviado un correo de recuperación a
                 <span class="font-bold">{{ email }}</span>
             </p>
@@ -34,6 +34,8 @@
 </template>
 
 <script setup>
+
+import { ExclamationTriangleIcon }  from "@heroicons/vue/24/outline";
 
 import { Input, Spinner } from 'flowbite-vue'
 

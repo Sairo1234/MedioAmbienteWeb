@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/ajustes',
     name: 'ajustes',
-    beforeEnter: checkAuth,
+    beforeEnter: [checkAuth],
     component: () => import(/* webpackChunkName: "about" */ '../views/AjustesUsuarioView.vue')
   },
   {
@@ -41,7 +41,7 @@ const routes = [
   },
   {
     path: '/',
-    name: 'landing',
+    name: '/',
     component: LandingView
   },
   {
@@ -55,10 +55,17 @@ const router = createRouter({
   routes
 })
 
-function checkAuth(to, from, next) 
+function  checkAuth(to, from, next) 
 {
     if (useSessionStore().isLogged) next();
     else next("/login");
 }
+
+
+// function checkRolAyto(to, from, next) 
+// {
+//     if (useSessionStore().user?.rol === 'AYUNTAMIENTO') next();
+//     else next(from.name);
+// }
 
 export default router

@@ -81,14 +81,14 @@
                         <div class="py-1" role="none">
                             <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                             <router-link to="/ajustes"
-                                class="flex items-center text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 inline-block w-full"
+                                class="flex items-center text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full"
                                 role="menuitem" tabindex="-1" id="menu-item-0">
                                 <AdjustmentsHorizontalIcon class="h-5 w-5 mr-2" />
                                 Ajustes
                             </router-link>
 
                             <button @click="handleLogoutButtonClick"
-                                class="flex items-center text-left text-red-500 block px-4 py-2 text-sm hover:bg-slate-100 inline-block w-full"
+                                class="flex items-center text-left text-red-500 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full"
                                 role="menuitem" tabindex="-1" id="menu-item-1">
                                 <ArrowLeftOnRectangleIcon class="h-5 w-5 mr-2" />
                                 Cerrar sesión

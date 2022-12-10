@@ -11,30 +11,33 @@
                         v-model="userEdit.nickname" :disabled="!editando" />
                     <Input class="placeholder-gray-200" placeholder="your email" label="email" v-model="userEdit.email"
                         :disabled="!editando" />
-                    <!----------Boton Editar ---------->
+                        <!----------Boton Editar ---------->
                     <button type="button" @click="toggleEdit(true)" v-if="!editando" :disabled="loading"
-                        class="disabled:bg-gray-600 mt-6 px-4 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                        Editar perfil
-                    </button>
+                        class="flex items-center justify-center disabled:bg-gray-600 mt-6 px-6 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                        <PencilSquareIcon class="h-5 w-5 mr-2" />
+                            Editar perfil
+                    </button>                   
                     <!----------Boton Guardar ---------->
                     <button @click="toggleEdit(false)" v-if="editando"
-                        class="mt-6 px-4 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                        class="flex items-center justify-center mt-6 px-4 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                        <CheckIcon class="h-5 w-5 mr-2" />
                         Guardar cambios
                     </button>
                     <!----------Boton Cancelar ---------->
                     <button @click="cancelarEdicion" v-if="editando"
-                        class="px-4 py-2 text-sm font-medium text-center text-gray-400 transition-colors duration-150 rounded-lg active:bg-white/20  hover:bg-gray-100 dark:hover:bg-white/5 focus:outline-none focus:shadow-outline-blue">
+                        class="flex items-center justify-center px-4 py-2 text-sm font-medium text-center text-gray-400 transition-colors duration-150 rounded-lg active:bg-white/20  hover:bg-gray-100 dark:hover:bg-white/5 focus:outline-none focus:shadow-outline-blue">
+                        <XMarkIcon class="h-5 w-5 mr-2" />
                         Cancelar
                     </button>
-                    <span v-if="error" class="text-rose-500 text-sm">{{ error }}</span>
+                    <span v-if="error" class="flex gap-1 text-rose-500 text-sm"><ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}</span>
                     <spinner v-if="loading" class="ml-4 self-end w-full" size="4" />
                 </div>
             </tab>
             <tab name="second" title="Cambiar contraseña">
                 <!-----Cambiar contraseña------>
-                <div class="flex flex-col gap-2 w-full md:w-1/2">
+                <div class="flex flex-col gap-2 w-full md:w-1/2 mt-2">
                     <!----------Texto---------->
-                    <h1 class="mb-4 mt-2 text-2xl font-bold text-gray-700  dark:text-white">
+                    <h1 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">
                         Cambiar contraseña
                     </h1>
 
@@ -50,15 +53,15 @@
                         class="disabled:bg-gray-600 mt-6 px-4 py-2 text-sm font-medium  text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Cambiar contraseña
                     </button>
-                    <span v-if="error" class="text-rose-500 text-sm">{{ error }}</span>
+                    <span v-if="error" class="flex gap-1 text-rose-500 text-sm"><ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}</span>
                     <spinner v-if="loading" class="ml-4 self-end w-full" size="4" />
 
                 </div>
             </tab>
             <tab name="third" title="Mi sensor">
-                <div class="flex flex-col gap-2 w-full md:w-1/2">
+                <div class="flex flex-col gap-2 w-full md:w-1/2 <mt-2">
                     <!----------Texto---------->
-                    <h1 class="mb-4 mt-2 text-2xl font-bold text-gray-700 dark:text-white">
+                    <h1 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">
                         Mi sensor
                     </h1>
                     <div v-for="(sensor, index) in sensores" :key="index"
@@ -78,6 +81,15 @@
                 </div>
 
             </tab>
+            <tab name="four" title="Gestionar usuarios" v-if="user?.rol === 'AYUNTAMIENTO'">
+                <div class="flex flex-col gap-2 w-full md:w-1/2 <mt-2">
+                    <!----------Texto---------->
+                    <h1 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">
+                        Gestion de usuarios
+                    </h1>                    
+                </div>
+
+            </tab>
         </tabs>
 
 
@@ -86,6 +98,8 @@
 </template>
 
 <script setup>
+
+import { PencilSquareIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 import { Input, Avatar, Tabs, Tab, Spinner } from 'flowbite-vue'
 
@@ -135,12 +149,14 @@ const cancelarEdicion = () => {
     userEdit.value = {
         ...sessionStore.user
     }
+    error.value = ""
 }
 
 const toggleEdit = async (toggle) => {
 
-    editando.value = toggle
+    editando.value = toggle;
 
+    //si esta en false es porque esta editando, entonces guarda 
     if (!toggle) {
 
         const newData = {}
@@ -151,9 +167,10 @@ const toggleEdit = async (toggle) => {
         if (userEdit.value.email !== sessionStore.user.email) newData.email = userEdit.value.email
 
         //si no se ha cambiado nada - cancelar guardar
-        if(JSON.stringify(newData) === '{}') return
-
-        
+        if (JSON.stringify(newData) === '{}') {
+            cancelarEdicion();
+            return;
+        }
 
         try {
 
@@ -172,11 +189,13 @@ const toggleEdit = async (toggle) => {
                 sessionStore.user.nickname = res.data.nickname
                 sessionStore.user.email = res.data.email
 
+                editando.value = false
                 error.value = ""
                 alert("Perfil guardado con exito.")
             }
 
         } catch (errors) {
+            editando.value = true
             if (errors.length > 0) error.value = errors[0].msg
             else error.value = "Connection error."
 

@@ -18,7 +18,7 @@
                             <img class="object-cover w-64 " src="logoco3.png" alt="img" />
                         </div>
                         <!----------Texto Iniciar Sesión---------->
-                        <div class="flex items-center mb-4 mt-10 ">
+                        <div class="flex items-center mb-4 mt-6 ">
                             <h1 class="text-2xl text-left text-gray-700 dark:text-white">
                                 Iniciar sesión
                             </h1>
@@ -52,20 +52,16 @@
 
                             <!----------Boton Iniciar Sesión---------->
                             <button type="submit" @click="handleLoginButtonClick"
-                                class="w-full mt-6 text-white bg-blue-700 hover:bg-blue-800 fnt-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                class="w-full mt-3 mb-2 text-white bg-blue-700 hover:bg-blue-800 fnt-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700"
                                 href="#">
                                 Inicia sesión
                             </button>
 
                         </form>
 
-                        <span v-if="error" class="text-rose-500 text-sm">{{ error }}</span>
-
-
+                        <span v-if="error" class="flex gap-1 text-rose-500 text-sm"><ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}</span> 
 
                     </div>
-
-
 
                 </div>
             </div>
@@ -84,13 +80,15 @@ import { useSessionStore } from '@/store/session'
 
 import { Input, Spinner } from 'flowbite-vue'
 import { AtSymbolIcon, KeyIcon } from "@heroicons/vue/20/solid";
+import { ExclamationTriangleIcon }  from "@heroicons/vue/24/outline";
 
 export default defineComponent({
     components: {
     Input,
     Spinner,
     AtSymbolIcon,
-    KeyIcon
+    KeyIcon,
+    ExclamationTriangleIcon
 },
     setup() {
 

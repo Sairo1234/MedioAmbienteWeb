@@ -3,20 +3,20 @@
 
         <div id="map">
             <div class="absolute m-auto right-28 bottom-12 w-fit flex flex-col gap-4">
-                <div class="bg-white/20 backdrop-blur-sm dark:bg-slate-900 p-5 rounded-md shadow-lg">
+                <div class="bg-white/20 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
                     <!-- <h3 class="font-bold mb-3 dark:text-white">Filtrar por gas</h3> -->
                     <div class="flex flex-col gap-2 text-blue-800">
                         <div class="flex items-center">
                             <input id="o3-checkbox" type="checkbox" value="o3" v-model="checkedGasses"
-                                class="w-5 h-5 disabled:border-gray-100 bg-gray-100 rounded border-gray-300 focus:ring-blue-500/20 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                class="w-5 h-5 disabled:border-gray-100 bg-gray-100 rounded border-gray-300 focus:ring-blue-500/20 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-400 dark:border-gray-600">
                             <label for="o3-checkbox"
-                                class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-300">Ozono (O3)</label>
+                                class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-800">Ozono (O3)</label>
                         </div>
                         <div class="flex items-center">
                             <input disabled id="co2-checkbox" type="checkbox" value="co2" v-model="checkedGasses"
-                                class="w-5 h-5 disabled:border-gray-100 bg-gray-100 rounded border-gray-300 focus:ring-blue-500/20 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                class="w-5 h-5 disabled:border-gray-100 bg-gray-100 rounded border-gray-300 focus:ring-blue-500/20 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-400 dark:border-gray-600">
                             <label for="co2-checkbox"
-                                class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-300">Dióxido de carbono
+                                class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-800">Dióxido de carbono
                                 (CO2)</label>
                         </div>
                         <span>Checked gasses: {{ checkedGasses }}</span>
