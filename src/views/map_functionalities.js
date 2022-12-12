@@ -1,9 +1,8 @@
 //import * as medidasJson from './medidas.json'
-import L from "leaflet"
+import * as L from 'leaflet';
+import 'leaflet.markercluster';
 //import { onMounted } from 'vue'
 //import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
-import { random } from 'lodash'
-
 
 export const mapFunctions = {
 
@@ -39,12 +38,11 @@ export const mapFunctions = {
                 "geometry": {
                     "type": "Point",
                     // Coordenadas del json
-                    "coordenadas": [j["lat"], j["lng"]],
+                    "coordenadas": [j["lat"], j["lng"],j["value"]],
                 },
                 "properties":
                 {
-                   // valor de la medida, ahora es random porque no tengo. Tiene que ser de 0 a 0.1
-                    "value": random(0.0, 0.9)
+                    "value": j["value"]
                 }  
             }
     
@@ -71,15 +69,54 @@ export const mapFunctions = {
 
         geojsonFeature.features.forEach(function(feature)
         {
-            heatMapPoints.push([feature.geometry.coordenadas[0], feature.geometry.coordenadas[1], feature.properties.value])
+            var puntos = {
+                "lat": feature.geometry.coordenadas[0],
+                "lng": feature.geometry.coordenadas[1],
+                "value": feature.geometry.coordenadas[2]
+            }
+
+            heatMapPoints.push(puntos)
         })
-    
-        L.heatLayer(
-            heatMapPoints, 
+
+        // Configuración del heatmap
+        var cnfg = 
+        {
+            max: 1,
+            radius: 45,
+            minOpacity: 0.3,
+            gradient: 
             {
-                radius: 10,
-                minOpacity: 0.4,
-                gradient: {0.4: 'blue', 0.5: 'lime', 0.9: 'red'}
-            }).addTo(mymap);
-    }
+                '0.0': 'rgb(0, 0, 0)',
+                '0.6': 'rgb(24, 53, 103)',
+                '0.75': 'rgb(46, 100, 158)',
+                '0.9': '#FF9C32',
+                '1.0': 'Orange'
+            },
+            // Escala el radio dependiendo del zoom
+            scaleRadius: true,
+            // si se establece en falso, el mapa de calor usa el máximo global para la coloración
+            // si está activado: utiliza el máximo de datos dentro de los límites del mapa actual
+            useLocalExtrema: false,
+            blur: 12,
+            latField: "lat",
+            lngField: "lng",
+            valueField: "value"
+        }
+    
+        var heatmap = L.heatLayer(heatMapPoints, cnfg).addTo(mymap)
+
+        return heatmap
+    },
+
+    generarAgrupacionDeMedidas(geojsonFeature, mymap)
+    {
+        var markers = L.markerClusterGroup();
+
+        geojsonFeature.features.forEach(function(feature)
+        {
+            markers.addLayer(L.marker([feature.geometry.coordenadas[0], feature.geometry.coordenadas[1]]))
+        })
+
+        mymap.addLayer(markers)
+    },
 }

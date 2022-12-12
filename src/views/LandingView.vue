@@ -529,9 +529,19 @@ onMounted(async () => {
    var geojsonFeature = mapFunctions.generarGeoJson(features)
 
    // Generamos el heatMap
-   mapFunctions.generarHeatMap(geojsonFeature, mymap)
+   var heatmap = mapFunctions.generarHeatMap(geojsonFeature, mymap)
 
+   //Mirando si dejar la funcionalidad o no
+   //mapFunctions.generarAgrupacionDeMedidas(geojsonFeature, mymap)
+
+   // Creamos las capas
+   var baseMaps = 
+   {
+      "Mapa normal": mymap,
+      "Mapa de las últimas 24 horas": heatmap
+   }
    
+   L.control.layers(baseMaps).addTo(mymap);
 })
 
 //var myLayer = L.geoJSON().addTo(mymap);
