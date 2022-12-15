@@ -524,11 +524,61 @@
 
 import { PresentationChartLineIcon } from '@heroicons/vue/24/outline'
 
+import '../lib/leaflet-heat.js'
 import { TheCard } from 'flowbite-vue'
+
+import L from "leaflet"
+import { onMounted } from 'vue'
 
 import { storeToRefs } from 'pinia'
 import { useSessionStore } from '@/store/session'
 import { computed, ref } from 'vue';
+//import medidasJson from './medidas.json'
+
+import {mapFunctions} from './map_functionalities'
+import { Utilities } from './utilities'
+import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
+//import geoJsonBarrios from './Barrios_20210712'
+
+// ***************** Código del mapa
+
+onMounted(async () => 
+{
+    //Asocio al mapa creado el mapa generado en vue
+    let mymap = L.map('map').setView([51.446509, -0.267366], 13);
+
+    // Generador del mapa
+    
+    mapFunctions.generarMapa(mymap)
+
+    // Si quiero obtener las mediciones de hoy de la Base de datos:
+    var medidasJson = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
+
+    // Generamos el array de puntos
+    var features = mapFunctions.generarFeatures(medidasJson)
+    
+    // Generamos el GeoJson
+    var geojsonFeature = mapFunctions.generarGeoJson(features)
+
+    // Generamos el heatMap
+    var heatmap = mapFunctions.generarHeatMap(geojsonFeature, mymap)
+
+    //AQUÍ HABRÍA UNA LLAMADA AL BACKEND PARA RECIBIR EL GEOJSON DE LOS BARRIOS
+   
+    //var geoJsonDistritosAyuntamiento = mapFunctions.generarGeoJsonDeDistritosDelAyuntamiento(geojsonFeature, geoJsonBarrios)
+
+    //var barriosColoreados = L.geoJson(geoJsonDistritosAyuntamiento, {style: Utilities.style(geoJsonDistritosAyuntamiento)})
+
+    console.log(Utilities)
+    // Creamos las capas
+    var baseMaps = 
+    {
+        "Mapa normal": mymap,
+        "Mapa de las últimas 24 horas": heatmap,
+    }
+   
+    L.control.layers(baseMaps).addTo(mymap);
+})
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
@@ -546,7 +596,11 @@ const checkedGasses = ref([])
     box-shadow: inset 0 0 80px rgb(87, 87, 87);
     width: 100%;
     height: 100vh;
-    background: url("../../public/gmaps.png");
+}
+
+#map a{
+
+    z-index: -999;
 }
 
 .sections section {
