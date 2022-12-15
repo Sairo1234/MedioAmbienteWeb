@@ -1,3 +1,4 @@
+
 <template>
 
     <div class="flex items-center min-h-screen bg-white dark:bg-slate-800 rounded-xl">
