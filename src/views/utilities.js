@@ -55,17 +55,17 @@ export const Utilities = {
             minY = Math.min(p[1], minY);
             maxY = Math.max(p[1], maxY);
         })
-
-        console.log({minX, p: p.x})
- 
+         
         if (p.x < minX || p.x > maxX || p.y < minY || p.y > maxY) return false;
 
         var inside = false;
 
-        for (let i = 0, j = polygon.Length - 1; i < polygon.Length; j = i++) 
+        for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) 
         {
-            if ((polygon[i][1] > p.y) != (polygon[j][1] > p.y) &&
-                p.x < (polygon[j][0] - polygon[i][0]) * (p.y - polygon[i][1]) / (polygon[j][1] - polygon[i][1]) + polygon[i][0]) inside = !inside
+            if ((polygon[i][1] > p.y) != (polygon[j][1] > p.y) && p.x < (polygon[j][0] - polygon[i][0]) * (p.y - polygon[i][1]) / (polygon[j][1] - polygon[i][1]) + polygon[i][0])
+            {
+                inside = !inside
+            }
         }
 
         return inside;
@@ -81,11 +81,11 @@ export const Utilities = {
     */
 
     getColor(d) {
-        return d > 50 ? 'rgb(0, 0, 0)' :
-            d > 23 ? 'rgb(24, 53, 103)' :
+        return  d > 50 ? 'rgb(0, 0, 0)' :
+                d > 23 ? 'rgb(24, 53, 103)' :
                 d > 15 ? 'rgb(46, 100, 158)' :
-                    d > 12 ? '#FF9C32' :
-                        'Orange';
+                d > 12 ? '#FF9C32' :
+                         'Orange';
     },
 
     /**--------------------------------------------
@@ -97,10 +97,23 @@ export const Utilities = {
     * @return El promediado
     */
 
-    PromediadoDeValoresDeunDistrito(datos) {
-        var i = 0, summ = 0, ArrayLen = datos.length;
-        while (i < ArrayLen) summ = summ + datos.properties.value;
-
-        return summ / ArrayLen;
+    PromediadoDeValoresDeunDistrito(geoJsonBarrios) 
+    {
+        geoJsonBarrios.features.forEach(distrito => {  
+            distrito.properties.TASA_MEDIA_CO2 == distrito.properties.TASA_MEDIA_CO2 / distrito.mediciones.length
+        })
     },
+
+        
+    style(geoJson)
+    {
+        return {
+            fillColor: geoJson.features[0].properties.TASA_MEDIA_CO2,
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        }
+	},
 }

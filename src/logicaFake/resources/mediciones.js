@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { logicaFakeSettings } from '../config.js';
 
 export const MedicionesAPI = {
@@ -54,19 +55,36 @@ export const MedicionesAPI = {
 
     async obtenerTodasMedicionesDelDia(instante)
     {
-        logicaFakeSettings.headers.set('Content-Type', 'multipart/form-data');
+        try {
 
-        console.log(instante)
-        return await fetch(logicaFakeSettings.baseURL + '/mediciones/day/' + instante, 
-        {
-            method: 'GET',
-            headers: logicaFakeSettings.headers
-        })
-            .then(function (response) 
-            {
-                console.log(response)
-                if (response.status != 200) throw response.status
-                else return response.json()
-            });
-    }
+            var response = await axios.get(logicaFakeSettings.baseURL + '/mediciones/day/' + instante)
+
+            console.log(response)
+
+        } catch (err) {
+
+            //                
+
+            if (err.response.data.errors) {
+
+                // errors = [{msg: string}] 
+                const errors = err.response.data.errors
+                throw errors;
+
+            }
+
+            // errors = [{msg: string}]     
+            const errors = [{ msg: err.response.data.msg }]
+            throw errors;
+        }
+
+        if (response.status == 200) {
+
+            //return user data
+            return response.data
+
+        }
+    },
+
+    
 }

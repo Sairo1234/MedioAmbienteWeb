@@ -4,8 +4,9 @@
     "features": [
         {
             "type": "Feature",
-            "mediciones": [],
             "properties": {
+                "TASA_MEDIA_CO2": 0,
+                "mediciones": [],
                 "NOMDIS": "Villaverde",
                 "NOMBRE": "San Cristóbal",
                 "COD_DIS": "17",

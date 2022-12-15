@@ -113,11 +113,12 @@ export const mapFunctions =
         // Configuración del heatmap
         var cnfg =
         {
-            radius: 55,
+
+            radius: 60,
             minOpacity: 0.3,
             gradient:
             {
-                '0.0': 'rgb(0, 0, 0)',
+                '0.0': 'rgb(255, 0, 0)',
                 '0.4': 'rgb(24, 53, 103)',
                 '0.75': 'rgb(46, 100, 158)',
                 '0.9': '#FF9C32',
@@ -128,7 +129,7 @@ export const mapFunctions =
             // si se establece en falso, el mapa de calor usa el máximo global para la coloración
             // si está activado: utiliza el máximo de datos dentro de los límites del mapa actual
             useLocalExtrema: false,
-            blur: 10,
+            blur: 30,
         }
 
         var heatmap = L.heatLayer(heatMapPoints, cnfg).addTo(mymap)
@@ -150,9 +151,10 @@ export const mapFunctions =
     generarGeoJsonDeDistritosDelAyuntamiento(geoJsonMediciones, geoJsonBarrios) 
     {
         geoJsonMediciones.features.forEach(feature => {
-            geoJsonBarrios.features.forEach(distrito => {   
-                if (Utilities.IsPointInPolygon(
-                    new Point(feature.geometry.coordenadas[0], feature.geometry.coordenadas[1]), distrito.geometry.coordenadas[0]) == true) 
+
+            geoJsonBarrios.features.forEach(distrito => {  
+
+                if (Utilities.IsPointInPolygon( new Point(feature.geometry.coordenadas[0], feature.geometry.coordenadas[1]), distrito.geometry.coordenadas[0]) == true) 
                 {
                     distrito.mediciones.push({
                         "geometry": {
@@ -164,9 +166,14 @@ export const mapFunctions =
                             "value": feature.properties.value
                         }
                     })
+
+                    distrito.properties.TASA_MEDIA_CO2 = distrito.properties.TASA_MEDIA_CO2 + feature.properties.value
                 }
             })
         })
+
+        Utilities.PromediadoDeValoresDeunDistrito(geoJsonBarrios)
+
         return geoJsonBarrios
     },
 }
