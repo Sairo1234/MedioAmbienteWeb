@@ -508,6 +508,8 @@ import { computed } from 'vue';
 import medidasJson from './medidas.json'
 
 import {mapFunctions} from './map_functionalities'
+import { Utilities } from './utilities'
+import geoJsonBarrios from './Barrios_20210712'
 
 // ***************** Código del mapa
 
@@ -531,22 +533,33 @@ onMounted(async () => {
    // Generamos el heatMap
    var heatmap = mapFunctions.generarHeatMap(geojsonFeature, mymap)
 
-   //Mirando si dejar la funcionalidad o no
-   //mapFunctions.generarAgrupacionDeMedidas(geojsonFeature, mymap)
-
    // Creamos las capas
    var baseMaps = 
    {
       "Mapa normal": mymap,
       "Mapa de las últimas 24 horas": heatmap
    }
+
+   //AQUÍ HABRÍA UNA LLAMADA AL BACKEND PARA RECIBIR EL GEOJSON DE LOS BARRIOS
    
-   L.control.layers(baseMaps).addTo(mymap);
+    var geoJsonDistritosAyuntamiento = 
+        mapFunctions.generarGeoJsonDeDistritosDelAyuntamiento(geojsonFeature, geoJsonBarrios)
+        L.geoJson(geoJsonDistritosAyuntamiento).addTo(mymap)
+
+    var cnfgMapaDistritos = 
+    {
+        fillColor: Utilities.getColor(Utilities.PromediadoDeValoresDeunDistrito(geoJsonDistritosAyuntamiento.features.mediciones)),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+	};
+
+    L.geoJson(geoJsonDistritosAyuntamiento, cnfgMapaDistritos).addTo(mymap);
+   
+   L.control.layers(baseMaps, heatmap).addTo(mymap);
 })
-
-//var myLayer = L.geoJSON().addTo(mymap);
-//myLayer.addData(geojsonFeature);
-
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
