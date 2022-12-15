@@ -17,6 +17,15 @@ export const useSessionStore = defineStore('session', {
 
   actions: {
 
+    setUserData(userData) {  
+      let user = {
+        ...this.user,
+        ...userData
+      }
+      this.user = user;
+      window.sessionStorage.setItem("user", JSON.stringify(user))
+    },
+
     async login(email, password) {
 
       this.user = await logicaFakeAuth.login(email, password)

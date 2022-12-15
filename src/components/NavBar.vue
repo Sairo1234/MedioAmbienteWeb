@@ -12,49 +12,70 @@
         <template #default="{ isShowMenu }">
             <NavbarCollapse v-if="!isLogged" :isShowMenu="isShowMenu">
                 <NavbarLink link='/'>
-                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                    <div class="flex items-center rounded-md text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full">
                         <MapIcon class="h-5 w-5 mr-2" />
                         Ver mapa
                     </div>
                 </NavbarLink>
                 <NavbarLink link='/#about'>
-                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                    <div class="flex items-center rounded-md text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full">
                         <InformationCircleIcon class="h-5 w-5 mr-2" />
                         Quienes somos
                     </div>
                 </NavbarLink>
                 <NavbarLink link='/#howto'>
-                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                    <div class="flex items-center rounded-md text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full">
                         <QuestionMarkCircleIcon class="h-5 w-5 mr-2" />
                         ¿Que tengo que hacer?
                     </div>
                 </NavbarLink>
                 <NavbarLink link='/#contact'>
-                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                    <div class="flex items-center rounded-md text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full">
                         <EnvelopeIcon class="h-5 w-5 mr-2" />
                         Contacto
                     </div>
                 </NavbarLink>
                 <NavbarLink v-if="isShowMenu">
-                    <div class="flex items-center p-3 bg-gray-100 hover:bg-gray-200 dark:hover:bg-white/20 rounded-2xl">
+                    <router-link to="/login"
+                        class="flex items-center rounded-md text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full"
+                        role="menuitem" tabindex="-1" id="menu-item-0">
                         <UserCircleIcon class="h-5 w-5 mr-2" />
-                        <router-link to='/login' class="dark:text-gray-400">Iniciar sesión</router-link>
-                    </div>
+                        Iniciar sesión
+                    </router-link>
                 </NavbarLink>
             </NavbarCollapse>
             <NavbarCollapse v-if="isLogged" :isShowMenu="isShowMenu">
-                <NavbarLink link='/'>
-                    <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
+                <NavbarLink>
+                    <router-link to="/"
+                        class="flex items-center rounded-md text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full"
+                        role="menuitem" tabindex="-1" id="menu-item-0">
                         <MapIcon class="h-5 w-5 mr-2" />
                         Ver mapa
-                    </div>
+                    </router-link>
                 </NavbarLink>
+                <NavbarLink v-if="isShowMenu">
+                    <router-link to="/ajustes"
+                        class="flex items-center rounded-md text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full"
+                        role="menuitem" tabindex="-1" id="menu-item-0">
+                        <AdjustmentsHorizontalIcon class="h-5 w-5 mr-2" />
+                        Ajustes
+                    </router-link>
+                </NavbarLink>
+                <NavbarLink v-if="isShowMenu">
+                    <button @click="handleLogoutButtonClick"
+                        class="flex items-center rounded-md text-left text-red-500 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full"
+                        role="menuitem" tabindex="-1" id="menu-item-1">
+                        <ArrowLeftOnRectangleIcon class="h-5 w-5 mr-2" />
+                        Cerrar sesión
+                    </button>
+                </NavbarLink>
+
             </NavbarCollapse>
         </template>
         <template #right-side>
             <div class="flex flex-auto gap-8">
                 <!-- Profile Dropdown -->
-                <div id="profile-dropdown" v-if="isLogged" class="relative inline-block text-left">
+                <div id="profile-dropdown" v-if="isLogged" class="rounded-md relative inline-block text-left shadow hover:shadow-md duration-200">
                     <div>
                         <button type="button" @click="handleProfileDropdownClick"
                             class="inline-flex w-full justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
@@ -100,7 +121,7 @@
 
                 <!-- Landing buttons -->
                 <div class="flex gap-6 items-center">
-                    <NavbarCollapse  v-if="!isLogged">
+                    <NavbarCollapse v-if="!isLogged">
                         <NavbarLink link='/#howto'>
                             <div
                                 class="text-white bg-blue-700 hover:bg-blue-800 fnt-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700">
@@ -108,29 +129,27 @@
                             </div>
                         </NavbarLink>
                         <NavbarLink class="flex items-center">
-                            <router-link to='/login' class="dark:text-gray-400">
-                                <div class="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-2xl">
-                                    <UserCircleIcon class="h-5 w-5 mr-2" />
-                                    Iniciar sesión
-                                </div>
+                            <router-link to='/login' class="flex items-center rounded-md text-gray-700 dark:text-gray-400 block px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-white/10 inline-block w-full">
+                                <UserCircleIcon class="h-5 w-5 mr-2" />
+                                Iniciar sesión  
                             </router-link>
                         </NavbarLink>
 
                     </NavbarCollapse>
                     <!-- Toggle theme button -->
-                <div>
-                    <button id="theme-toggle" type="button"
-                        class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 dark:hover:bg-gray-700 rounded-lg p-2">
-                        <div id="theme-toggle-dark-icon" class="hidden">
-                            <MoonIcon class="h-5 w-5" />
-                        </div>
-                        <div id="theme-toggle-light-icon" class="hidden">
-                            <SunIcon class="h-5 w-5" />
-                        </div>
-                    </button>
+                    <div>
+                        <button id="theme-toggle" type="button"
+                            class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 dark:hover:bg-gray-700 rounded-lg p-2">
+                            <div id="theme-toggle-dark-icon" class="hidden">
+                                <MoonIcon class="h-5 w-5" />
+                            </div>
+                            <div id="theme-toggle-light-icon" class="hidden">
+                                <SunIcon class="h-5 w-5" />
+                            </div>
+                        </button>
+                    </div>
                 </div>
-                </div>
-                
+
 
             </div>
         </template>

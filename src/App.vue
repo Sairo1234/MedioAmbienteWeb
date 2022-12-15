@@ -1,25 +1,8 @@
 <template>
-  <!-- <link href="https://unpkg.com/primevue/resources/themes/fluent-light/theme.css" rel="stylesheet">
-  <nav>
-    <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link>
-    <router-link v-if="isLogged" to="/mediciones">Mediciones ({{ medicionesTotales }})</router-link>
-    <router-link v-if="!isLogged" to="/login">Login</router-link>
-    <div id="user-info" v-if="isLogged">
-      <img v-bind:src="user.profile_photo_url"/>
-      <div>
-        <b>{{ user.nickname }}</b>
-        <br>
-        <span>{{ user.email }}</span>
-      </div>
-    </div>
-    <PrimeButton v-if="isLogged" @click="handleLogoutButtonClick">Cerrar sesión</PrimeButton>
-  </nav>
-  <router-view /> -->
 
   <div id="app" class="dark:bg-slate-800">
-    <NavBar></NavBar>
-    <router-view class="pt-24 md:pt-18" />
+    <NavBar class="h-16 md:h-24"></NavBar>
+    <router-view class="pt-16 md:pt-24" />
   </div>
 </template>
 
@@ -38,7 +21,7 @@ export default defineComponent({
     NavBar
   },
 
-  setup() {    
+  setup() {
 
     const sessionStore = useSessionStore()
 
@@ -61,9 +44,17 @@ export default defineComponent({
 
 })
 
+function disableF5(e) {
+  if ((e.which || e.keyCode) == 116) {
+    //console.log(router.currentRoute)
+    //e.preventDefault();
+  }
+}
+
+// To disable f5
+document.onkeydown = disableF5;
 
 </script>
-
 
 <style>
 #app {

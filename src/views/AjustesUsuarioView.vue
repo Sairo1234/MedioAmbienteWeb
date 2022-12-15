@@ -1,22 +1,24 @@
 <template>
-    <div class="m-auto w-screen md:w-3/4">
+    <div class="w-screen md:w-3/4 m-auto">
         <tabs variant="underline" v-model="activeTab" class="p-4">
             <!-- class appends to content DIV for all tabs -->
-            <tab name="first" title="Perfil">
+            <tab name="perfil" title="Perfil">
 
-                <Avatar class="hover:grayscale transition-1 w-fit" size="xl" rounded bordered
-                    :img="userEdit?.profile_photo_url" />
                 <div class="flex flex-col gap-2 w-full md:w-1/3 mt-12">
+
+                    <Avatar class="hover:grayscale transition-1 w-fit mb-6" size="xl" rounded bordered
+                        :img="userEdit?.profile_photo_url" />
+
                     <Input class="placeholder-gray-200" placeholder="your nickname" label="nickname"
                         v-model="userEdit.nickname" :disabled="!editando" />
                     <Input class="placeholder-gray-200" placeholder="your email" label="email" v-model="userEdit.email"
                         :disabled="!editando" />
-                        <!----------Boton Editar ---------->
+                    <!----------Boton Editar ---------->
                     <button type="button" @click="toggleEdit(true)" v-if="!editando" :disabled="loading"
                         class="flex items-center justify-center disabled:bg-gray-600 mt-6 px-6 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         <PencilSquareIcon class="h-5 w-5 mr-2" />
-                            Editar perfil
-                    </button>                   
+                        Editar perfil
+                    </button>
                     <!----------Boton Guardar ---------->
                     <button @click="toggleEdit(false)" v-if="editando"
                         class="flex items-center justify-center mt-6 px-4 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
@@ -29,11 +31,13 @@
                         <XMarkIcon class="h-5 w-5 mr-2" />
                         Cancelar
                     </button>
-                    <span v-if="error" class="flex gap-1 text-rose-500 text-sm"><ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}</span>
+                    <span v-if="error" class="flex gap-1 text-rose-500 text-sm">
+                        <ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}
+                    </span>
                     <spinner v-if="loading" class="ml-4 self-end w-full" size="4" />
                 </div>
             </tab>
-            <tab name="second" title="Cambiar contraseña">
+            <tab name="password" title="Cambiar contraseña">
                 <!-----Cambiar contraseña------>
                 <div class="flex flex-col gap-2 w-full md:w-1/2 mt-2">
                     <!----------Texto---------->
@@ -53,41 +57,30 @@
                         class="disabled:bg-gray-600 mt-6 px-4 py-2 text-sm font-medium  text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Cambiar contraseña
                     </button>
-                    <span v-if="error" class="flex gap-1 text-rose-500 text-sm"><ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}</span>
+                    <span v-if="error" class="flex gap-1 text-rose-500 text-sm">
+                        <ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}
+                    </span>
                     <spinner v-if="loading" class="ml-4 self-end w-full" size="4" />
 
                 </div>
             </tab>
-            <tab name="third" title="Mi sensor">
-                <div class="flex flex-col gap-2 w-full md:w-1/2 <mt-2">
-                    <!----------Texto---------->
-                    <h1 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">
-                        Mi sensor
-                    </h1>
-                    <div v-for="(sensor, index) in sensores" :key="index"
-                        class="rounded-md border border-gray-300 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-                        <div class="flex flex-auto gap-8 items-center">
-                            <Avatar stacked :status="sensor.activo ? 'online' : 'offline'" bordered rounded
-                                img="https://i.pinimg.com/736x/05/ca/61/05ca610ff78bb9c6f23efc2039842cec.jpg" />
-                            <div class="flex flex-col gap-2">
-                                <p class="text-gray-500 dark:text-gray-400">{{ sensor.uuid }}</p>
-                                <div :class="[sensor.activo ? 'bg-green-100 dark:border-green-400 text-green-400 dark:text-green-500' : 'bg-red-100 dark:border-red-400 text-red-400 dark:text-red-500']"
-                                    class="w-fit dark:bg-slate-800 dark:border  px-2 rounded ">
-                                    {{ sensor.activo ? 'Activo' : 'Inactivo' }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <tab name="sensor" title="Mi sensor" v-if="user?.rol === 'USER'">
+                <Suspense>
+                    <MisSensores title="Mi sensor"></MisSensores>
+                    <!-- loading state via #fallback slot -->
+                    <template #fallback>
+                        Cargando...
+                    </template>
+                </Suspense>
             </tab>
-            <tab name="four" title="Gestionar usuarios" v-if="user?.rol === 'AYUNTAMIENTO'">
-                <div class="flex flex-col gap-2 w-full md:w-1/2 <mt-2">
-                    <!----------Texto---------->
-                    <h1 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">
-                        Gestion de usuarios
-                    </h1>                    
-                </div>
+            <tab name="gestion" title="Gestionar sensores y usuarios" v-if="user?.rol === 'AYUNTAMIENTO'">
+                <Suspense>
+                    <GestionAyuntamiento title="Gestionar"></GestionAyuntamiento>
+                    <!-- loading state via #fallback slot -->
+                    <template #fallback>
+                        Cargando...
+                    </template>
+                </Suspense>
 
             </tab>
         </tabs>
@@ -108,15 +101,20 @@ import { reactive, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia';
 import { useSessionStore } from '@/store/session'
 
+import MisSensores from '@/components/MisSensores.vue';
+import GestionAyuntamiento from '@/components/GestionAyuntamiento.vue';
+
+
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
 
-const activeTab = ref('first')
+const activeTab = ref('perfil')
 
 watch(activeTab, () => {
-    if (editando.value) alert("¡Cuidado! Tienes cambios sin guardar.")
-    editando.value = false
-    error.value = ""
+    if (editando.value && activeTab.value !== "perfil") {
+        activeTab.value = "perfil"
+        alert("¡Cuidado! Tienes cambios sin guardar.")
+    }
 })
 
 const loading = ref(false)
@@ -134,15 +132,6 @@ const passwordForm = reactive({
 const userEdit = ref({
     ...user.value
 })
-
-
-//sensores
-const sensores = ref([
-    {
-        uuid: "2f8eec06-6ded-11ed-a1eb-0242ac120002",
-        activo: true,
-    }
-])
 
 const cancelarEdicion = () => {
     editando.value = false
@@ -186,8 +175,7 @@ const toggleEdit = async (toggle) => {
             if (res.success) {
 
                 //actualizar datos usuario de la web
-                sessionStore.user.nickname = res.data.nickname
-                sessionStore.user.email = res.data.email
+                sessionStore.setUserData(res.data)
 
                 editando.value = false
                 error.value = ""

@@ -2,8 +2,8 @@
     <div class="w-full">
 
         <div id="map">
-            <div class="absolute m-auto right-28 bottom-12 w-fit flex flex-col gap-4">
-                <div class="bg-white/20 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
+            <div class="absolute m-auto right-12 bottom-12 w-fit flex flex-col gap-4">
+                <div class="bg-white/60 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
                     <!-- <h3 class="font-bold mb-3 dark:text-white">Filtrar por gas</h3> -->
                     <div class="flex flex-col gap-2 text-blue-800">
                         <div class="flex items-center">
