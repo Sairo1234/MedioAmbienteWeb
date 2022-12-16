@@ -25,9 +25,9 @@
 
 </template>
 
-<script>
+<script setup>
 
-import { defineComponent, ref, toRaw } from 'vue'
+import { defineProps, ref, toRaw, defineEmits } from 'vue'
 
 import { storeToRefs } from 'pinia';
 import { useSessionStore } from '@/store/session'
@@ -37,53 +37,42 @@ import { PlusCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
 import { logicaFakeUsuario } from '@/logicaFake/resources/usuario';
 import { logicaFakeAyuntamiento } from '@/logicaFake/resources/ayuntamiento';
 
-export default defineComponent({
-    components: {
-        PlusCircleIcon,
-        XCircleIcon
-    },
-    props: {
-        uuid: String
-    },
-    async setup() {
 
-        const sessionStore = useSessionStore()
-        const { user } = storeToRefs(sessionStore)
+const props = defineProps(['uuid'])
+const emit = defineEmits(['updated'])
 
-        const userRaw = { ...toRaw(user.value) };
-        const ayto = await logicaFakeUsuario.getAyuntamiento(userRaw.nickname);
+const emitUpdated = (res) => {
+    emit('updated', res);
+}
 
-        const usuarios = await logicaFakeAyuntamiento.getUsuarios(ayto.id);
+const sessionStore = useSessionStore()
+const { user } = storeToRefs(sessionStore)
 
-        const selectedUser = ref("")
+const userRaw = { ...toRaw(user.value) };
+const ayto = await logicaFakeUsuario.getAyuntamiento(userRaw.nickname);
 
-        const showAddUsers = ref(false)
+const usuarios = await logicaFakeAyuntamiento.getUsuarios(ayto.id);
 
-        const enableAddUser = (enable) => {
-            selectedUser.value = ""
-            showAddUsers.value = enable;
-        }
+const selectedUser = ref("")
 
-        return {
-            usuarios,
-            showAddUsers,
-            selectedUser,
-            enableAddUser
-        }
+const showAddUsers = ref(false)
 
-    },
-    methods: {
-        async asociarUsuarioSensor() {
+const enableAddUser = (enable) => {
+    selectedUser.value = ""
+    showAddUsers.value = enable;
+}
 
-            if(this.selectedUser === "") {
-                console.log("selecciona un usuario")
-                return;
-            }
+async function asociarUsuarioSensor() {
 
-            const res = logicaFakeAyuntamiento.asociarUsuarioSensor(this.uuid, this.selectedUser);
-            console.log(res)
-        }
+    if (selectedUser.value === "") {
+        console.log("selecciona un usuario")
+        return;
     }
-})
+
+    const res = await logicaFakeAyuntamiento.asociarUsuarioSensor(props.uuid, selectedUser.value);
+    emitUpdated(res)
+
+}
+
 
 </script>

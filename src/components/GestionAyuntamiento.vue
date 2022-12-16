@@ -62,7 +62,7 @@
                 </div>
 
 
-                <div class="grid grid-cols-1 2xl:grid-cols-1 gap-4 p-6">
+                <div class="grid grid-cols-1 2xl:grid-cols-1 gap-4 p-6" v-if="refresh">
                     <div v-for="(sensor, index) in filteredSensoresUsuario" :key="index" class="grid grid-cols-2 gap-4">
                         <div
                             class="flex flex-row gap-6 items-center shadow hover:shadow-md duration-200 relative rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
@@ -75,6 +75,7 @@
                                     {{ sensor.activo ? 'Activo' : 'Inactivo' }}
                                 </div>
                             </div>
+                            <div class="absolute right-10 text-gray-300">></div>
                             <!-- <XMarkIcon class="h-5 w-5 mr-2 text-gray-300 hover:text-gray-600" /> -->
                         </div>
 
@@ -83,12 +84,12 @@
                             <div v-if="sensor.user" class="w-full group relative">
                                 <div class="flex flex-row-reverse gap-8 items-center justify-start">
                                     <Avatar bordered rounded :img=sensor.user.profile_photo_url />
-                                    <div class="flex flex-col gap-2 text-right">
+                                    <div class="flex flex-col items-end gap-2 text-right">
                                         <p class="font-bold text-gray-500 dark:text-gray-400">{{ sensor.user.nickname }}
                                         </p>
                                         <i class="text-gray-500 dark:text-gray-400">{{ sensor.user.email }}</i>
 
-                                        <div class="flex gap-4" v-if="false"> <!-- !!!!!! -->
+                                        <div class="flex gap-4" v-if="sensor.user"> <!-- !!!!!! -->
                                             <div :class="[sensor.user.verified ? 'bg-green-100 dark:border-green-400 text-green-400 dark:text-green-500' : 'bg-red-100 dark:border-red-400 text-red-400 dark:text-red-500']"
                                                 class="w-fit dark:bg-slate-800 dark:border px-2 rounded ">
                                                 {{ sensor.user.verified ? 'Verificado' : 'No verificado' }}
@@ -104,7 +105,7 @@
                                 </div>
                             </div>
 
-                            <AsociarSensorUser v-if="!sensor.user" :uuid="sensor?.uuid" />
+                            <AsociarSensorUser v-if="!sensor.user" :uuid="sensor?.uuid" @updated="asociarSensorUserUpdated" />
 
                         </div>
                         <!-- <div class="absolute right-6">></div> -->
@@ -176,7 +177,7 @@ import { XCircleIcon } from '@heroicons/vue/24/outline'
 import AsociarSensorUser from './AsociarSensorUser.vue'
 import { Avatar, Input } from 'flowbite-vue'
 
-import { defineProps, reactive, computed, toRaw } from 'vue';
+import { defineProps, reactive, computed, toRaw, ref     } from 'vue';
 
 import { logicaFakeUsuario } from '@/logicaFake/resources/usuario';
 import { logicaFakeAyuntamiento } from '@/logicaFake/resources/ayuntamiento';
@@ -223,6 +224,15 @@ const filteredSensoresUsuario = computed(() => {
     return filtered;
 
 })
+
+const refresh = ref(true)
+const asociarSensorUserUpdated = async (res) => {
+    if(res.success) {
+        refresh.value = false;
+        sensoresUsuario = await logicaFakeAyuntamiento.getSensoresUsuarios(ayto.id);
+        refresh.value = true;
+    }
+}
 
 
 </script>
