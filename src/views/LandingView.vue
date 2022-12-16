@@ -2,8 +2,13 @@
     <div class="w-full">
 
         <div id="map">
+<<<<<<< Updated upstream
             <div class="absolute m-auto right-12 bottom-12 w-fit flex flex-col gap-4">
                 <div class="bg-white/60 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
+=======
+            <div id="filtros-mapa" class="absolute m-auto right-28 bottom-12 w-fit flex flex-col gap-4">
+                <div class="bg-white/20 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
+>>>>>>> Stashed changes
                     <!-- <h3 class="font-bold mb-3 dark:text-white">Filtrar por gas</h3> -->
                     <div class="flex flex-col gap-2 text-blue-800">
                         <div class="flex items-center">
@@ -535,50 +540,14 @@ import { useSessionStore } from '@/store/session'
 import { computed, ref } from 'vue';
 //import medidasJson from './medidas.json'
 
-import {mapFunctions} from './map_functionalities'
-import { Utilities } from './utilities'
+import { mapFunctions } from './map_functionalities'
+//import { Utilities } from './utilities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
+import { antPath } from 'leaflet-ant-path';
 //import geoJsonBarrios from './Barrios_20210712'
 
 // ***************** Código del mapa
 
-onMounted(async () => 
-{
-    //Asocio al mapa creado el mapa generado en vue
-    let mymap = L.map('map').setView([51.446509, -0.267366], 13);
-
-    // Generador del mapa
-    
-    mapFunctions.generarMapa(mymap)
-
-    // Si quiero obtener las mediciones de hoy de la Base de datos:
-    var medidasJson = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
-
-    // Generamos el array de puntos
-    var features = mapFunctions.generarFeatures(medidasJson)
-    
-    // Generamos el GeoJson
-    var geojsonFeature = mapFunctions.generarGeoJson(features)
-
-    // Generamos el heatMap
-    var heatmap = mapFunctions.generarHeatMap(geojsonFeature, mymap)
-
-    //AQUÍ HABRÍA UNA LLAMADA AL BACKEND PARA RECIBIR EL GEOJSON DE LOS BARRIOS
-   
-    //var geoJsonDistritosAyuntamiento = mapFunctions.generarGeoJsonDeDistritosDelAyuntamiento(geojsonFeature, geoJsonBarrios)
-
-    //var barriosColoreados = L.geoJson(geoJsonDistritosAyuntamiento, {style: Utilities.style(geoJsonDistritosAyuntamiento)})
-
-    console.log(Utilities)
-    // Creamos las capas
-    var baseMaps = 
-    {
-        "Mapa normal": mymap,
-        "Mapa de las últimas 24 horas": heatmap,
-    }
-   
-    L.control.layers(baseMaps).addTo(mymap);
-})
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
@@ -589,18 +558,101 @@ const isLogged = computed(() => {
 
 const checkedGasses = ref([])
 
+onMounted(async () => {
+
+    //Asocio al mapa creado el mapa generado en vue
+    let mymap = L.map('map').setView([51.446509, -0.267366], 13);
+
+    // Generador del mapa
+    mapFunctions.generarMapa(mymap)
+
+    // Si quiero obtener las mediciones de hoy de la Base de datos:
+    var medidasJsonDelUltimoDia = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
+
+    // Generamos el array de puntos
+    var features = mapFunctions.generarFeatures(medidasJsonDelUltimoDia)
+
+    // Generamos el GeoJson
+    var geojsonFeature = mapFunctions.generarGeoJson(features)
+
+    // Generamos el heatMap
+    var heatmap = mapFunctions.generarHeatMap(geojsonFeature, mymap)
+
+    //AQUÍ HABRÍA UNA LLAMADA AL BACKEND PARA RECIBIR EL GEOJSON DE LOS BARRIOS
+
+    //var geoJsonDistritosAyuntamiento = mapFunctions.generarGeoJsonDeDistritosDelAyuntamiento(geojsonFeature, geoJsonBarrios)
+
+    //var barriosColoreados = L.geoJson(geoJsonDistritosAyuntamiento, {style: Utilities.style(geoJsonDistritosAyuntamiento)})
+
+    var baseMaps = null
+
+    // Si hay un usuario logeado, se calculan sus layers
+    if (isLogged.value) 
+    {
+        // geoJson de las mediciones del usuario. Llamada al servidor
+        var medidasJsonDelUltimoDiaDelUsuarioLogeado = await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul")
+        var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(mapFunctions.generarFeatures(medidasJsonDelUltimoDiaDelUsuarioLogeado))
+        var heatmapDelUsuario = mapFunctions.generarHeatMap(geojsonFeatureDelusuario, mymap)
+
+        // Ruta del usuario de hoy
+        var routeDelusuario = []
+        geojsonFeatureDelusuario.features.forEach(feature => {
+
+            routeDelusuario.push(feature.geometry.coordenadas)
+        })
+
+        // Estilo de la ruta del usuario
+        const pathDelUsuario = antPath(routeDelusuario,
+        {
+            "delay": 733,
+            "dashArray": [
+                11,
+                42
+            ],
+            "weight": 5,
+            "color": "#0000FF",
+            "pulseColor": "#FFFFFF",
+            "paused": false,
+            "reverse": false,
+            "hardwareAccelerated": true
+        });
+
+        // Se establecen las capas
+        baseMaps =
+        {
+            "Mapa normal": mymap,
+            "Mapa de las últimas 24 horas": heatmap,
+            "Tu recorrido": pathDelUsuario,
+            "Tu Mapa de Calor": heatmapDelUsuario
+            //"Mapa Barrios": barriosColoreados,
+        }
+    }
+    else {
+
+        // Si no está loggeado, se muestran las capas estándar
+        baseMaps =
+        {
+            "Mapa normal": mymap,
+            "Mapa de las últimas 24 horas": heatmap,
+            //"Mapa Barrios": barriosColoreados,
+        }
+    }
+
+    // Asignación de las capas al mapa
+    L.control.layers(baseMaps).addTo(mymap);
+})
+
 </script>
 
 <style scoped>
 #map {
     box-shadow: inset 0 0 80px rgb(87, 87, 87);
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 75px);
 }
 
-#map a{
-
-    z-index: -999;
+#map #filtros-mapa {
+    z-index: 999;
 }
 
 .sections section {
