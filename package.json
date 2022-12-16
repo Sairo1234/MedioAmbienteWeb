@@ -17,6 +17,7 @@
     "flowbite-vue": "^0.0.7",
     "heatmap.js": "^2.0.5",
     "leaflet": "^1.9.3",
+    "leaflet-gesture-handling": "^1.2.2",
     "leaflet.markercluster": "^1.5.3",
     "pinia": "^2.0.23",
     "socket.io-client": "^4.5.3",

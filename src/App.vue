@@ -1,7 +1,7 @@
 <template>
 
   <div id="app" class="dark:bg-slate-800">
-    <NavBar class="h-16 md:h-24"></NavBar>
+    <NavBar id="navBar" class="h-16 md:h-24"></NavBar>
     <router-view class="pt-16 md:pt-24" />
   </div>
 </template>
@@ -76,4 +76,10 @@ html {
   padding: 0;
   box-sizing: border-box;
 }
+
+
+#navBar {
+    z-index: 9999;
+}
+
 </style>

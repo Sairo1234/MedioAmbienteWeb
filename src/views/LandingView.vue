@@ -2,7 +2,7 @@
     <div class="w-full">
 
         <div id="map">
-            <div class="absolute m-auto right-12 bottom-12 w-fit flex flex-col gap-4">
+            <div id="mapOverlay" class="absolute m-auto right-12 bottom-12 w-fit flex flex-col gap-4">
                 <div class="bg-white/60 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
                     <!-- <h3 class="font-bold mb-3 dark:text-white">Filtrar por gas</h3> -->
                     <div class="flex flex-col gap-2 text-blue-800">
@@ -524,10 +524,16 @@
 
 import { PresentationChartLineIcon } from '@heroicons/vue/24/outline'
 
-import '../lib/leaflet-heat.js'
 import { TheCard } from 'flowbite-vue'
 
 import L from "leaflet"
+import '../lib/leaflet-heat.js'
+
+import { GestureHandling } from "leaflet-gesture-handling";
+
+import "leaflet/dist/leaflet.css";
+import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
+
 import { onMounted } from 'vue'
 
 import { storeToRefs } from 'pinia'
@@ -536,7 +542,6 @@ import { computed, ref } from 'vue';
 //import medidasJson from './medidas.json'
 
 import {mapFunctions} from './map_functionalities'
-import { Utilities } from './utilities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 //import geoJsonBarrios from './Barrios_20210712'
 
@@ -544,8 +549,14 @@ import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 
 onMounted(async () => 
 {
+    
+    L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
+    
     //Asocio al mapa creado el mapa generado en vue
-    let mymap = L.map('map').setView([51.446509, -0.267366], 13);
+    let mymap = L.map('map', {
+        zoomControl: false,
+        gestureHandling: true
+    }).setView([51.446509, -0.267366], 13);
 
     // Generador del mapa
     
@@ -569,7 +580,7 @@ onMounted(async () =>
 
     //var barriosColoreados = L.geoJson(geoJsonDistritosAyuntamiento, {style: Utilities.style(geoJsonDistritosAyuntamiento)})
 
-    console.log(Utilities)
+    //console.log(Utilities)
     // Creamos las capas
     var baseMaps = 
     {
@@ -595,12 +606,11 @@ const checkedGasses = ref([])
 #map {
     box-shadow: inset 0 0 80px rgb(87, 87, 87);
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 80px);
 }
 
-#map a{
-
-    z-index: -999;
+#mapOverlay {
+    z-index: 999;
 }
 
 .sections section {
@@ -608,6 +618,6 @@ const checkedGasses = ref([])
 }
 
 .main-container {
-    min-height: calc(100vh - 50px);
+    min-height: calc(100vh - 80px);
 }
 </style>
