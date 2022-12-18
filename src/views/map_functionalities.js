@@ -1,11 +1,12 @@
 //import * as medidasJson from './medidas.json'
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-//import { onMounted } from 'vue'
-//import { MedicionesAPI } from '@/logicaFake/resources/mediciones'ç
 
 import { Point } from 'leaflet';
 import { Utilities } from './utilities';
+//import glify from '@khiemntu/leaflet.glify'
+
+import idw from '../../node_modules/leaflet.idw/src/leaflet-idw.js'
 
 export const mapFunctions = 
 {
@@ -175,5 +176,48 @@ export const mapFunctions =
         Utilities.PromediadoDeValoresDeunDistrito(geoJsonBarrios)
 
         return geoJsonBarrios
+    },
+
+
+    /**--------------------------------------------
+    * Dado un json con las medidas, y json de opciones
+    * genera un mapa de interpolación
+    * 
+    * @param {medidicasJson} Json con las mediciones en un intervalo de tiempo determinado
+    * @param {mymap} map Nuestro mapa
+    *  
+    * @return Devuelve el heatMap
+    */
+    generarMapaDeInterpolacion(medidasJson, mymap)
+    {
+        var data = []
+
+        var meteoPoints = 
+        [
+            [ 47.11285 , 7.222309, 8], //Ipsach
+            [ 47.085272, 7.20377 , 12], //M�rigen
+            [ 47.092285, 7.156734, 11], //Twann
+            [ 47.13294 , 7.220936, 0], //Vingelz
+            [ 47.088311, 7.128925, 15], //Twannberg
+            [ 47.124765, 7.234669, 5], //Nidau
+            [ 47.055107, 7.07159 , 1],  //lelanderon
+        ];
+
+        medidasJson.forEach(function (j) 
+        {
+            data.push([j["lat"], j["lng"], j["value"]])
+        })
+
+        console.log(idw)
+
+        var idw_ = L.idwLayer(meteoPoints, {
+            opacity: 0.5,
+            maxZoom: 18,
+            cellSize: 6,
+            exp: 3,
+            max: 20,
+        }).addTo(mymap)
+
+        return idw_
     },
 }
