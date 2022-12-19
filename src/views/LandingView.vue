@@ -641,6 +641,8 @@ import { computed, ref } from 'vue';
 import { mapFunctions } from './map_functionalities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 import { antPath } from 'leaflet-ant-path';
+import 'iso8601-js-period'
+
 //import geoJsonBarrios from './Barrios_20210712'
 
 // ***************** Código del mapa
@@ -662,8 +664,8 @@ onMounted(async () => {
     //Asocio al mapa creado el mapa generado en vue
     let mymap = L.map('map', {
         zoomControls: false,
-        gestureHandling: true
-    }).setView([51.446509, -0.267366], 13);
+        gestureHandling: true,
+    }).setView([47.085107, 7.13], 12);
 
     // Generador del mapa
     mapFunctions.generarMapa(mymap)
@@ -680,10 +682,11 @@ onMounted(async () => {
     // Generamos el heatMap
     var heatmap = mapFunctions.generarHeatMap(geojsonFeature, mymap)
 
+    // genera un mapa de interpolación global: De todos los datos
+    var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
+
     //AQUÍ HABRÍA UNA LLAMADA AL BACKEND PARA RECIBIR EL GEOJSON DE LOS BARRIOS
-
     //var geoJsonDistritosAyuntamiento = mapFunctions.generarGeoJsonDeDistritosDelAyuntamiento(geojsonFeature, geoJsonBarrios)
-
     //var barriosColoreados = L.geoJson(geoJsonDistritosAyuntamiento, {style: Utilities.style(geoJsonDistritosAyuntamiento)})
 
     var baseMaps = null
@@ -694,6 +697,7 @@ onMounted(async () => {
         var medidasJsonDelUltimoDiaDelUsuarioLogeado = await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul")
         var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(mapFunctions.generarFeatures(medidasJsonDelUltimoDiaDelUsuarioLogeado))
         var heatmapDelUsuario = mapFunctions.generarHeatMap(geojsonFeatureDelusuario, mymap)
+        var mapaInterpolacionUsuario = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioLogeado)
 
         // Ruta del usuario de hoy
         var routeDelusuario = []
@@ -724,7 +728,8 @@ onMounted(async () => {
             "Mapa normal": mymap,
             "Mapa de las últimas 24 horas": heatmap,
             "Tu recorrido": pathDelUsuario,
-            "Tu Mapa de Calor": heatmapDelUsuario
+            "Tu Mapa de Calor": heatmapDelUsuario,
+            "Mapa de interpolación": mapaInterpolacionUsuario
             //"Mapa Barrios": barriosColoreados,
         }
     }
@@ -735,7 +740,7 @@ onMounted(async () => {
         {
             "Mapa normal": mymap,
             "Mapa de las últimas 24 horas": heatmap,
-            //"Mapa Barrios": barriosColoreados,
+            "mapa inter": mapaInterpolacion
         }
     }
 
