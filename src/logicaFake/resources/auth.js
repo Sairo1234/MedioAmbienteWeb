@@ -3,6 +3,36 @@ import { logicaFakeSettings } from '../config.js';
 
 export const logicaFakeAuth = {
 
+    async register(nickname, email, password) {
+
+        const data = {
+            nickname: nickname,
+            email: email,
+            password: password
+        }
+
+        try {
+
+            var response = await axios.post(logicaFakeSettings.baseURL + '/usuarios/register', data)
+            let payload = response;
+            return payload;
+
+        } catch (error) {
+            let payload = error.response.data            
+            let errors; // errors = [{msg: string}]   
+            if (payload.errors) {  
+                errors = payload.errors 
+            }
+            else {
+                errors = [{ msg: payload.msg }]
+            }            
+            throw errors;
+        }
+
+
+    },
+
+
     async login(email, password) {
 
         const data = {

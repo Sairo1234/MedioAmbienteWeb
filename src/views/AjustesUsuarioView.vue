@@ -83,6 +83,9 @@
                 </Suspense>
 
             </tab>
+            <tab name="alta" title="Dar de alta usuario" v-if="user?.rol === 'AYUNTAMIENTO'">
+                <AltaUsuario/>
+            </tab>
         </tabs>
 
 
@@ -103,7 +106,7 @@ import { useSessionStore } from '@/store/session'
 
 import MisSensores from '@/components/MisSensores.vue';
 import GestionAyuntamiento from '@/components/GestionAyuntamiento.vue';
-
+import AltaUsuario from '@/components/AltaUsuario.vue'
 
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
