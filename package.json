@@ -1,0 +1,71 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@heroicons/vue": "^2.0.13",
+    "@khiemntu/leaflet.glify": "^3.0.4",
+    "axios": "^1.1.3",
+    "core-js": "^3.26.0",
+    "dayjs": "^1.11.6",
+    "element-plus": "^2.2.19",
+    "flowbite": "^1.5.4",
+    "flowbite-vue": "^0.0.7",
+    "gulp": "^4.0.2",
+    "heatmap.js": "^2.0.5",
+    "idw": "^0.0.2",
+    "iso8601-js-period": "^0.2.1",
+    "leaflet": "^1.9.3",
+    "leaflet-ant-path": "^1.3.0",
+    "leaflet-gesture-handling": "^1.2.2",
+    "leaflet.idw": "^0.0.1",
+    "leaflet.markercluster": "^1.5.3",
+    "maptalks": "^1.0.0-rc.17",
+    "maptalks.three": "^0.35.1",
+    "pinia": "^2.0.23",
+    "socket.io-client": "^4.5.3",
+    "vue": "^3.2.41",
+    "vue-axios": "^3.5.0",
+    "vue-router": "^4.1.6",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "^5.0.8",
+    "@vue/cli-plugin-vuex": "^5.0.8",
+    "@vue/cli-service": "~5.0.0",
+    "autoprefixer": "^10.4.13",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "postcss": "^8.4.19",
+    "tailwindcss": "^3.2.4"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}
