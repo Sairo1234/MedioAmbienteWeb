@@ -46,11 +46,19 @@
                     </h1>
 
                     <Input :disabled="loading" class="placeholder-gray-200" placeholder="enter your current password"
-                        label="Contraseña antigua" type="password" v-model="passwordForm.currentPassword" />
+                        label="Contraseña antigua" type="password" v-model="currentPassword" />
                     <Input :disabled="loading" class="placeholder-gray-200" placeholder="enter your new password"
-                        label="Contraseña nueva" type="password" v-model="passwordForm.newPassword" />
+                        label="Contraseña nueva" type="password" v-model="newPassword">
+
+                    <template #suffix>
+                       <!-- Comprobar seguridad de la contraseña -->
+                    <div v-if="newPassword != ''" class="w-fit h-full p-1 rounded-md text-xs text-white"
+                        :style="{ 'background-color': passwordStrength.color }"> {{ passwordStrength.text }} </div>
+                    </template>
+                    </Input>
+                    
                     <Input :disabled="loading" class="placeholder-gray-200" placeholder="repeat your new password"
-                        label="Confirmar nueva contraseña" type="password" v-model="passwordForm.repeatNewPassword" />
+                        label="Confirmar nueva contraseña" type="password" v-model="repeatNewPassword" />
 
                     <!----------Boton Aceptar---------->
                     <button type="button" :disabled="loading" @click="handleCambiarContrasenyaButton"
@@ -81,16 +89,12 @@
                         Cargando...
                     </template>
                 </Suspense>
-
             </tab>
             <tab name="alta" title="Dar de alta usuario" v-if="user?.rol === 'AYUNTAMIENTO'">
-                <AltaUsuario/>
+                <AltaUsuario />
             </tab>
         </tabs>
-
-
     </div>
-
 </template>
 
 <script setup>
@@ -99,7 +103,7 @@ import { PencilSquareIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon } from 
 
 import { Input, Avatar, Tabs, Tab, Spinner } from 'flowbite-vue'
 
-import { reactive, ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 
 import { storeToRefs } from 'pinia';
 import { useSessionStore } from '@/store/session'
@@ -118,6 +122,7 @@ watch(activeTab, () => {
         activeTab.value = "perfil"
         alert("¡Cuidado! Tienes cambios sin guardar.")
     }
+    error.value = ""
 })
 
 const loading = ref(false)
@@ -126,11 +131,41 @@ const error = ref("")
 //editar perfil
 const editando = ref(false)
 
-const passwordForm = reactive({
-    currentPassword: "",
-    newPassword: "",
-    repeatNewPassword: "",
-})
+const currentPassword = ref("")
+const newPassword = ref("")
+const repeatNewPassword = ref("")
+
+const passwordStrength = computed(() => {
+
+    // Obtener el valor de la contraseña
+    const password = newPassword.value;
+
+    console.log(password)
+
+    // Verificar la longitud mínima de la contraseña
+    const regex1 = /^.{6,}$/;
+    if (!regex1.test(password)) {
+        return {
+            text: "Seguridad baja",
+            color: '#ff4444'
+        };
+    }
+                              
+    // Verificar el uso de diferentes tipos de caracteres
+    const regex2 = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/;
+    if (!regex2.test(password)) {
+        return {
+            text: "Seguridad media",
+            color: '#ffbb33'
+        };
+    }
+
+    // Si la contraseña cumple con todas las reglas, devolver una clase CSS para un indicador de seguridad verde
+    return {
+        text: "Seguridad alta",
+        color: '#00c851'
+    };
+});
 
 const userEdit = ref({
     ...user.value
@@ -200,7 +235,7 @@ const toggleEdit = async (toggle) => {
 
 const handleCambiarContrasenyaButton = async () => {
 
-    if (passwordForm.newPassword !== passwordForm.repeatNewPassword) {
+    if (newPassword.value !== repeatNewPassword.value) {
         error.value = "Las contraseñas no coinciden";
         return;
     }
@@ -215,9 +250,11 @@ const handleCambiarContrasenyaButton = async () => {
         loading.value = true;
 
         //cambiar contrasenya
-        const res = await sessionStore.cambiarContrasenya(passwordForm.currentPassword, passwordForm.newPassword)
+        const res = await sessionStore.cambiarContrasenya(currentPassword.value, newPassword.value)
         if (res.success) {
-            Object.keys(passwordForm).forEach(v => passwordForm[v] = "")
+            currentPassword.value = ""
+            newPassword.value = ""
+            repeatNewPassword.value = ""
             error.value = ""
             alert(res.msg)
         } else {
@@ -239,5 +276,15 @@ const handleCambiarContrasenyaButton = async () => {
 </script>
 
 <style scoped>
+.password-weak {
+    background-color: red;
+}
 
+.password-medium {
+    background-color: yellow;
+}
+
+.password-strong {
+    background-color: green;
+}
 </style>

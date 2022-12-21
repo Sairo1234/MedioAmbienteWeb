@@ -1,23 +1,23 @@
 <template>
 
-    <div class="w-full">
+    <div :class="showAddUsers ? 'border-2 border-blue-500' : ''" class="w-full flex flex-row gap-6 items-center px-4 py-2 shadow relative rounded-md text-sm font-medium bg-gray-200 text-gray-400">
         <div v-if="!showAddUsers" class="flex justify-start w-full">
-            <PlusCircleIcon @click="enableAddUser(true)" class="h-5 w-5 mr-3 text-gray-300 hover:text-gray-600" />
+            <PlusCircleIcon @click="enableAddUser(true)" class="h-5 w-5 mr-3 text-gray-400 hover:text-gray-600" />
             <span class="ml-2">Sin usuario asignado</span>
         </div>
         <div v-if="showAddUsers" class="flex justify-start items-center w-full">
-            <XCircleIcon @click="enableAddUser(false)" class="h-5 w-5 mr-3 text-gray-300 hover:text-gray-600" />
+            <XCircleIcon @click="enableAddUser(false)" class="h-5 w-5 mr-3 text-gray-400 hover:text-gray-600" />
             <select v-model="selectedUser" name="users" id="users"
-                class=" block w-2/3 p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                class=" block w-2/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option value="" disabled selected>Selecciona un usuario</option>
                 <option v-for="(u, index) in usuarios" :key="index" :value="u.nickname">
                     {{ u.nickname }} ({{ u.email }})
                 </option>
             </select>
             <button v-if="selectedUser"
-                class="ml-8 focus:outline-none text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="ml-8 px-3 py-2 text-sm focus:outline-none text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 @click="asociarUsuarioSensor()">
-                Asociar a {{ selectedUser }}
+                Asociar
             </button>
 
         </div>
