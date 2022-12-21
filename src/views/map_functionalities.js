@@ -165,29 +165,12 @@ export const mapFunctions =
     {
         var data = []
 
-        var meteoPoints = 
-        [
-            [ 47.11285 , 7.222309, 8], //Ipsach
-            [ 47.085272, 7.20377 , 12], //M�rigen
-            [ 47.092285, 7.156734, 11], //Twann
-            [ 47.13294 , 7.220936, 0], //Vingelz
-            [ 47.088311, 7.128925, 15], //Twannberg
-            [ 47.124765, 7.234669, 5], //Nidau
-            [ 47.07911446468586, 7.212085324850676 , 1],  //lelanderon
-            [ 47.12815434175707, 7.186518919824749 , 6],  //lelanderon
-            [ 47.109400663649694, 7.129305863212892 , 19],  //lelanderon
-            [ 47.03447041893412, 7.123050798160193 , 14],  //lelanderon
-            [ 47.115626585672885, 7.243417717964917 , ],  //lelanderon
-            [ 47.084634997854465, 7.09780481469582 , 1],  //lelanderon
-
-        ];
-
         medidasJson.forEach(function (j) 
         {
             data.push([j["lat"], j["lng"], j["value"]])
         })
 
-        var idw_ = L.idwLayer(meteoPoints, {  // Opciones del mapa
+        var idw_ = L.idwLayer(data, {  // Opciones del mapa
             opacity: 0.65,
             maxZoom: 18,
             cellSize: 4,

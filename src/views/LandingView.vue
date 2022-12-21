@@ -636,13 +636,10 @@ import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSessionStore } from '@/store/session'
 import { computed, ref } from 'vue';
-//import medidasJson from './medidas.json'
 
 import { mapFunctions } from './map_functionalities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 import 'iso8601-js-period'
-
-//import geoJsonBarrios from './Barrios_20210712'
 
 // ***************** Código del mapa
 
@@ -660,43 +657,27 @@ const checkedGasses = ref([])
 onMounted(async () => {
 
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
-
-    // Asocio al mapa creado el mapa generado en vue. Generador del mapa
     var mymap = mapFunctions.generarMapa('map')
 
-    var baseMaps = null
+    var medidasJsonDelUltimoDia = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
 
     // Si hay un usuario logeado, se calculan sus layers
     if (isLogged.value) {
 
         var medidasJsonDelUltimoDiaDelUsuarioLogeado = await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul")
         var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(medidasJsonDelUltimoDiaDelUsuarioLogeado)
-        var mapaInterpolacionUsuario = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioLogeado)
-        var rutaDelUsuario = mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario)
 
-        // Se establecen las capas
-        baseMaps =
-        {
-            "Mapa de interpolación del usuario": mapaInterpolacionUsuario,
-            "Tu recorrido": rutaDelUsuario
-            //"Mapa Barrios": barriosColoreados,
-        }
+        L.control.layers({
+            "Mapa de interpolación del usuario": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioLogeado, mymap),
+            "Mapa de interpolación global": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
+        }, {"Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario)}).addTo(mymap);
     }
     else 
     {
-        // Medidas de todos los usuarios
-        var medidasJsonDelUltimoDia = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
-
-        // genera un mapa de interpolación global: De todos los datos
         var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
-
         mapaInterpolacion.addTo(mymap)
     } 
-
-    // Asignación de las capas al mapa
-    L.control.layers(baseMaps).addTo(mymap);
 })
-
 </script>
 
 <style scoped>
@@ -720,20 +701,5 @@ onMounted(async () => {
 
 .main-container {
     min-height: calc(100vh - 80px);
-}
-.leaflet-control-layers-toggle {
-  background-image: url(https://i.stack.imgur.com/3keSg.png) !important;
-	background-color: #2da0e2;
-  background-size: 20px 20px;
-}
-
-.leaflet-touch .leaflet-control-layers-toggle {
-background-image: url(https://i.stack.imgur.com/3keSg.png) !important;
-background-color: #2da0e2;
-}
-
-.leaflet-control-layers-expanded {
-  color: white;
-	background-color: #2da0e2;
 }
 </style>
