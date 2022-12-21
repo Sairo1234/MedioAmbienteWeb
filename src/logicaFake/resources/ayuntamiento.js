@@ -78,8 +78,7 @@ export const logicaFakeAyuntamiento = {
         }
 
         try {
-
-            var response = await axios.put(logicaFakeSettings.baseURL + '/ayuntamientos/asociarSensor', data)
+            var response = await axios.put(logicaFakeSettings.baseURL + '/ayuntamientos/asociarSensor', data)    
             let payload = response.data;
             return payload;
 

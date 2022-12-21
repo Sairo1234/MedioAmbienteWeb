@@ -2,8 +2,6 @@
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 
-import { Point } from 'leaflet';
-import { Utilities } from './utilities';
 import {antPath} from 'leaflet-ant-path';
 
 //import glify from '@khiemntu/leaflet.glify'
@@ -71,46 +69,6 @@ export const mapFunctions =
         };
 
         return geojsonFeatures
-    },
-
-    /**--------------------------------------------
-    * Dado un Geojson que define los barrios de un Ayuntamiento
-    * y otro con las medidas, se fusuiona con el Geojson de los barrios
-    * y los divide entre los respectivos barrios donde han sido tomadas
-    * 
-    * @param {geoJsonMediciones} Geojson de las mediciones
-    * @param {geoJsonBarrios} Geojson con los datos de los barrios
-    *  
-    * @return Devuelve el heatMap
-    */
-
-    generarGeoJsonDeDistritosDelAyuntamiento(geoJsonMediciones, geoJsonBarrios) 
-    {
-        geoJsonMediciones.features.forEach(feature => {
-
-            geoJsonBarrios.features.forEach(distrito => {  
-
-                if (Utilities.IsPointInPolygon( new Point(feature.geometry.coordenadas[0], feature.geometry.coordenadas[1]), distrito.geometry.coordenadas[0]) == true) 
-                {
-                    distrito.mediciones.push({
-                        "geometry": {
-                            "type": "Point",
-                            "coordenadas": [feature.geometry.coordenadas[0], feature.geometry.coordenadas[1]],
-                        },
-                        "properties":
-                        {
-                            "value": feature.properties.value
-                        }
-                    })
-
-                    distrito.properties.TASA_MEDIA_CO2 = distrito.properties.TASA_MEDIA_CO2 + feature.properties.value
-                }
-            })
-        })
-
-        Utilities.PromediadoDeValoresDeunDistrito(geoJsonBarrios)
-
-        return geoJsonBarrios
     },
 
     /**--------------------------------------------
