@@ -4,38 +4,46 @@ import 'leaflet.markercluster';
 
 import { Point } from 'leaflet';
 import { Utilities } from './utilities';
+import {antPath} from 'leaflet-ant-path';
+
 //import glify from '@khiemntu/leaflet.glify'
 
-import idw from '../../node_modules/leaflet.idw/src/leaflet-idw.js'
+import '../../node_modules/leaflet.idw/src/leaflet-idw.js'
 
 export const mapFunctions = 
 {
     /**--------------------------------------------
-    * Genera un mapa de OpenStreetMap dado un map
+    * Genera un mapa de OpenStreetMap dado el id de un mapa
     * 
     * @param {mymap} map
     */
 
-    generarMapa(mymap) 
+    generarMapa(mapa) 
     {
+        let mymap = L.map(mapa, {
+            attributionControl: true,
+            zoomControls: true,
+            gestureHandling: true,
+        }).setView([47.085107, 7.13], 12);
+
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
                 maxZoom: 19,
                 attribution:
                     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(mymap);
+
+        return mymap
     },
 
     /**--------------------------------------------
-    * Genera un array de Features que contiene las 
-    * coordenadas (geometry.coordenadas) y el valor de cada
-    * una de estas (properties.value)
+    * Genera un geojson de mediciones dado un json unas medidas
     * 
     * @param {medidasJson} Array
-    * @return Array de features
+    * @return GeoJson de Features
     */
 
-    generarFeatures(medidasJson) 
+    generarGeoJson(medidasJson) 
     {
         let features = []
 
@@ -56,86 +64,13 @@ export const mapFunctions =
             features.push(GeoCoordenadas)
         })
 
-        return features
-    },
-
-    /**--------------------------------------------
-    * Genera un geojson dado un array con features
-    * 
-    * @param {features} Array
-    * @return GeoJson de Features
-    */
-
-    generarGeoJson(features) 
-    {
-        var geojsonFeature =
+        var geojsonFeatures =
         {
             "type": "FeatureCollection",
             "features": features
         };
 
-        return geojsonFeature
-    },
-
-    
-    /**--------------------------------------------
-    * Dado un Geojson de Features y un mapa, genera un HeatMap
-    * 
-    * @param {geojsonFeature} Geojson de las features
-    * @param {mymap} map Mapa
-    * 
-    * @return Devuelve el heatMap
-    */
-
-    generarHeatMap(geojsonFeature, mymap) {
-        /*
-          Opciones del heatmap:
-
-            minOpacity - La mínima opcidad en la que el heat puede empezar (datos despreciables)
-            maxZoom - zoom level where the points reach maximum intensity (as intensity scales with zoom), equals maxZoom of the map by default
-            max - maximum point intensity, 1.0 by default
-            radius - radius of each "point" of the heatmap, 25 by default
-            blur - amount of blur, 15 by default
-            gradient - color gradient config, e.g. {0.4: 'blue', 0.65: 'lime', 1: 'red'}
-        */
-
-        var heatMapPoints = []
-
-        geojsonFeature.features.forEach(function (feature) {
-            var puntos = [
-                feature.geometry.coordenadas[0],
-                feature.geometry.coordenadas[1],
-                feature.properties.value
-            ]
-
-            heatMapPoints.push(puntos)
-        })
-
-        // Configuración del heatmap
-        var cnfg =
-        {
-
-            radius: 60,
-            minOpacity: 0.3,
-            gradient:
-            {
-                '0.0': 'rgb(255, 0, 0)',
-                '0.4': 'rgb(24, 53, 103)',
-                '0.75': 'rgb(46, 100, 158)',
-                '0.9': '#FF9C32',
-                '1.0': 'Orange'
-            },
-            // Escala el radio dependiendo del zoom
-            scaleRadius: false,
-            // si se establece en falso, el mapa de calor usa el máximo global para la coloración
-            // si está activado: utiliza el máximo de datos dentro de los límites del mapa actual
-            useLocalExtrema: false,
-            blur: 30,
-        }
-
-        var heatmap = L.heatLayer(heatMapPoints, cnfg).addTo(mymap)
-
-        return heatmap
+        return geojsonFeatures
     },
 
     /**--------------------------------------------
@@ -178,17 +113,55 @@ export const mapFunctions =
         return geoJsonBarrios
     },
 
+    /**--------------------------------------------
+    * Dado un geoJson con las mediciones del usuario en las últimas
+    * 24 horas, calcula su recorrido y lo devuelve
+    * 
+    * @param {geojsonFeatureDelusuario} GeoJson con las mediciones en un intervalo de tiempo determinado
+    *  
+    * @return Devuelve la ruta del usuario
+    */
+
+    generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario)
+    {
+        // Ruta del usuario de hoy
+        var routeDelusuario = []
+        geojsonFeatureDelusuario.features.forEach(feature => {
+
+            routeDelusuario.push(feature.geometry.coordenadas)
+        })
+
+        // Estilo de la ruta del usuario
+        const pathDelUsuario = antPath(routeDelusuario,
+        {
+            "delay": 733,
+            "dashArray": [
+                11,
+                42
+            ],
+            "weight": 5,
+            "color": "#0000FF",
+            "pulseColor": "#FFFFFF",
+            "paused": false,
+            "reverse": false,
+            "hardwareAccelerated": true
+        });
+
+        return pathDelUsuario
+    },
+
 
     /**--------------------------------------------
-    * Dado un json con las medidas, y json de opciones
-    * genera un mapa de interpolación
+    * Dado un json con las medidas y el mapa a implementar
+    * se crea una layer de mapa de interpolación
     * 
     * @param {medidicasJson} Json con las mediciones en un intervalo de tiempo determinado
     * @param {mymap} map Nuestro mapa
     *  
     * @return Devuelve el heatMap
     */
-    generarMapaDeInterpolacion(medidasJson, mymap)
+
+    generarMapaDeInterpolacion(medidasJson)
     {
         var data = []
 
@@ -200,7 +173,13 @@ export const mapFunctions =
             [ 47.13294 , 7.220936, 0], //Vingelz
             [ 47.088311, 7.128925, 15], //Twannberg
             [ 47.124765, 7.234669, 5], //Nidau
-            [ 47.055107, 7.07159 , 1],  //lelanderon
+            [ 47.07911446468586, 7.212085324850676 , 1],  //lelanderon
+            [ 47.12815434175707, 7.186518919824749 , 6],  //lelanderon
+            [ 47.109400663649694, 7.129305863212892 , 19],  //lelanderon
+            [ 47.03447041893412, 7.123050798160193 , 14],  //lelanderon
+            [ 47.115626585672885, 7.243417717964917 , ],  //lelanderon
+            [ 47.084634997854465, 7.09780481469582 , 1],  //lelanderon
+
         ];
 
         medidasJson.forEach(function (j) 
@@ -208,15 +187,23 @@ export const mapFunctions =
             data.push([j["lat"], j["lng"], j["value"]])
         })
 
-        console.log(idw)
-
-        var idw_ = L.idwLayer(meteoPoints, {
-            opacity: 0.5,
+        var idw_ = L.idwLayer(meteoPoints, {  // Opciones del mapa
+            opacity: 0.65,
             maxZoom: 18,
-            cellSize: 6,
-            exp: 3,
+            cellSize: 4,
+            exp: 4,
             max: 20,
-        }).addTo(mymap)
+            gradient : {
+                0.2: 'lime',
+                0.4: 'yellow',            
+                0.5: 'orange',
+                0.6: 'red',
+                0.7: 'Maroon',
+                0.8: '#660066',
+                0.9: '#990099',
+                1.0: '#ff66ff'
+            },
+        }) 
 
         return idw_
     },

@@ -640,7 +640,6 @@ import { computed, ref } from 'vue';
 
 import { mapFunctions } from './map_functionalities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
-import { antPath } from 'leaflet-ant-path';
 import 'iso8601-js-period'
 
 //import geoJsonBarrios from './Barrios_20210712'
@@ -657,92 +656,42 @@ const isLogged = computed(() => {
 
 const checkedGasses = ref([])
 
+// Creación del mapa
 onMounted(async () => {
 
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
-    //Asocio al mapa creado el mapa generado en vue
-    let mymap = L.map('map', {
-        zoomControls: false,
-        gestureHandling: true,
-    }).setView([47.085107, 7.13], 12);
-
-    // Generador del mapa
-    mapFunctions.generarMapa(mymap)
-
-    // Si quiero obtener las mediciones de hoy de la Base de datos:
-    var medidasJsonDelUltimoDia = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
-
-    // Generamos el array de puntos
-    var features = mapFunctions.generarFeatures(medidasJsonDelUltimoDia)
-
-    // Generamos el GeoJson
-    var geojsonFeature = mapFunctions.generarGeoJson(features)
-
-    // Generamos el heatMap
-    var heatmap = mapFunctions.generarHeatMap(geojsonFeature, mymap)
-
-    // genera un mapa de interpolación global: De todos los datos
-    var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
-
-    //AQUÍ HABRÍA UNA LLAMADA AL BACKEND PARA RECIBIR EL GEOJSON DE LOS BARRIOS
-    //var geoJsonDistritosAyuntamiento = mapFunctions.generarGeoJsonDeDistritosDelAyuntamiento(geojsonFeature, geoJsonBarrios)
-    //var barriosColoreados = L.geoJson(geoJsonDistritosAyuntamiento, {style: Utilities.style(geoJsonDistritosAyuntamiento)})
+    // Asocio al mapa creado el mapa generado en vue. Generador del mapa
+    var mymap = mapFunctions.generarMapa('map')
 
     var baseMaps = null
 
     // Si hay un usuario logeado, se calculan sus layers
     if (isLogged.value) {
-        // geoJson de las mediciones del usuario. Llamada al servidor
+
         var medidasJsonDelUltimoDiaDelUsuarioLogeado = await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul")
-        var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(mapFunctions.generarFeatures(medidasJsonDelUltimoDiaDelUsuarioLogeado))
-        var heatmapDelUsuario = mapFunctions.generarHeatMap(geojsonFeatureDelusuario, mymap)
+        var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(medidasJsonDelUltimoDiaDelUsuarioLogeado)
         var mapaInterpolacionUsuario = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioLogeado)
-
-        // Ruta del usuario de hoy
-        var routeDelusuario = []
-        geojsonFeatureDelusuario.features.forEach(feature => {
-
-            routeDelusuario.push(feature.geometry.coordenadas)
-        })
-
-        // Estilo de la ruta del usuario
-        const pathDelUsuario = antPath(routeDelusuario,
-            {
-                "delay": 733,
-                "dashArray": [
-                    11,
-                    42
-                ],
-                "weight": 5,
-                "color": "#0000FF",
-                "pulseColor": "#FFFFFF",
-                "paused": false,
-                "reverse": false,
-                "hardwareAccelerated": true
-            });
+        var rutaDelUsuario = mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario)
 
         // Se establecen las capas
         baseMaps =
         {
-            "Mapa normal": mymap,
-            "Mapa de las últimas 24 horas": heatmap,
-            "Tu recorrido": pathDelUsuario,
-            "Tu Mapa de Calor": heatmapDelUsuario,
-            "Mapa de interpolación": mapaInterpolacionUsuario
+            "Mapa de interpolación del usuario": mapaInterpolacionUsuario,
+            "Tu recorrido": rutaDelUsuario
             //"Mapa Barrios": barriosColoreados,
         }
     }
-    else {
+    else 
+    {
+        // Medidas de todos los usuarios
+        var medidasJsonDelUltimoDia = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
 
-        // Si no está loggeado, se muestran las capas estándar
-        baseMaps =
-        {
-            "Mapa normal": mymap,
-            "Mapa de las últimas 24 horas": heatmap,
-            "mapa inter": mapaInterpolacion
-        }
-    }
+        // genera un mapa de interpolación global: De todos los datos
+        var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
+
+        mapaInterpolacion.addTo(mymap)
+    } 
 
     // Asignación de las capas al mapa
     L.control.layers(baseMaps).addTo(mymap);
@@ -771,5 +720,20 @@ onMounted(async () => {
 
 .main-container {
     min-height: calc(100vh - 80px);
+}
+.leaflet-control-layers-toggle {
+  background-image: url(https://i.stack.imgur.com/3keSg.png) !important;
+	background-color: #2da0e2;
+  background-size: 20px 20px;
+}
+
+.leaflet-touch .leaflet-control-layers-toggle {
+background-image: url(https://i.stack.imgur.com/3keSg.png) !important;
+background-color: #2da0e2;
+}
+
+.leaflet-control-layers-expanded {
+  color: white;
+	background-color: #2da0e2;
 }
 </style>
