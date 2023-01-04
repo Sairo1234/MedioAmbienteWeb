@@ -2,8 +2,6 @@
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 
-import { Point } from 'leaflet';
-import { Utilities } from './utilities';
 import {antPath} from 'leaflet-ant-path';
 
 //import glify from '@khiemntu/leaflet.glify'
@@ -74,46 +72,6 @@ export const mapFunctions =
     },
 
     /**--------------------------------------------
-    * Dado un Geojson que define los barrios de un Ayuntamiento
-    * y otro con las medidas, se fusuiona con el Geojson de los barrios
-    * y los divide entre los respectivos barrios donde han sido tomadas
-    * 
-    * @param {geoJsonMediciones} Geojson de las mediciones
-    * @param {geoJsonBarrios} Geojson con los datos de los barrios
-    *  
-    * @return Devuelve el heatMap
-    */
-
-    generarGeoJsonDeDistritosDelAyuntamiento(geoJsonMediciones, geoJsonBarrios) 
-    {
-        geoJsonMediciones.features.forEach(feature => {
-
-            geoJsonBarrios.features.forEach(distrito => {  
-
-                if (Utilities.IsPointInPolygon( new Point(feature.geometry.coordenadas[0], feature.geometry.coordenadas[1]), distrito.geometry.coordenadas[0]) == true) 
-                {
-                    distrito.mediciones.push({
-                        "geometry": {
-                            "type": "Point",
-                            "coordenadas": [feature.geometry.coordenadas[0], feature.geometry.coordenadas[1]],
-                        },
-                        "properties":
-                        {
-                            "value": feature.properties.value
-                        }
-                    })
-
-                    distrito.properties.TASA_MEDIA_CO2 = distrito.properties.TASA_MEDIA_CO2 + feature.properties.value
-                }
-            })
-        })
-
-        Utilities.PromediadoDeValoresDeunDistrito(geoJsonBarrios)
-
-        return geoJsonBarrios
-    },
-
-    /**--------------------------------------------
     * Dado un geoJson con las mediciones del usuario en las últimas
     * 24 horas, calcula su recorrido y lo devuelve
     * 
@@ -165,29 +123,12 @@ export const mapFunctions =
     {
         var data = []
 
-        var meteoPoints = 
-        [
-            [ 47.11285 , 7.222309, 8], //Ipsach
-            [ 47.085272, 7.20377 , 12], //M�rigen
-            [ 47.092285, 7.156734, 11], //Twann
-            [ 47.13294 , 7.220936, 0], //Vingelz
-            [ 47.088311, 7.128925, 15], //Twannberg
-            [ 47.124765, 7.234669, 5], //Nidau
-            [ 47.07911446468586, 7.212085324850676 , 1],  //lelanderon
-            [ 47.12815434175707, 7.186518919824749 , 6],  //lelanderon
-            [ 47.109400663649694, 7.129305863212892 , 19],  //lelanderon
-            [ 47.03447041893412, 7.123050798160193 , 14],  //lelanderon
-            [ 47.115626585672885, 7.243417717964917 , ],  //lelanderon
-            [ 47.084634997854465, 7.09780481469582 , 1],  //lelanderon
-
-        ];
-
         medidasJson.forEach(function (j) 
         {
             data.push([j["lat"], j["lng"], j["value"]])
         })
 
-        var idw_ = L.idwLayer(meteoPoints, {  // Opciones del mapa
+        var idw_ = L.idwLayer(data, {  // Opciones del mapa
             opacity: 0.65,
             maxZoom: 18,
             cellSize: 4,
