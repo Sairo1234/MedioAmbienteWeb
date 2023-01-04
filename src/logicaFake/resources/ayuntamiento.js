@@ -94,6 +94,32 @@ export const logicaFakeAyuntamiento = {
             throw errors;
         }
 
+    },
+
+    async desasociarUsuarioSensor(_uuid, _nickname) {
+
+        const data = {
+            uuid: _uuid,
+            nickname: _nickname
+        }
+
+        try {
+            var response = await axios.put(logicaFakeSettings.baseURL + '/ayuntamientos/desasociarSensor', data)    
+            let payload = response.data;
+            return payload;
+
+        } catch (error) {
+            let payload = error.response.data            
+            let errors; // errors = [{msg: string}]   
+            if (payload.errors) {  
+                errors = payload.errors 
+            }
+            else {
+                errors = [{ msg: payload.msg }]
+            }            
+            throw errors;
+        }
+
     }
 
 }

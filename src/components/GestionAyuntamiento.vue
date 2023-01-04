@@ -72,7 +72,7 @@
                             <div class="flex flex-col gap-2">
                                 <p class="text-gray-500 dark:text-gray-400">{{ sensor.uuid }}</p>
                                 <div :class="[sensor.activo ? 'bg-green-100 dark:border-green-400 text-green-400 dark:text-green-500' : 'bg-red-100 dark:border-red-400 text-red-400 dark:text-red-500']"
-                                    class="w-fit dark:bg-slate-800 dark:border px-2 rounded ">
+                                    class="w-fit dark:bg-slate-800 dark:border px-2 rounded">
                                     {{ sensor.activo ? 'Activo' : 'Inactivo' }}
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                             </div>
 
                             <!-- <AsociarSensorUser v-if="!sensor.user" :uuid="sensor?.uuid"
-                                @updated="asociarSensorUserUpdated" /> -->
+                              @updated="asociarSensorUserUpdated" /> -->
 
                         </div>
                         <!-- <div class="absolute right-6">></div> -->
@@ -122,13 +122,16 @@
         <div class="flex flex-col gap-12">
             <TableFilters v-for="(n) in tablesCount" :key="n">{{ n }}</TableFilters>
             <div class="flex gap-2">
-                <div class="group flex justify-center p-2 rounded-md bg-gray-100 hover:bg-gray-200 hover:cursor-pointer" :class="tablesCount > 0 ? 'w-5/6' : 'w-full'"
-                    @click="tablesCount++">
-                    <PlusCircleIcon class="h-8 w-8 mr-3 text-gray-200 group-hover:text-gray-400" />
+                <div class="group flex justify-center gap-2 text-gray-300 hover:text-gray-500 items-center p-2 rounded-md bg-gray-100 hover:bg-gray-200 hover:cursor-pointer"
+                    :class="tablesCount > 0 ? 'w-5/6' : 'w-full'" @click="tablesCount++">
+                    <PlusCircleIcon class="h-6 w-6 text-gray-200 group-hover:text-gray-400" />
+                    Añadir tabla
                 </div>
-                <div v-if="tablesCount > 0" class="group flex justify-center p-2 rounded-md bg-gray-100 hover:bg-red-200 hover:cursor-pointer w-1/6"
+                <div v-if="tablesCount > 0"
+                    class="group flex justify-center gap-2 text-gray-300 hover:text-red-500 p-2 rounded-md bg-gray-100 hover:bg-red-200 hover:cursor-pointer w-1/6"
                     @click="tablesCount--">
-                    <XCircleIcon class="h-8 w-8 mr-3 text-gray-200 group-hover:text-red-500" />
+                    <XCircleIcon class="h-6 w-6 text-gray-200 group-hover:text-red-500" />
+                    Eliminar tabla
                 </div>
             </div>
         </div>
@@ -136,7 +139,7 @@
 
     </div>
 </template>
-  
+
 <script setup>
 
 //El user que accede a esta pagina es un administrador de su ayuntamiento
@@ -154,8 +157,7 @@ defineProps(['title'])
 const tablesCount = ref(1)
 
 </script>
-  
+
 <style scoped>
 
 </style>
-  

@@ -1,16 +1,21 @@
 <template>
-    <div class="container mx-auto">
-        <div class="flex gap-6 items-center mb-4 p-4 bg-white shadow-md rounded-xl">
-            <input type="text" placeholder="Filtrar por UUID" v-model="filtroUuid" class="border rounded py-1 px-3" />
-            <input type="text" placeholder="Filtrar por Nombre" v-model="filtroNombre"
-                class="border rounded py-1 px-3" />
+    <div class="container mx-auto dark:text-gray-300">
+        <div class="flex gap-6 items-center mb-4 p-4 bg-gray-100 dark:bg-white/5 shadow-md rounded-xl">
+            <input type="text" placeholder="Filtrar por UUID" v-model="filtroUuid" class="border rounded py-1 px-3"
+                :class="filtroUuid ? 'bg-white dark:bg-white/10' : 'bg-gray-300 bg-white/5'" />
+            <input type="text" placeholder="Filtrar por Nombre" v-model="filtroNombre" class="border rounded py-1 px-3"
+                :class="filtroNombre ? 'bg-white dark:bg-white/10' : 'bg-gray-300 bg-white/5'" />
             <label class="inline-flex items-center">
-                <input type="checkbox" v-model="filtroActivo" class="form-checkbox" />
-                <span class="ml-2">Solo inactivos</span>
+                <input type="checkbox" v-model="filtroActivo" class="form-checkbox dark:bg-white/10 rounded" />
+                <span class="ml-2"
+                    :class="filtroActivo ? 'text-gray-900 dark:text-gray-300' : 'text-gray-500 dark:text-gray-500'">Solo
+                    inactivos</span>
             </label>
             <label class="inline-flex items-center">
-                <input type="checkbox" v-model="filtroSinUser" class="form-checkbox" />
-                <span class="ml-2">Sin usuario asignado</span>
+                <input type="checkbox" v-model="filtroSinUser" class="form-checkbox dark:bg-white/10 rounded" />
+                <span class="ml-2"
+                    :class="filtroSinUser ? 'text-gray-900 dark:text-gray-300' : 'text-gray-500 dark:text-gray-500'">Sin
+                    usuario asignado</span>
             </label>
             <button class="rounded-lg p-2 bg-blue-500 text-white" @click="exportToPDF">Export to PDF</button>
         </div>
@@ -43,44 +48,47 @@
                         <span> - Sin coincidencias -</span>
                     </td>
                 </tr>
-                <tr v-for="(item, index) in filteredData" :key="index" :class="{ 'bg-gray-200': index % 2 === 0 }"
-                    class="grid grid-cols-3">
+                <tr v-for="(item, index) in filteredData" :key="index"
+                    :class="{ 'bg-gray-200 dark:bg-gray-900': index % 2 === 0 }" class="grid grid-cols-3">
                     <td class="px-4 py-2 h-full flex items-center">
                         <div class="text-sm font-medium">
                             {{ item.uuid }}
                         </div>
                     </td>
-                    <td class="px-4 py-2 flex items-center">
-                        <div class="text-sm font-medium">
-                            <span :class="{
-                                'bg-green-500 rounded-full p-1': item.activo,
-                                'bg-red-500 rounded-full p-1': !item.activo
+                    <td class="px-4 py-2 flex items-center h-full">
+                        <div class="text-sm font-medium flex h-full items-center">
+                            <span class="h-2 rounded-full p-1" :class="{
+                                'bg-green-500 dark:bg-green-400 outline outline-2 outline-offset-1 outline-green-300 dark:outline-green-500': item.activo,
+                                'bg-red-500 dark:bg-red-500': !item.activo
                             }"></span>
                             <span class="ml-4 font-bold" v-if="item.activo">activo</span>
-                            <span class="ml-4 font-bold" v-if="!item.activo">inactivo
-                                <span class="font-medium text-sm">desde hace {{ tiempoTranscurrido(item.ultimaConexion)
-                                }}</span>
+                            <span class="ml-4 " v-if="!item.activo">inactivo
+                                <!-- <span class="font-medium text-sm">desde hace {{
+                                    tiempoTranscurrido(item.ultimaConexion)
+                                }}</span> -->
                             </span>
                         </div>
                     </td>
                     <td class="px-4 py-2">
                         <div v-if="item.user"
-                            class="w-full group relative flex flex-row gap-6 items-center px-4 py-2 shadow relative rounded-md text-sm font-medium border bg-white shadow hover:shadow-md">
+                            class="w-full h-12 group relative flex flex-row gap-6 items-center px-4 py-2 shadow relative rounded-md text-sm font-medium border bg-white dark:bg-white/10 shadow hover:shadow-md">
                             <div class="flex flex-row gap-8 items-center justify-start">
                                 <div class="flex flex-col items-end gap-2 text-right">
                                     <p>
                                         <span class="font-bold text-gray-500 dark:text-gray-400"></span>{{
-                                                item.user.nickname
+                                            item.user.nickname
                                         }}
                                         ( <i class="text-gray-500 dark:text-gray-400">{{ item.user.email }}</i> )
                                     </p>
 
                                 </div>
                                 <XCircleIcon
-                                    class="absolute right-2 hidden group-hover:block h-5 w-5 ml-3 text-gray-300 hover:text-red-600" />
+                                    class="absolute right-2 hidden group-hover:block h-5 w-5 ml-3 text-gray-300 hover:text-red-600" @click="desasociarUsuarioSensor(item.uuid, item.user.nickname)"/>
                             </div>
                         </div>
-                        <AsociarSensorUser v-if="!item.user" :uuid="item?.uuid" @updated="OnSensorUserAsociado" />
+                        <AsociarSensorUser :key="refreshKey" v-if="!item.user" :uuid="item?.uuid"
+                            @updated="OnSensorUserAsociado" />
+
                     </td>
                 </tr>
             </tbody>
@@ -91,9 +99,10 @@
   
 <script setup>
 
+
 import { ref, computed, toRaw } from 'vue'
 
-import moment from 'moment'
+//import moment from 'moment'
 import objectPath from 'object-path'
 
 import jsPDF from 'jspdf'
@@ -108,6 +117,9 @@ import { useSessionStore } from '@/store/session'
 import { XCircleIcon } from '@heroicons/vue/24/outline'
 import AsociarSensorUser from './AsociarSensorUser.vue'
 
+
+const refreshKey = ref(0);
+
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
 
@@ -116,29 +128,17 @@ const userRaw = { ...toRaw(user.value) };
 const ayto = await logicaFakeUsuario.getAyuntamiento(userRaw.nickname);
 let data = await logicaFakeAyuntamiento.getSensoresUsuarios(ayto.id);
 
-// const data = [
-//     { uuid: 'abcd1234', activo: true, nombre: 'Juan Pérez' },
-//     { uuid: 'efgh5678', activo: false, nombre: 'Ana Martínez' },
-//     { uuid: 'ijkl9101', activo: true, nombre: 'Luis González' },
-//     { uuid: 'mnop2345', activo: false, nombre: null },
-//     { uuid: 'qrst6789', activo: true, nombre: 'Mario Álvarez' },
-//     { uuid: 'uvwx0123', activo: false, nombre: 'Laura Sánchez' },
-//     { uuid: 'yzaq4567', activo: true, nombre: 'Pablo Rodríguez' },
-//     { uuid: 'bcde8901', activo: false, nombre: 'Cristina Gómez' },
-// ]
-
 const exportToPDF = () => {
     const doc = new jsPDF()
     doc.autoTable({ html: '#data-table' })
     doc.save('data-sensores.pdf')
 }
 
-const today = new Date()
-
-data.forEach(item => {
-    const randomMilliseconds = Math.floor(Math.random() * 86400000)
-    if (!item.activo) item.ultimaConexion = today.getTime() - randomMilliseconds
-})
+//const today = new Date()
+// data.forEach(item => {
+//     const randomMilliseconds = Math.floor(Math.random() * 86400000)
+//     if (!item.activo) item.ultimaConexion = today.getTime() - randomMilliseconds
+// })
 
 const filtroUuid = ref('')
 const filtroNombre = ref('')
@@ -153,29 +153,31 @@ const removeAccents = (str) => {
     return strNorm?.toLowerCase()
 }
 
-const tiempoTranscurrido = (ultimaConexion) => {
-    const milisegundos = moment().diff(ultimaConexion)
-    const segundos = Math.floor(milisegundos / 1000)
-    const minutos = Math.floor(segundos / 60)
-    const horas = Math.floor(minutos / 60)
+// const tiempoTranscurrido = (ultimaConexion) => {
+//     const milisegundos = moment().diff(ultimaConexion)
+//     const segundos = Math.floor(milisegundos / 1000)
+//     const minutos = Math.floor(segundos / 60)
+//     const horas = Math.floor(minutos / 60)
 
-    let tiempoTranscurrido = ''
+//     let tiempoTranscurrido = ''
 
-    if (horas) {
-        tiempoTranscurrido += `${horas} hora${horas > 1 ? 's' : ''} `
-    }
-    if (minutos) {
-        tiempoTranscurrido += `${minutos % 60} minuto${minutos % 60 > 1 ? 's' : ''} `
-    }
-    if (segundos) {
-        tiempoTranscurrido += `${segundos % 60} segundo${segundos % 60 > 1 ? 's' : ''} `
-    }
+//     if (horas) {
+//         tiempoTranscurrido += `${horas} hora${horas > 1 ? 's' : ''} `
+//     }
+//     if (minutos) {
+//         tiempoTranscurrido += `${minutos % 60} minuto${minutos % 60 > 1 ? 's' : ''} `
+//     }
+//     if (segundos) {
+//         tiempoTranscurrido += `${segundos % 60} segundo${segundos % 60 > 1 ? 's' : ''} `
+//     }
 
-    return tiempoTranscurrido
-}
+//     return tiempoTranscurrido
+// }
 //
 
 const filteredData = computed(() => {
+
+    refreshKey.value;
 
     let filtered = data
         .filter(item => {
@@ -222,9 +224,18 @@ const sortBy = (column) => {
 }
 
 const OnSensorUserAsociado = async (res) => {
+    console.log(res)
     if (res.success) {
         //
+        data = await logicaFakeAyuntamiento.getSensoresUsuarios(ayto.id);
+        refreshKey.value += 1;
     }
+}
+
+async function desasociarUsuarioSensor(uuid, nickname) {
+
+    const res = await logicaFakeAyuntamiento.desasociarUsuarioSensor(uuid, nickname);
+    OnSensorUserAsociado(res)
 }
 
 

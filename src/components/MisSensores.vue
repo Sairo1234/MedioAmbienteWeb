@@ -40,7 +40,10 @@ defineProps(['title'])
 //sensores
 const sensores = ref([])
 const userSensor = await logicaFakeUsuario.getSensor(user.value.nickname);
-sensores.value.push(userSensor)
+if(userSensor) {
+    sensores.value.push(userSensor)
+}
+
 
 </script>
   
