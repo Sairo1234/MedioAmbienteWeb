@@ -6,7 +6,7 @@ import {antPath} from 'leaflet-ant-path';
 
 //import glify from '@khiemntu/leaflet.glify'
 
-import '../../node_modules/leaflet.idw/src/leaflet-idw.js'
+import 'leaflet.idw/src/leaflet-idw.js'
 
 export const mapFunctions = 
 {

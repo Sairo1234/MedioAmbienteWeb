@@ -637,13 +637,11 @@ import { storeToRefs } from 'pinia'
 import { useSessionStore } from '@/store/session'
 import { computed, ref } from 'vue';
 
-import { mapFunctions } from './map_functionalities'
+import { mapFunctions } from '../logicaFake/map_functionalities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 import 'iso8601-js-period'
 
 // ***************** Código del mapa
-
-
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
 
@@ -670,13 +668,12 @@ onMounted(async () => {
         L.control.layers({
             "Mapa de interpolación del usuario": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioLogeado, mymap),
             "Mapa de interpolación global": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
-        }, {"Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario)}).addTo(mymap);
+        }, { "Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario) }).addTo(mymap);
     }
-    else 
-    {
+    else {
         var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
         mapaInterpolacion.addTo(mymap)
-    } 
+    }
 })
 </script>
 
