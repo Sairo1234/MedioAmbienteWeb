@@ -6,8 +6,8 @@
 
                 <div class="flex flex-col gap-2 w-full md:w-1/3 mt-12">
 
-                    <Avatar class="hover:grayscale transition-1 w-fit mb-6" size="xl" rounded bordered
-                        :img="userEdit?.profile_photo_url" />
+                    <!-- <Avatar class="hover:grayscale transition-1 w-fit mb-6" size="xl" rounded bordered
+                        :img="userEdit?.profile_photo_url" /> -->
 
                     <Input class="placeholder-gray-200" placeholder="your nickname" label="nickname"
                         v-model="userEdit.nickname" :disabled="!editando" />
@@ -101,7 +101,7 @@
 
 import { PencilSquareIcon, XMarkIcon, CheckIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
-import { Input, Avatar, Tabs, Tab, Spinner } from 'flowbite-vue'
+import { Input, Tabs, Tab, Spinner } from 'flowbite-vue'
 
 import { ref, watch, computed } from 'vue'
 

@@ -4,8 +4,18 @@
         <h1 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">
             Mi sensor
         </h1>
+        <div v-if="sensores.length <= 0">
+            <div
+                class="rounded-md border border-gray-300 bg-gray-100 dark:bg-slate-800 h-20 flex justify-center items-center pl-5 text-sm font-medium text-gray-200">
+                <div class="flex flex-auto gap-8 items-center">
+                    <div class="flex flex-col gap-2">
+                        <p class="text-gray-300 dark:text-gray-300">Sin sensor asignado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div v-for="(sensor, index) in sensores" :key="index"
-            class="rounded-md border border-gray-300 bg-white dark:bg-slate-800 px-4 py-4 text-sm font-medium text-gray-700 shadow-md hover:bg-gray-50">
+            class="rounded-md border border-gray-300 bg-white dark:bg-slate-800 h-20 flex justify-center items-center pl-5 text-sm font-medium text-gray-700 shadow-md hover:bg-gray-50">
             <div class="flex flex-auto gap-8 items-center">
                 <Avatar :status="sensor.activo ? 'online' : 'offline'" bordered rounded
                     img="https://i.pinimg.com/736x/05/ca/61/05ca610ff78bb9c6f23efc2039842cec.jpg" />
@@ -40,7 +50,7 @@ defineProps(['title'])
 //sensores
 const sensores = ref([])
 const userSensor = await logicaFakeUsuario.getSensor(user.value.nickname);
-if(userSensor) {
+if (userSensor) {
     sensores.value.push(userSensor)
 }
 

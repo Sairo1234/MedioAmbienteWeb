@@ -4,11 +4,10 @@
 
         <!-- list items -->
         <ul class="z-10 absolute mt-2 p-2 w-fit rounded bg-gray-50 ring-1 ring-gray-300 shadow" v-if="open">
-            <li v-for="(u, index) in filteredUsersList" :key="index" :value="u.nickname"
-                class="cursor-pointer select-none p-2 hover:bg-gray-200" @click="selectUser(u.nickname)">
-                {{ u.nickname }}(<span class="text-gray-500">{{ u.email }}</span>)
+            <li v-for="(ayto, index) in filteredAyuntamientosList" :key="index" :value="ayto.ciudad"
+                class="cursor-pointer select-none p-2 hover:bg-gray-200" @click="selectAyto(ayto.ciudad)">
             </li>
-            <li v-if="filteredUsersList.length <= 0"
+            <li v-if="filteredAyuntamientosList.length <= 0"
                 class="select-none p-2">
                 <span class="text-gray-500">Sin coincidencias</span>
             </li>
@@ -23,13 +22,13 @@ import { ref, computed, watch } from 'vue'
 //import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
 
 export default {
-    name: 'SearchUsers',
+    name: 'SearchAyuntamientos',
     components: {
         // ChevronDownIcon,
         // ChevronUpIcon
     },
     props: {
-        users: {
+        ayuntamientos: {
             type: Array,
             required: true
         }
@@ -40,9 +39,9 @@ export default {
 
         const searchValue = ref('')
 
-        const filteredUsersList = computed(() => {
+        const filteredAyuntamientosList = computed(() => {
 
-            return props.users.filter(user => {
+            return props.ayuntamientos.filter(user => {
                 return user.nickname.toLowerCase().includes(searchValue.value.toLowerCase())
             })
 
@@ -50,7 +49,7 @@ export default {
 
         watch(searchValue, () => {
             open.value = true
-        }) 
+        })  
 
         const open = ref(false)
 
@@ -58,7 +57,7 @@ export default {
             open.value = !open.value
         }
 
-        const selectUser = (nickname) => {           
+        const selectAyto = (nickname) => {           
             searchValue.value = nickname
             context.emit('updated', searchValue.value)
             setTimeout( () => {
@@ -69,9 +68,9 @@ export default {
         return {
             open,
             toggle,
-            selectUser,
+            selectAyto,
             searchValue,
-            filteredUsersList
+            filteredAyuntamientosList
         }
     }
 }
