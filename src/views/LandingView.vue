@@ -5,9 +5,8 @@
             <div class="absolute m-auto right-12 bottom-12 w-fit flex flex-col gap-4">
 
                 <div id="filtros-mapa" class="absolute m-auto right-28 bottom-12 w-fit flex flex-col gap-4">
-                    <div class="bg-white/20 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
+                    <!-- <div class="bg-white/20 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
 
-                        <!-- <h3 class="font-bold mb-3 dark:text-white">Filtrar por gas</h3> -->
                         <div class="flex flex-col gap-2 text-blue-800">
                             <div class="flex items-center">
                                 <input id="o3-checkbox" type="checkbox" value="o3" v-model="checkedGasses"
@@ -24,7 +23,7 @@
                             </div>
                             <span>Checked gasses: {{ checkedGasses }}</span>
                         </div>
-                    </div>
+                    </div> -->
                     <a v-if="isLogged"
                         class="w-full dark:bg-slate-800 bg-white hover:bg-gray-100 dark:hover:bg-slate-700 px-12 py-2 rounded-md shadow-lg text-blue-800 dark:text-white font-bold"
                         href="#misdatos">
@@ -306,6 +305,11 @@
                         culpa
                         est!
                     </p>
+
+                    <!--Boton "Unete"-->
+                    <a href="#solicitar" v-if="!isLogged"
+                        class="text-white bg-blue-700 mt-10 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Solicitar sensor</a>
                 </section>
 
                 <section id="about" class="bg-white dark:bg-slate-800">
@@ -423,6 +427,47 @@
                         culpa
                         est!
                     </p>
+
+                    <div id="solicitar" class="w-full h-screen flex flex-col gap-4 items-center pt-48">
+
+
+                        <form 
+                            class="w-2/3 h-fit flex flex-col items-center py-16 ph-24 border border rounded-lg bg-gray-100 relative overflow-hidden">
+
+                            <h2 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">Busca tu ayuntamiento:
+                            </h2>
+                            <p class="w-2/4 text-sm text-center text-gray-500 mb-6 ">
+                                Encuentra tu ayuntamiento y solicita tu sensor.
+                            </p>
+                            <div class="w-1/3 flex flex-col gap-4">
+                                <Suspense>
+                                    <!-- loading state via #fallback slot -->
+                                    <template #fallback>
+                                        Buscando...
+                                    </template>
+                                    <SearchAytosInput @updated="handleSelectedAytoUpdate" id="ayuntamientos" />
+                                </Suspense>
+                                <Input :disabled="loading || !selectedAyto" v-model="email" type="email"
+                                    class="w-full dark:text-gray-400" placeholder="Correo electrónico" name="">
+                                <template #prefix>
+                                    <AtSymbolIcon class="h-5 w-5 mr-2" />
+                                </template>
+                                </Input>
+                                <!---------- Boton Solicitar ---------->
+                                <button :disabled="loading || !email" type="submit" @click="handleSolicitarButtonClick"
+                                    class="disabled:bg-gray-600 w-full mt-2 px-4 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                                    Solicitar sensor
+                                </button>
+                            </div>
+                            <MapPinIcon class="h-96 w-96 absolute left-8 -bottom-12 mb-2 text-gray-200/40" />
+                        </form>
+
+                        <p class="w-full text-center text-xs text-gray-500 mb-6">
+                            No garantizamos la entrega de un sensor, delegando las responsabilidades al ayuntamiento de tu ciudad.
+                        </p>
+
+                    </div>
+
                 </section>
 
                 <section id="contact" class="bg-white dark:bg-slate-800">
@@ -540,6 +585,8 @@
                         culpa
                         est!
                     </p>
+
+
                 </section>
             </div>
 
@@ -551,7 +598,7 @@
                 <!--Texto principal-->
                 <div class="mb-20">
                     <h1 class="text-3xl md:text-5xl font-bold text-blue-900 mb-6 dark:text-white">Bienvenido, {{
-                            user.nickname
+                        user.nickname
                     }}</h1>
                     <!--Poner algo de texto más tarde-->
                     <p class="md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor, sit amet consectetur
@@ -619,9 +666,11 @@
 
 <script setup>
 
-import { PresentationChartLineIcon } from '@heroicons/vue/24/outline'
+import SearchAytosInput from '../components/SearchAytosInput.vue'
 
-import { TheCard } from 'flowbite-vue'
+import { PresentationChartLineIcon, AtSymbolIcon, MapPinIcon } from '@heroicons/vue/24/outline'
+
+import { TheCard, Input } from 'flowbite-vue'
 
 import L from "leaflet"
 import '../lib/leaflet-heat.js'
@@ -639,6 +688,7 @@ import { computed, ref } from 'vue';
 
 import { mapFunctions } from '../logicaFake/map_functionalities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
+
 import 'iso8601-js-period'
 
 // ***************** Código del mapa
@@ -649,7 +699,30 @@ const isLogged = computed(() => {
     return sessionStore.isLogged
 })
 
-const checkedGasses = ref([])
+//const checkedGasses = ref([])
+
+const selectedAyto = ref('')
+const email = ref('')
+const loading = ref(false)
+
+const handleSelectedAytoUpdate = (v) => {
+    console.log(v)
+    selectedAyto.value = v;
+}
+
+const handleSolicitarButtonClick = async () => {
+    if (email.value == '') return
+    loading.value = true;
+    //await solicitarSensor(email.value)
+    setTimeout(() => {
+
+        loading.value = false;
+        alert("Sensor solicitado.")
+        email.value = ''
+
+    }, 2000);
+
+}
 
 // Creación del mapa
 onMounted(async () => {
@@ -674,6 +747,8 @@ onMounted(async () => {
         var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
         mapaInterpolacion.addTo(mymap)
     }
+
+
 })
 </script>
 

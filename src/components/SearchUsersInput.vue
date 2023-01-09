@@ -1,6 +1,14 @@
 <template>
     <div class="relative w-full text-gray-700">
-        <input type="text" v-model="searchValue" placeholder="Usuario" class="pl-2 placeholder:text-gray-400 w-full items-center justify-between rounded bg-white p-1 ring-1 ring-gray-300" />
+        <!-- <input type="text" v-model="searchValue" placeholder="Usuario" class="pl-2 placeholder:text-gray-400 w-full items-center justify-between rounded bg-white p-1 ring-1 ring-gray-300" /> -->
+
+        <Input v-model="searchValue" type="text" class="w-full dark:text-gray-400"
+            placeholder="Usuario" name="">
+            <template #prefix>
+                <MagnifyingGlassIcon v-if="!searchValue" class="h-4 w-4 mr-3" />
+                <UserIcon v-if="searchValue" class="h-4 w-4 mr-3" />
+            </template>
+        </Input>
 
         <!-- list items -->
         <ul class="z-10 absolute mt-2 p-2 w-fit rounded bg-gray-50 ring-1 ring-gray-300 shadow" v-if="open">
@@ -22,12 +30,18 @@ import { ref, computed, watch } from 'vue'
 
 //import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline'
 
+import { Input } from 'flowbite-vue'
+import { UserIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+
 export default {
     name: 'SearchUsers',
     components: {
-        // ChevronDownIcon,
-        // ChevronUpIcon
-    },
+    // ChevronDownIcon,
+    // ChevronUpIcon
+    Input,
+    MagnifyingGlassIcon,
+    UserIcon
+},
     props: {
         users: {
             type: Array,
@@ -54,9 +68,9 @@ export default {
 
         const open = ref(false)
 
-        const toggle = () => {
-            open.value = !open.value
-        }
+        // const toggle = () => {
+        //     open.value = !open.value
+        // }
 
         const selectUser = (nickname) => {           
             searchValue.value = nickname
@@ -68,7 +82,7 @@ export default {
 
         return {
             open,
-            toggle,
+            //toggle,
             selectUser,
             searchValue,
             filteredUsersList

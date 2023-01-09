@@ -52,15 +52,14 @@
                             </div>
 
                             <!----------Boton Iniciar Sesión---------->
-                            <button type="submit" @click="handleLoginButtonClick"
-                                class="w-full mt-3 mb-2 text-white bg-blue-700 hover:bg-blue-800 fnt-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700"
-                                href="#">
+                            <button type="submit" @click="handleLoginButtonClick" :disabled="loading" 
+                            class="disabled:bg-gray-600 w-full mt-6 px-4 py-2 text-sm font-medium text-center text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                                 Inicia sesión
                             </button>
 
                         </form>
 
-                        <span v-if="error" class="flex gap-1 text-rose-500 text-sm"><ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}</span> 
+                        <span v-if="error" class="mt-2 flex gap-1 text-rose-500 text-sm"><ExclamationTriangleIcon class="h-5 w-5 mr-2" /> {{ error }}</span> 
 
                     </div>
 

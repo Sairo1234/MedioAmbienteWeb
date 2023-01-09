@@ -3,6 +3,27 @@ import { logicaFakeSettings } from '../config.js';
 
 export const logicaFakeAyuntamiento = {
    
+    async getAyuntamientos() {
+
+        try {
+
+            var response = await axios.get(logicaFakeSettings.baseURL + '/ayuntamientos')
+            let payload = response.data;
+            return payload;
+
+        } catch (error) {
+            let payload = error.response.data            
+            let errors; // errors = [{msg: string}]   
+            if (payload.errors) {  
+                errors = payload.errors 
+            }
+            else {
+                errors = [{ msg: payload.msg }]
+            }            
+            throw errors;
+        }   
+
+    },
 
     async getUsuarios(ayuntamientoId) {
 
