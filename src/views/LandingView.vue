@@ -38,6 +38,8 @@
             </div>
         </div>
 
+        <div style="width: 800px;"><canvas id="estadistica"></canvas></div>
+
         <div class="main-container" v-if="!isLogged">
 
             <div class="bg-white dark:bg-slate-900 py-20">
@@ -641,6 +643,8 @@ import { mapFunctions } from '../logicaFake/map_functionalities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 import 'iso8601-js-period'
 
+import {estaFunctions} from '../logicaFake/estadisticas_functionalities'
+
 // ***************** Código del mapa
 const sessionStore = useSessionStore()
 const { user } = storeToRefs(sessionStore)
@@ -662,18 +666,27 @@ onMounted(async () => {
     // Si hay un usuario logeado, se calculan sus layers
     if (isLogged.value) {
 
-        var medidasJsonDelUltimoDiaDelUsuarioLogeado = await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul")
-        var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(medidasJsonDelUltimoDiaDelUsuarioLogeado)
+        var medidasJsonDelUltimoDiaDelUsuarioDeTipoO3= await MedicionesAPI.obtenerMedicionesDeTemperaturaDelDiaPorNicknameYTipo("Raul", 1, new Date().getTime())
+        var medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2= await MedicionesAPI.obtenerMedicionesDeTemperaturaDelDiaPorNicknameYTipo("Raul", 2, new Date().getTime())
+        var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul"))
+
+        console.log(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3)
+        console.log(medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2)
+
 
         L.control.layers({
-            "Mapa de interpolación del usuario": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioLogeado, mymap),
-            "Mapa de interpolación global": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
-        }, { "Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario) }).addTo(mymap);
+            "Mapa de interpolación del O3": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3, mymap).addTo(mymap),
+            "Mapa de interpolación de NO2":  mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2, mymap),
+            }, 
+            { "Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario) },
+            {collapsed: false}).addTo(mymap);
     }
     else {
         var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
         mapaInterpolacion.addTo(mymap)
     }
+
+    estaFunctions.estadisticaPrueba('estadistica')
 })
 </script>
 
