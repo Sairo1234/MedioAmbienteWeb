@@ -141,6 +141,30 @@ export const logicaFakeAyuntamiento = {
             throw errors;
         }
 
+    },
+
+    async solicitarSensor(_emailSolicitante, _ayuntamientoId) {
+
+        const data = {
+            email: _emailSolicitante
+        }
+
+        try {
+            var response = await axios.post(logicaFakeSettings.baseURL + '/ayuntamientos/'+ _ayuntamientoId +'/solicitarSensor', data)
+            let payload = response.data;
+            return payload;
+
+        } catch (error) {
+            let payload = error.response.data
+            let errors; // errors = [{msg: string}]   
+            if (payload.errors) {  
+                errors = payload.errors 
+            }
+            else {
+                errors = [{ msg: payload.msg }]
+            }            
+            throw errors;
+        }
     }
 
 }

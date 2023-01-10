@@ -43,10 +43,10 @@
 
                 <!--Texto principal-->
                 <div class="flex justify-center flex-col items-center mb-20">
-                    <h1 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">
+                    <h1 class="text-4xl md:text-6xl font-bold text-blue-900 text-center mb-8 w-2/6 dark:text-white">
                         Recoge datos y ayuda a tu ciudad</h1>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor,
+                    <p class="text-center w-full px-6 md:w-2/5 text-gray-500 dark:text-gray-400">Lorem ipsum dolor,
                         sit
                         amet
                         consectetur
@@ -432,7 +432,7 @@
 
 
                         <form 
-                            class="w-2/3 h-fit flex flex-col items-center py-16 ph-24 border border rounded-lg bg-gray-100 relative overflow-hidden">
+                            class="w-2/3 h-fit flex flex-col items-center py-16 ph-24 border border rounded-lg bg-gray-100 dark:text-gray-600 dark:bg-slate-700 relative overflow-hidden">
 
                             <h2 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">Busca tu ayuntamiento:
                             </h2>
@@ -459,7 +459,7 @@
                                     Solicitar sensor
                                 </button>
                             </div>
-                            <MapPinIcon class="h-96 w-96 absolute left-8 -bottom-12 mb-2 text-gray-200/40" />
+                            <MapPinIcon class="h-96 w-96 absolute left-8 -bottom-2 mb-2 text-gray-200/40 dark:text-white/5" />
                         </form>
 
                         <p class="w-full text-center text-xs text-gray-500 mb-6">
@@ -690,6 +690,7 @@ import { mapFunctions } from '../logicaFake/map_functionalities'
 import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 
 import 'iso8601-js-period'
+import { logicaFakeAyuntamiento } from '@/logicaFake/resources/ayuntamiento'
 
 // ***************** Código del mapa
 const sessionStore = useSessionStore()
@@ -711,16 +712,14 @@ const handleSelectedAytoUpdate = (v) => {
 }
 
 const handleSolicitarButtonClick = async () => {
-    if (email.value == '') return
+    if (email.value == '' || selectedAyto.value == '') return
     loading.value = true;
-    //await solicitarSensor(email.value)
-    setTimeout(() => {
-
-        loading.value = false;
+    const res = await logicaFakeAyuntamiento.solicitarSensor(email.value, selectedAyto.value)
+    if(res.success) {
         alert("Sensor solicitado.")
         email.value = ''
-
-    }, 2000);
+    }
+    loading.value = false
 
 }
 
