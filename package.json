@@ -12,6 +12,7 @@
     "@khiemntu/leaflet.glify": "^3.0.4",
     "@types/node": "^18.11.17",
     "axios": "^1.1.3",
+    "chart.js": "^4.1.2",
     "core-js": "^3.26.0",
     "dayjs": "^1.11.6",
     "element-plus": "^2.2.19",
