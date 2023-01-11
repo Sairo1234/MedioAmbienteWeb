@@ -655,7 +655,7 @@ const isLogged = computed(() => {
 
 const checkedGasses = ref([])
 
-// Creación del mapa
+// Creación del mapa y estadísticas
 onMounted(async () => {
 
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
@@ -671,8 +671,6 @@ onMounted(async () => {
         var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul"))
 
         console.log(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3)
-        console.log(medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2)
-
 
         L.control.layers({
             "Mapa de interpolación del O3": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3, mymap).addTo(mymap),
@@ -686,8 +684,13 @@ onMounted(async () => {
         mapaInterpolacion.addTo(mymap)
     }
 
+    // Función para crear media de datos dados de las últimas 24 horas
     estaFunctions.estadisticaPrueba('estadistica')
+
 })
+
+
+
 </script>
 
 <style scoped>
