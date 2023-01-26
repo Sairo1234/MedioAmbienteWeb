@@ -37,7 +37,9 @@
             </div>
         </div>
 
-        <div style="width: 800px;"><canvas id="estadistica"></canvas></div>
+        <div style="width: 800px;"><canvas id="estadisticaSemana"></canvas></div>
+        <div style="width: 800px;"><canvas id="estadisticaMes"></canvas></div>
+
 
         <div class="main-container" v-if="!isLogged">
 
@@ -735,6 +737,8 @@ onMounted(async () => {
 
     var medidasJsonDelUltimoDia = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
 
+    console.log(medidasJsonDelUltimoDia)
+
     // Si hay un usuario logeado, se calculan sus layers
     if (isLogged.value) {
 
@@ -742,25 +746,35 @@ onMounted(async () => {
         var medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2= await MedicionesAPI.obtenerMedicionesDeTemperaturaDelDiaPorNicknameYTipo("Raul", 2, new Date().getTime())
         var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul"))
 
-        console.log(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3)
-
         L.control.layers({
             "Mapa de interpolación del O3": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3, mymap).addTo(mymap),
             "Mapa de interpolación de NO2":  mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2, mymap),
             }, 
             { "Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario) },
-            {collapsed: false}).addTo(mymap);
+            {collapsed: false})
+        .addTo(mymap);
+
+
+        var mediasArrayDeLaUltimaSemanaDelUsuarioTipoO3 = await MedicionesAPI.obtenerMediaDeDatosSemanalesDelUsuarioLogeadoPorTipo("Raul", 1)
+        var mediasArrayDeLaUltimaSemanaDelUsuarioTipoNO2 = await MedicionesAPI.obtenerMediaDeDatosSemanalesDelUsuarioLogeadoPorTipo("Raul", 2)
+
+        var mediasArrayDelultimoMesDelUsuarioTipoO3 = await MedicionesAPI.obtenerMediaDeDatosMensualesDelUsuarioLogeadoPorTipo("Raul", 1)
+        var mediasArrayDelUltimoMesDelUsuarioTipoNO2 = await MedicionesAPI.obtenerMediaDeDatosMensualesDelUsuarioLogeadoPorTipo("Raul", 2)
+
+
+        // Función para crear media de datos dados de las últimas 24 horas
+        estaFunctions.estadisticaDeLaSemana('estadisticaSemana', mediasArrayDeLaUltimaSemanaDelUsuarioTipoO3, mediasArrayDeLaUltimaSemanaDelUsuarioTipoNO2)
+        estaFunctions.estadisticaDelMes('estadisticaMes', mediasArrayDelultimoMesDelUsuarioTipoO3, mediasArrayDelUltimoMesDelUsuarioTipoNO2)
+
     }
     else {
         var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
         mapaInterpolacion.addTo(mymap)
     }
 
-    // Función para crear media de datos dados de las últimas 24 horas
-    estaFunctions.estadisticaPrueba('estadistica')
+
+    
 })
-
-
 
 </script>
 

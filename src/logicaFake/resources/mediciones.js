@@ -142,4 +142,61 @@ export const MedicionesAPI = {
 
         }
     },
+
+
+    async obtenerMediaDeDatosSemanalesDelUsuarioLogeadoPorTipo(nickName, tipo)
+    {
+        try {
+            var response = await axios.get(logicaFakeSettings.baseURL + '/mediciones/usuario/' + nickName + "/mediaSemana?" + "tipo=" + tipo)
+
+        } catch (err) {
+
+            if (err.response.data.errors) {
+
+                // errors = [{msg: string}] 
+                const errors = err.response.data.errors
+                throw errors;
+
+            }
+
+            // errors = [{msg: string}]     
+            const errors = [{ msg: err.response.data.msg }]
+            throw errors;
+        }
+
+        if (response.status == 200) {
+
+            //return user data
+            return response.data
+
+        }
+    },
+
+    async obtenerMediaDeDatosMensualesDelUsuarioLogeadoPorTipo(nickName, tipo)
+    {
+        try {
+            var response = await axios.get(logicaFakeSettings.baseURL + '/mediciones/usuario/' + nickName + "/mediaMes?" + "tipo=" + tipo)
+
+        } catch (err) {
+
+            if (err.response.data.errors) {
+
+                // errors = [{msg: string}] 
+                const errors = err.response.data.errors
+                throw errors;
+
+            }
+
+            // errors = [{msg: string}]     
+            const errors = [{ msg: err.response.data.msg }]
+            throw errors;
+        }
+
+        if (response.status == 200) {
+
+            //return user data
+            return response.data
+
+        }
+    },
 }
