@@ -1,6 +1,5 @@
-import { json } from 'body-parser';
+
 import Chart from 'chart.js/auto';
-import { map } from 'core-js/core/array';
 
 export const estaFunctions = 
 {
@@ -34,27 +33,5 @@ export const estaFunctions =
           },
         }
       );
-    },
-
-    calcularMediaDeUnDia(jsonMedidasDeUnDia)
-    {
-      valorMedio = 0
-
-      cantidadDeMedidas = 0
-
-      jsonMedidasDeUnDia.map(function(medida)
-      {
-        valorMedio = valorMedio + medida.value
-        cantidadDeMedidas++
-      })
-
-      return valorMedio/cantidadDeMedidas
-    },
-
-    calcularMediaDeUnaSemana(jsonMedidasDeUnaSemana)
-    {
-      valorMedio = 0
-
-      jsonMediasDeUnaSemana
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto dark:text-gray-300">
+    <div class="container mx-auto dark:text-gray-300" :key="refreshKey">
         <div class="flex gap-6 items-center mb-4 p-4 bg-gray-100 dark:bg-white/5 shadow-md rounded-xl">
             <input type="text" placeholder="Filtrar por UUID" v-model="filtroUuid" class="border rounded py-1 px-3"
                 :class="filtroUuid ? 'bg-white dark:bg-white/10' : 'bg-gray-300 bg-white/5'" />
@@ -28,11 +28,11 @@
                         <span v-if="sortColumn === 'uuid' && sortDirection === 'asc'">▲</span>
                         <span v-if="sortColumn === 'uuid' && sortDirection === 'desc'">▼</span>
                     </th>
-                    <th class="px-4 py-2 hover:bg-gray-100 cursor-pointer" v-on:click="sortBy('ultimaConexion')">
+                    <th class="px-4 py-2 hover:bg-gray-100 cursor-pointer" v-on:click="sortBy('inactivoDesde')">
                         Activo
                         <!-- Muestra una flecha arriba o abajo para indicar el orden actual de la tabla -->
-                        <span v-if="sortColumn === 'ultimaConexion' && sortDirection === 'asc'">▲</span>
-                        <span v-if="sortColumn === 'ultimaConexion' && sortDirection === 'desc'">▼</span>
+                        <span v-if="sortColumn === 'inactivoDesde' && sortDirection === 'asc'">▲</span>
+                        <span v-if="sortColumn === 'inactivoDesde' && sortDirection === 'desc'">▼</span>
                     </th>
                     <th class="px-4 py-2 hover:bg-gray-100 cursor-pointer" v-on:click="sortBy('user.nickname')">
                         Nombre
@@ -49,7 +49,7 @@
                     </td>
                 </tr>
                 <tr v-for="(item, index) in filteredData" :key="index"
-                    :class="{ 'bg-gray-200 dark:bg-gray-900': index % 2 === 0 }" class="grid grid-cols-3">
+                    :class="{ 'bg-gray-100 dark:bg-gray-900': index % 2 === 0 }" class="grid grid-cols-3">
                     <td class="px-4 py-2 h-full flex items-center">
                         <div class="text-sm font-medium">
                             {{ item.uuid }}
@@ -62,10 +62,10 @@
                                 'bg-red-500 dark:bg-red-500': !item.activo
                             }"></span>
                             <span class="ml-4 font-bold" v-if="item.activo">activo</span>
-                            <span class="ml-4 " v-if="!item.activo">inactivo
-                                <!-- <span class="font-medium text-sm">desde hace {{
-                                    tiempoTranscurrido(item.ultimaConexion)
-                                }}</span> -->
+                            <span class="ml-4 font-bold" v-if="!item.activo">inactivo
+                                <span class="font-medium text-sm">desde hace {{
+                                    tiempoTranscurrido(item.inactivoDesde)
+                                }}</span>
                             </span>
                         </div>
                     </td>
@@ -83,11 +83,11 @@
 
                                 </div>
                                 <XCircleIcon
-                                    class="absolute right-2 hidden group-hover:block h-5 w-5 ml-3 text-gray-300 hover:text-red-600" @click="desasociarUsuarioSensor(item.uuid, item.user.nickname)"/>
+                                    class="absolute right-2 hidden group-hover:block h-5 w-5 ml-3 text-gray-300 hover:text-red-600"
+                                    @click="desasociarUsuarioSensor(item.uuid, item.user.nickname)" />
                             </div>
                         </div>
-                        <AsociarSensorUser :key="refreshKey" v-if="!item.user" :uuid="item?.uuid"
-                            @updated="OnSensorUserAsociado" />
+                        <AsociarSensorUser v-if="!item.user" :uuid="item?.uuid" @updated="OnSensorUserAsociado" />
 
                     </td>
                 </tr>
@@ -102,7 +102,7 @@
 
 import { ref, computed, toRaw } from 'vue'
 
-//import moment from 'moment'
+import moment from 'moment'
 import objectPath from 'object-path'
 
 import jsPDF from 'jspdf'
@@ -137,7 +137,7 @@ const exportToPDF = () => {
 //const today = new Date()
 // data.forEach(item => {
 //     const randomMilliseconds = Math.floor(Math.random() * 86400000)
-//     if (!item.activo) item.ultimaConexion = today.getTime() - randomMilliseconds
+//     if (!item.activo) item.inactivoDesde = today.getTime() - randomMilliseconds
 // })
 
 const filtroUuid = ref('')
@@ -153,27 +153,27 @@ const removeAccents = (str) => {
     return strNorm?.toLowerCase()
 }
 
-// const tiempoTranscurrido = (ultimaConexion) => {
-//     const milisegundos = moment().diff(ultimaConexion)
-//     const segundos = Math.floor(milisegundos / 1000)
-//     const minutos = Math.floor(segundos / 60)
-//     const horas = Math.floor(minutos / 60)
+const tiempoTranscurrido = (inactivoDesde) => {
+    const milisegundos = moment().diff(inactivoDesde)
+    const segundos = Math.floor(milisegundos / 1000)
+    const minutos = Math.floor(segundos / 60)
+    const horas = Math.floor(minutos / 60)
 
-//     let tiempoTranscurrido = ''
+    let tiempoTranscurrido = ''
 
-//     if (horas) {
-//         tiempoTranscurrido += `${horas} hora${horas > 1 ? 's' : ''} `
-//     }
-//     if (minutos) {
-//         tiempoTranscurrido += `${minutos % 60} minuto${minutos % 60 > 1 ? 's' : ''} `
-//     }
-//     if (segundos) {
-//         tiempoTranscurrido += `${segundos % 60} segundo${segundos % 60 > 1 ? 's' : ''} `
-//     }
+    if (horas) {
+        tiempoTranscurrido += `${horas} hora${horas > 1 ? 's' : ''} `
+    }
+    if (minutos) {
+        tiempoTranscurrido += `${minutos % 60} minuto${minutos % 60 > 1 ? 's' : ''} `
+    }
+    if (segundos) {
+        tiempoTranscurrido += `${segundos % 60} segundo${segundos % 60 > 1 ? 's' : ''} `
+    }
 
-//     return tiempoTranscurrido
-// }
-//
+    return tiempoTranscurrido
+}
+
 
 const filteredData = computed(() => {
 
@@ -223,21 +223,21 @@ const sortBy = (column) => {
     }
 }
 
-const OnSensorUserAsociado = async (res) => {
-    console.log(res)
-    if (res.success) {
-        //
-        data = await logicaFakeAyuntamiento.getSensoresUsuarios(ayto.id);
-        refreshKey.value += 1;
-    }
-}
-
 async function desasociarUsuarioSensor(uuid, nickname) {
 
     const res = await logicaFakeAyuntamiento.desasociarUsuarioSensor(uuid, nickname);
-    OnSensorUserAsociado(res)
+
+    if (res.success) {
+        OnSensorUserAsociado(res)
+    }
+
 }
 
+
+const OnSensorUserAsociado = async () => {
+    data = await logicaFakeAyuntamiento.getSensoresUsuarios(ayto.id);
+    refreshKey.value += 1;
+}
 
 
 
