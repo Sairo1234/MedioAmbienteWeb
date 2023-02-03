@@ -1,4 +1,3 @@
-import { json } from 'body-parser';
 import Chart from 'chart.js/auto';
 
 export const estaFunctions =
@@ -45,10 +44,20 @@ export const estaFunctions =
     }
     var c = document.getElementById(nombreEstadistica);
     var ctx = c.getContext("2d");
-
+    
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(58,123,213, 1)');
-    gradient.addColorStop(1, 'rgba(0,210,255, 0.3)');
+
+    if(label == "O3")
+    {
+      gradient.addColorStop(0, 'rgba(58,123,213, 1)');
+      gradient.addColorStop(1, 'rgba(0,210,255, 0.3)');
+    }
+    else
+    {
+      gradient.addColorStop(0, 'rgba(255, 137, 213, 1)');
+      gradient.addColorStop(1, 'rgba(255,196,126, 0.3)');
+    }
+
     
     new Chart(ctx, {
       type: 'line',
@@ -78,8 +87,17 @@ export const estaFunctions =
     var ctx = c.getContext("2d");
 
     let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(58,123,213, 1)');
-    gradient.addColorStop(1, 'rgba(0,210,255, 0.3)');
+    
+    if(label == "O3")
+    {
+      gradient.addColorStop(0, 'rgba(58,123,213, 1)');
+      gradient.addColorStop(1, 'rgba(0,210,255, 0.3)');
+    }
+    else
+    {
+      gradient.addColorStop(0, 'rgba(255, 137, 213, 1)');
+      gradient.addColorStop(1, 'rgba(255,196,126, 0.3)');
+    }
 
     let options = 
     {

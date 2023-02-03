@@ -610,10 +610,10 @@
 
 
                     <div class="flex justify-around flex-wrap gap-12">
-                        <div class="card" style="width: 800px;"><canvas id="estadisticaSemanaO3"></canvas></div>
-                        <div class="card" style="width: 800px;"><canvas id="estadisticaMes03"></canvas></div>
-                        <div class="card" style="width: 800px;"><canvas id="estadisticaSemanaNO2"></canvas></div>
-                        <div class="card" style="width: 800px;"><canvas id="estadisticaMesNO2"></canvas></div>
+                        <div style="width: 800px;"><canvas id="estadisticaSemanaO3"></canvas></div>
+                        <div style="width: 800px;"><canvas id="estadisticaMes03"></canvas></div>
+                        <div style="width: 800px;"><canvas id="estadisticaSemanaNO2"></canvas></div>
+                        <div style="width: 800px;"><canvas id="estadisticaMesNO2"></canvas></div>
                     </div>
                 </div>
 
