@@ -114,7 +114,7 @@ export const MedicionesAPI = {
         }
     },
 
-    async obtenerMedicionesDeTemperaturaDelDiaPorNicknameYTipo(nickName, tipo)
+    async obtenerMedicionesDelUsuarioDelDiaPorNicknameYTipo(nickName, tipo)
     {
         try {
 

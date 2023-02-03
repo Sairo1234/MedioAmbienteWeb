@@ -22,7 +22,7 @@ export const mapFunctions =
             attributionControl: true,
             zoomControls: true,
             gestureHandling: true,
-        }).setView([47.085107, 7.13], 12);
+        }).setView([38.995741, -0.165693], 18);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             {
@@ -54,7 +54,7 @@ export const mapFunctions =
                 {
                     "type": "Point",
                     // Coordenadas del json
-                    "coordenadas": [j["lat"], j["lng"]],
+                    "coordinates": [j["lng"], j["lat"]],
                 },
                 "properties": { "value": j["value"] }
             }
@@ -86,7 +86,7 @@ export const mapFunctions =
         var routeDelusuario = []
         geojsonFeatureDelusuario.features.forEach(feature => {
 
-            routeDelusuario.push(feature.geometry.coordenadas)
+            routeDelusuario.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
         })
 
         // Estilo de la ruta del usuario
@@ -129,20 +129,18 @@ export const mapFunctions =
         })
 
         var idw_ = L.idwLayer(data, {  // Opciones del mapa
-            opacity: 0.65,
+            opacity: 0.75,
             maxZoom: 18,
-            cellSize: 4,
-            exp: 4,
-            max: 20,
+            cellSize: 3,
+            exp: 3,
+            max: 2,
+            min: 0,
             gradient : {
-                0.2: 'lime',
-                0.4: 'yellow',            
-                0.5: 'orange',
-                0.6: 'red',
-                0.7: 'Maroon',
-                0.8: '#660066',
-                0.9: '#990099',
-                1.0: '#ff66ff'
+                0.1: '#2B83BA',            
+                0.3: '#ABDdA4',
+                0.5: '#FFFFbF',
+                0.7: '#FDAE61',
+                1.0: '#D7191C',
             },
         }) 
 
