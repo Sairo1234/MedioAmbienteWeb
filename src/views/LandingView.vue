@@ -370,14 +370,14 @@ onMounted(async () => {
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
     var mymap = mapFunctions.generarMapa('map')
 
-    var medidasJsonDelUltimoDia = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
-
     // Si hay un usuario logeado, se calculan sus layers
     if (isLogged.value) {
 
         // Código para creación del mapa
         var medidasJsonDelUltimoDiaDelUsuarioDeTipoO3 = await MedicionesAPI.obtenerMedicionesDelUsuarioDelDiaPorNicknameYTipo(sessionStore.user.nickname, 1, new Date().getTime())
         var medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2 = await MedicionesAPI.obtenerMedicionesDelUsuarioDelDiaPorNicknameYTipo(sessionStore.user.nickname, 2, new Date().getTime())
+
+        console.log(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3)
 
         L.control.layers({
             "Mapa de interpolación del O3": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3, mymap).addTo(mymap),
@@ -395,7 +395,8 @@ onMounted(async () => {
 
     }
     else {
-        var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
+        var medidasJsonDelUltimoDia = await MedicionesAPI.obtenerTodasMedicionesDelDia(new Date().getTime())
+        var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia)
         mapaInterpolacion.addTo(mymap)
     }
 })

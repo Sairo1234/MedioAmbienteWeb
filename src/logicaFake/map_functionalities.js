@@ -131,7 +131,7 @@ export const mapFunctions =
         var idw_ = L.idwLayer(data, {  // Opciones del mapa
             opacity: 0.75,
             maxZoom: 18,
-            cellSize: 3,
+            cellSize: 5,
             exp: 3,
             max: 2,
             min: 0,

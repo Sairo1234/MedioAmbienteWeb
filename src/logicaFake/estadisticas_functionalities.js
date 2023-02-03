@@ -2,7 +2,17 @@ import Chart from 'chart.js/auto';
 
 export const estaFunctions =
 {
-  estadisticaDeLaSemana(nombreEstadistica, mediasO3, label) 
+
+  /**--------------------------------------------
+  * Dado el id de la estadística, los datos a mostrar y un label
+  * crear un gráfico de media semanal con estos datos
+  * 
+  * @param {nombreEstadistica} String Id de la estadística
+  * @param {medias} Json Json con las coordenadas y valores de datos
+  * @param {label} String Label a mostrar en el gráfico
+  */
+
+  estadisticaDeLaSemana(nombreEstadistica, medias, label) 
   { 
     let delayed;
 
@@ -66,7 +76,7 @@ export const estaFunctions =
         datasets: [
           {
             label: label,
-            data: mediasO3,
+            data: medias,
             fill: true,
             borderColor:  "#fff",
             backgroundColor: gradient,
@@ -77,10 +87,17 @@ export const estaFunctions =
     })
   },
   
-  estadisticaDelMes(nombreEstadistica, mediasO3, label) 
-  {
-    console.log(mediasO3)
+  /**--------------------------------------------
+  * Dado el id de la estadística, los datos a mostrar y un label
+  * crear un gráfico de media mensual con estos datos
+  * 
+  * @param {nombreEstadistica} String Id de la estadística
+  * @param {medias} Json Json con las coordenadas y valores de datos
+  * @param {label} String Label a mostrar en el gráfico
+  */
 
+  estadisticaDelMes(nombreEstadistica, medias, label) 
+  {
     let delayed;
     
     var c = document.getElementById(nombreEstadistica);
@@ -144,7 +161,7 @@ export const estaFunctions =
         datasets: [
           {
             label: label,
-            data: mediasO3,
+            data: medias,
             fill: true,
             borderColor:  "#fff",
             backgroundColor: gradient,
