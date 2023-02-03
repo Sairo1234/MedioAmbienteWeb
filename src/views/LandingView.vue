@@ -46,7 +46,8 @@
                 <!--Imagen y boton-->
                 <div class="flex justify-center items-center flex-col mb-16">
                     <!--Cambiar por una imagen más tarde-->
-                    <img class="halo-green object-cover w-auto h-full md:w-2/3 lg:w-1/2" src="../assets/freshair.jpg" alt="img" />
+                    <img class="halo-green object-cover w-auto h-full md:w-2/3 lg:w-1/2" src="../assets/freshair.jpg"
+                        alt="img" />
 
                     <!--Boton "Unete"-->
                     <a href="#howto" v-if="!isLogged"
@@ -117,8 +118,8 @@
 
                     <div class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2">
 
-                        <img class="halo-blue object-cover px-10 md:px-0 w-auto h-auto mb-8 " src="../assets/citymocko3.png"
-                            alt="img" />
+                        <img class="halo-blue object-cover px-10 md:px-0 w-auto h-auto mb-8 "
+                            src="../assets/citymocko3.png" alt="img" />
 
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16">
@@ -275,6 +276,28 @@
             </div>
 
         </div>
+
+        <footer class="flex justify-around">
+            <div class="flex flex-col gap-4">
+                <span>Copyright © 2023 Communo3. Todos los derechos reservados.</span>
+                <span>Para más información, puedes descargar el Manual de Usuario: 
+                    <a class="font-bold text-black/40" href="../assets/Manual de Usuario Proyecto Medio Ambiente.pdf"
+                        download="ManualDeUsuarioCommuno3.pdf">Descargar</a></span>
+            </div>
+
+
+            <div class="flex flex-col"><span>Síguenos en nuestras redes sociales:</span>
+                <ul>
+                    <li>Facebook: <a class="font-bold text-black/40"> @Communo3</a></li>
+                    <li>Twitter: <a class="font-bold text-black/40"> @Communo3_Air</a></li>
+                    <li>Instagram: <a class="font-bold text-black/40"> @Communo3_Air</a></li>
+                </ul>
+            </div>
+
+
+
+
+        </footer>
     </div>
 
 
@@ -426,8 +449,13 @@ img {
 img.halo-blue {
     box-shadow: 0 2px 1362px rgba(20, 90, 220, 0.1);
 }
+
 img.halo-green {
     box-shadow: 0 16px 1362px rgba(0, 180, 80, 0.1);
+}
+
+a:hover {
+    cursor: pointer;
 }
 
 #leyenda {
@@ -461,5 +489,10 @@ img.halo-green {
     color: aliceblue;
     border-radius: 0 6px 6px 0;
     background: #D7191C;
+}
+
+footer {
+    padding: 3rem;
+    background: rgba(87, 87, 87, 0.5);
 }
 </style>
