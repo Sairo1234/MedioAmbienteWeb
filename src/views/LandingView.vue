@@ -37,8 +37,6 @@
             </div>
         </div>
 
-        <div style="width: 800px;"><canvas id="estadistica"></canvas></div>
-
         <div class="main-container" v-if="!isLogged">
 
             <div class="bg-white dark:bg-slate-900 py-20">
@@ -609,6 +607,14 @@
                         amet
                         vitae
                         modi quae nemo, animi quidem esse quia.</p>
+
+
+                    <div class="flex justify-around flex-wrap gap-12">
+                        <div class="card" style="width: 800px;"><canvas id="estadisticaSemanaO3"></canvas></div>
+                        <div class="card" style="width: 800px;"><canvas id="estadisticaMes03"></canvas></div>
+                        <div class="card" style="width: 800px;"><canvas id="estadisticaSemanaNO2"></canvas></div>
+                        <div class="card" style="width: 800px;"><canvas id="estadisticaMesNO2"></canvas></div>
+                    </div>
                 </div>
 
                 <div class="flex justify-around flex-wrap gap-12">
@@ -738,29 +744,30 @@ onMounted(async () => {
     // Si hay un usuario logeado, se calculan sus layers
     if (isLogged.value) {
 
-        var medidasJsonDelUltimoDiaDelUsuarioDeTipoO3= await MedicionesAPI.obtenerMedicionesDeTemperaturaDelDiaPorNicknameYTipo("Raul", 1, new Date().getTime())
-        var medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2= await MedicionesAPI.obtenerMedicionesDeTemperaturaDelDiaPorNicknameYTipo("Raul", 2, new Date().getTime())
-        var geojsonFeatureDelusuario = mapFunctions.generarGeoJson(await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname("Raul"))
-
-        console.log(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3)
+        // Código para creación del mapa
+        var medidasJsonDelUltimoDiaDelUsuarioDeTipoO3 = await MedicionesAPI.obtenerMedicionesDelUsuarioDelDiaPorNicknameYTipo(sessionStore.user.nickname, 1, new Date().getTime())
+        var medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2 = await MedicionesAPI.obtenerMedicionesDelUsuarioDelDiaPorNicknameYTipo(sessionStore.user.nickname, 2, new Date().getTime())
 
         L.control.layers({
             "Mapa de interpolación del O3": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3, mymap).addTo(mymap),
             "Mapa de interpolación de NO2":  mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2, mymap),
             }, 
-            { "Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(geojsonFeatureDelusuario) },
-            {collapsed: false}).addTo(mymap);
+            { "Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(mapFunctions.generarGeoJson(await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname(sessionStore.user.nickname))) },
+            {collapsed: false})
+        .addTo(mymap);
+
+        // Código para crear estadísticas
+        estaFunctions.estadisticaDeLaSemana('estadisticaSemanaO3', await MedicionesAPI.obtenerMediaDeDatosSemanalesDelUsuarioLogeadoPorTipo(sessionStore.user.nickname, 1), "O3")
+        estaFunctions.estadisticaDelMes('estadisticaMes03', await MedicionesAPI.obtenerMediaDeDatosMensualesDelUsuarioLogeadoPorTipo(sessionStore.user.nickname, 1), "O3")
+        estaFunctions.estadisticaDeLaSemana('estadisticaSemanaNO2', await MedicionesAPI.obtenerMediaDeDatosSemanalesDelUsuarioLogeadoPorTipo(sessionStore.user.nickname, 2), "NO2")
+        estaFunctions.estadisticaDelMes('estadisticaMesNO2', await MedicionesAPI.obtenerMediaDeDatosMensualesDelUsuarioLogeadoPorTipo(sessionStore.user.nickname, 2), "NO2")
+
     }
     else {
         var mapaInterpolacion = mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDia, mymap)
         mapaInterpolacion.addTo(mymap)
     }
-
-    // Función para crear media de datos dados de las últimas 24 horas
-    estaFunctions.estadisticaPrueba('estadistica')
 })
-
-
 
 </script>
 
@@ -785,5 +792,22 @@ onMounted(async () => {
 
 .main-container {
     min-height: calc(100vh - 80px);
+}
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  padding: 1%;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
 }
 </style>

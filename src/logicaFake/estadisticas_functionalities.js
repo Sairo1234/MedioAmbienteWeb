@@ -1,37 +1,139 @@
-
+import { json } from 'body-parser';
 import Chart from 'chart.js/auto';
 
-export const estaFunctions = 
+export const estaFunctions =
 {
-    estadisticaPrueba(nombreEstadistica)
-    {
-      const data = [
-        { year: 2010, count: 10 },
-        { year: 2011, count: 20 },
-        { year: 2012, count: 15 },
-        { year: 2013, count: 25 },
-        { year: 2014, count: 22 },
-        { year: 2015, count: 30 },
-        { year: 2016, count: 28 },
-      ];
-      
-      new Chart(
-        document.getElementById(nombreEstadistica),
+  estadisticaDeLaSemana(nombreEstadistica, mediasO3, label) 
+  { 
+    let delayed;
+
+    let options = {
+      plgins:
+      {
+        legend: {},
+      },
+      elements:
+      {
+        tension: 1
+      },
+      scales: 
+      {
+        x: {
+          grid: {
+            display: false
+         }
+        },
+      },
+      animation: {
+  
+        onComplete: () => 
         {
-          type: 'line',
-          
-          data: {
-            labels: data.map(row => row.year),
-            datasets: [
-              {
-                label: 'Acquisitions by year',
-                data: data.map(row => row.count),
-                fill: true,
-                backgroundColor: 'rgba(0, 0, 0, 0.1)'
-              }
-            ]
-          },
-        }
-      );
+          delayed = true
+        },
+  
+        delay: (context) => 
+        {
+          let delay = 0
+          if(context.type === "data" && context.mode === "default" && !delayed)
+          {
+            delay = context.dataIndex * 400
+          }
+  
+          return delay
+        },
+      },
     }
+    var c = document.getElementById(nombreEstadistica);
+    var ctx = c.getContext("2d");
+
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(58,123,213, 1)');
+    gradient.addColorStop(1, 'rgba(0,210,255, 0.3)');
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
+        datasets: [
+          {
+            label: label,
+            data: mediasO3,
+            fill: true,
+            borderColor:  "#fff",
+            backgroundColor: gradient,
+            tension: 0.2,
+          }]
+      },
+      options: options
+    })
+  },
+  
+  estadisticaDelMes(nombreEstadistica, mediasO3, label) 
+  {
+    console.log(mediasO3)
+
+    let delayed;
+    
+    var c = document.getElementById(nombreEstadistica);
+    var ctx = c.getContext("2d");
+
+    let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(58,123,213, 1)');
+    gradient.addColorStop(1, 'rgba(0,210,255, 0.3)');
+
+    let options = 
+    {
+      plgins:
+      {
+        legend: {},
+      },
+      elements:
+      {
+        tension: 1
+      },
+      scales: 
+      {
+        x: {
+          grid: {
+            display: false
+         }
+        },
+      },
+      animation: {
+  
+        onComplete: () => 
+        {
+          delayed = true
+        },
+  
+        delay: (context) => 
+        {
+          let delay = 0
+          if(context.type === "data" && context.mode === "default" && !delayed)
+          {
+            delay = context.dataIndex * 400
+          }
+  
+          return delay
+        },
+      },
+    }
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [1,2,3,4],
+        datasets: [
+          {
+            label: label,
+            data: mediasO3,
+            fill: true,
+            borderColor:  "#fff",
+            backgroundColor: gradient,
+            tension: 0.2,
+          }]
+      },
+      options: options
+    })
+  },
 }
