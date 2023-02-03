@@ -281,8 +281,8 @@
             <div class="flex flex-col gap-4">
                 <span>Copyright © 2023 Communo3. Todos los derechos reservados.</span>
                 <span>Para más información, puedes descargar el Manual de Usuario: 
-                    <a class="font-bold text-black/40" href="../assets/Manual de Usuario Proyecto Medio Ambiente.pdf"
-                        download="ManualDeUsuarioCommuno3.pdf">Descargar</a></span>
+                    <a class="font-bold text-blue-700/80" href="../assets/Manual de Usuario Proyecto Medio Ambiente.pdf"
+                        download="ManualDeUsuarioCommuno3.pdf">Descargar Manual</a></span>
             </div>
 
 
