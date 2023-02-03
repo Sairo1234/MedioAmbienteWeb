@@ -2,36 +2,29 @@
     <div class="w-full">
 
         <div id="map">
-            <div class="absolute m-auto right-12 bottom-12 w-fit flex flex-col gap-4">
+            <div class="absolute m-auto right-28 bottom-12 w-fit flex flex-col gap-4">
 
-                <div id="filtros-mapa" class="absolute m-auto right-28 bottom-12 w-fit flex flex-col gap-4">
-                    <!-- <div class="bg-white/20 backdrop-blur-sm dark:bg-slate-900/20 p-5 rounded-md shadow-lg">
-
-                        <div class="flex flex-col gap-2 text-blue-800">
-                            <div class="flex items-center">
-                                <input id="o3-checkbox" type="checkbox" value="o3" v-model="checkedGasses"
-                                    class="w-5 h-5 disabled:border-gray-100 bg-gray-100 rounded border-gray-300 focus:ring-blue-500/20 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-400 dark:border-gray-600">
-                                <label for="o3-checkbox"
-                                    class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-800">Ozono (O3)</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input disabled id="co2-checkbox" type="checkbox" value="co2" v-model="checkedGasses"
-                                    class="w-5 h-5 disabled:border-gray-100 bg-gray-100 rounded border-gray-300 focus:ring-blue-500/20 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-400 dark:border-gray-600">
-                                <label for="co2-checkbox"
-                                    class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-800">Dióxido de carbono
-                                    (CO2)</label>
-                            </div>
-                            <span>Checked gasses: {{ checkedGasses }}</span>
-                        </div>
-                    </div> -->
+                <div id="filtros-mapa" class="absolute m-auto right-0 bottom-12 w-30 flex flex-col gap-4">
                     <a v-if="isLogged"
-                        class="w-full dark:bg-slate-800 bg-white hover:bg-gray-100 dark:hover:bg-slate-700 px-12 py-2 rounded-md shadow-lg text-blue-800 dark:text-white font-bold"
+                        class=" text-center w-full dark:bg-slate-800 bg-white hover:bg-gray-100 dark:hover:bg-slate-700 px-8 py-2 rounded-md shadow-lg text-blue-800 dark:text-white font-bold"
                         href="#misdatos">
-                        <div class="flex items-center">
+                        <div class="flex items-center justify-center w-full">
                             <PresentationChartLineIcon class="h-5 w-5 mr-2" />
                             Ver mis estadisticas
                         </div>
                     </a>
+                    <div id="leyenda" class="flex w-full">
+                        <span>Limpio</span>
+                        <span>Baja</span>
+                        <span>Media</span>
+                        <span>Alta</span>
+                        <span>Peligroso</span>
+                        <!-- #2B83BA
+                        #ABDdA4
+                        #FFFFbF
+                        #FDAE61
+                        #D7191C -->
+                    </div>
                 </div>
 
             </div>
@@ -46,21 +39,14 @@
                     <h1 class="text-4xl md:text-6xl font-bold text-blue-900 text-center mb-8 w-2/6 dark:text-white">
                         Recoge datos y ayuda a tu ciudad</h1>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-full px-6 md:w-2/5 text-gray-500 dark:text-gray-400">Lorem ipsum dolor,
-                        sit
-                        amet
-                        consectetur
-                        adipisicing elit.
-                        Reprehenderit aut ratione, ut, voluptatum commodi ducimus enim nobis ad ex excepturi eaque
-                        amet
-                        vitae
-                        modi quae nemo, animi quidem esse quia.</p>
+                    <p class="text-2xl text-center w-full px-6 md:w-2/5 text-gray-500 dark:text-gray-400">Unidos por el
+                        aire que respiramos.</p>
                 </div>
 
                 <!--Imagen y boton-->
                 <div class="flex justify-center items-center flex-col mb-16">
                     <!--Cambiar por una imagen más tarde-->
-                    <img class="object-cover w-auto h-full md:w-2/3 lg:w-1/2" src="cta-mapGrande.png" alt="img" />
+                    <img class="halo-green object-cover w-auto h-full md:w-2/3 lg:w-1/2" src="../assets/freshair.jpg" alt="img" />
 
                     <!--Boton "Unete"-->
                     <a href="#howto" v-if="!isLogged"
@@ -75,112 +61,98 @@
                     <h2 class="text-4xl md:text-5x1 font-bold text-blue-900 text-center mb-6 dark:text-white">¿Cómo
                         funciona?</h2>
                     <!--Poner algo de texto más tarde-->
-                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Tenetur
-                        reiciendis
-                        eveniet eligendi molestias necessitatibus.</p>
+                    <p class="text-center w-full px-6 md:w-2/3 text-gray-500 dark:text-gray-400">El proceso sencillo en
+                        4 pasos:</p>
                 </div>
 
                 <!--Texto terciario con elementos a imagenes y texto-->
 
-                <div class=" w-auto md:w-4/5 md:mx-auto bg-white dark:bg-slate-900">
+                <div id="howto" class=" w-auto md:w-4/5 md:mx-auto bg-white dark:bg-slate-900">
 
                     <!--Primera fila-->
 
-                    <div
-                        class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2 md:divide-x">
+                    <div class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2">
 
-                        <img class="object-cover px-10 md:px-0 w-auto h-auto mb-8 "
-                            src="https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2014/10/08/14127729679367.jpg"
+                        <img class="halo-blue object-cover px-10 md:px-0 w-auto h-auto mb-8 " src="../assets/stcity.png"
                             alt="img" />
 
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16">
 
-                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">Paso 1</h3>
+                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">1. Busca tu ayuntamiento
+                            </h3>
                             <!--Poner algo de texto más tarde-->
-                            <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Lorem
-                                ipsum
-                                dolor sit amet consectetur adipisicing
-                                elit. Veniam ab asperiores, odio delectus non consectetur aspernatur officia
-                                deserunt
-                                eius
-                                debitis sed aut unde, accusantium itaque ea, iusto maiores fugiat quos?</p>
+                            <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Antes de
+                                empezar, es importante verificar si tu ayuntamiento participa en esta iniciativa. Para
+                                ello, puedes utilizar el buscador en nuestra página web. Si tu ayuntamiento no está
+                                participando, te animamos a contactarlos y animarlos a unirse.</p>
                         </div>
 
                     </div>
 
                     <!--Segunda fila-->
 
-                    <div
-                        class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2 md:divide-x">
+                    <div class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2">
 
-                        <img class="object-cover px-10 md:px-0 w-auto h-auto mb-8 md:col-start-2 "
-                            src="cta-mapGrande.png" alt="img" />
+                        <img class="halo-blue object-cover px-10 md:px-0 w-auto h-auto mb-8 md:col-start-2 "
+                            src="../assets/boxo3.png" alt="img" />
 
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16 md:col-start-1 md:row-start-1">
 
-                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">Paso 2</h3>
+                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">2. Solicita un sensor</h3>
                             <!--Poner algo de texto más tarde-->
-                            <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Lorem
-                                ipsum
-                                dolor sit amet consectetur adipisicing
-                                elit. Veniam ab asperiores, odio delectus non consectetur aspernatur officia
-                                deserunt
-                                eius
-                                debitis sed aut unde, accusantium itaque ea, iusto maiores fugiat quos?</p>
+                            <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Una vez que
+                                sepas que tu ayuntamiento está participando, puedes solicitar un sensor.</p>
+
+                            <!--Boton "Unete"-->
+                            <a href="#solicitar" v-if="!isLogged"
+                                class="w-1/3 text-white bg-blue-700 mt-10 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Solicitar sensor</a>
                         </div>
 
                     </div>
 
                     <!--Tercera fila-->
 
-                    <div
-                        class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2 md:divide-x">
+                    <div class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2">
 
-                        <img class="object-cover px-10 md:px-0 w-auto h-auto mb-8 "
-                            src="https://www.aplicacionespara.org/wp-content/uploads/2019/07/aplicaciones-para-ayudar-al-medio-ambiente-1.jpg"
+                        <img class="halo-blue object-cover px-10 md:px-0 w-auto h-auto mb-8 " src="../assets/citymocko3.png"
                             alt="img" />
 
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16">
 
-                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">Paso 3</h3>
+                            <h3 class="text-3xl text-blue-900 dark:text-white mb-6 md:w-full">3. Descarga la aplicación
+                            </h3>
                             <!--Poner algo de texto más tarde-->
-                            <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Lorem
-                                ipsum
-                                dolor sit amet consectetur adipisicing
-                                elit. Veniam ab asperiores, odio delectus non consectetur aspernatur officia
-                                deserunt
-                                eius
-                                debitis sed aut unde, accusantium itaque ea, iusto maiores fugiat quos?</p>
+                            <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Una vez que
+                                tengas el sensor, es hora de descargar la aplicación correspondiente. La aplicación te
+                                permitirá conectarte con el sensor y enviar los datos a nuestra plataforma en línea.
+                                Además, te proporcionaremos un usuario y una contraseña que te permitirán entrar en la
+                                aplicación y empezar a utilizar el sensor.</p>
                         </div>
 
                     </div>
 
                     <!--Cuarta fila-->
 
-                    <div
-                        class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2 md:divide-x">
+                    <div class="flex flex-col md:flex-row justify-center items-center mb-16 md:grid md:grid-cols-2">
 
-                        <img class="object-cover px-10 md:px-0 w-auto h-auto mb-8 md:col-start-2 "
-                            src="cta-mapGrande.png" alt="img" />
+                        <img class="halo-blue object-cover px-10 md:px-0 w-auto h-auto mb-8 md:col-start-2 "
+                            src="../assets/co3city.png" alt="img" />
 
                         <div
                             class="flex flex-col justify-center md:justify-start mb-16 md:mb-0 text-center md:text-left md:ml-16 md:col-start-1 md:row-start-1">
 
-                            <h3 class="text-3xl text-blue-900 dark:text-white md:w-full">Paso 4</h3>
+                            <h3 class="text-3xl text-blue-900 dark:text-white md:w-full">4. Empezar a recopilar datos
+                            </h3>
                             <!--Poner algo de texto más tarde-->
-                            <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">Lorem
-                                ipsum
-                                dolor sit amet consectetur adipisicing
-                                elit. Veniam ab asperiores, odio delectus non consectetur aspernatur officia
-                                deserunt
-                                eius
-                                debitis sed aut unde, accusantium itaque ea, iusto maiores fugiat quos?</p>
+                            <p class="px-10 md:px-0 md:w-3/4 text-justify text-gray-500 dark:text-gray-400">¡Estás listo
+                                para empezar! Mientras camines por tu ciudad, el sensor medirá los niveles de ozono y
+                                otros gases en el aire. Los datos se enviarán automáticamente a nuestra plataforma en
+                                línea y se utilizarán para construir un mapa en tiempo real de la calidad del aire en tu
+                                ciudad. ¡Gracias por tu contribución!</p>
                         </div>
 
                     </div>
@@ -190,248 +162,20 @@
             </div>
             <div class="sections">
 
-                <section id="howto" class="bg-white dark:bg-slate-900">
-                    <h1 class="text-4xl font-extrabold dark:text-white">¿Qué tengo que hacer?</h1>
-                    <p class="my-4 text-lg text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
-                    </p>
-
-                    <!--Boton "Unete"-->
-                    <a href="#solicitar" v-if="!isLogged"
-                        class="text-white bg-blue-700 mt-10 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Solicitar sensor</a>
-                </section>
-
                 <section id="about" class="bg-white dark:bg-slate-800">
-                    <h1 class="text-4xl font-extrabold dark:text-white">Quiénes somos</h1>
-                    <p class="my-4 text-lg text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
+                    <h1 class="ml-16 mb-6 text-4xl font-extrabold dark:text-white">Quiénes somos</h1>
+                    <p class="ml-14 text-lg text-gray-500">
+                        Somos una empresa comprometida con el medio ambiente y la salud de las personas. Creemos en la
+                        importancia de tener datos precisos y actualizados sobre la calidad del aire en nuestras
+                        ciudades. Por eso, hemos desarrollado una solución innovadora que permite a cualquier persona
+                        contribuir a la creación de un mapa de la calidad del aire en tiempo real. Juntos podemos
+                        mejorar la calidad de vida en nuestras comunidades."
                     </p>
 
                     <div id="solicitar" class="w-full h-screen flex flex-col gap-4 items-center pt-48">
 
 
-                        <form 
+                        <form
                             class="w-2/3 h-fit flex flex-col items-center py-16 ph-24 border border rounded-lg bg-gray-100 dark:text-gray-600 dark:bg-slate-700 relative overflow-hidden">
 
                             <h2 class="mb-4 text-2xl font-bold text-gray-700 dark:text-white">Busca tu ayuntamiento:
@@ -459,133 +203,16 @@
                                     Solicitar sensor
                                 </button>
                             </div>
-                            <MapPinIcon class="h-96 w-96 absolute left-8 -bottom-2 mb-2 text-gray-200/40 dark:text-white/5" />
+                            <MapPinIcon
+                                class="h-96 w-96 absolute left-8 -bottom-2 mb-2 text-gray-200/40 dark:text-white/5" />
                         </form>
 
                         <p class="w-full text-center text-xs text-gray-500 mb-6">
-                            No garantizamos la entrega de un sensor, delegando las responsabilidades al ayuntamiento de tu ciudad.
+                            *No garantizamos la entrega de un sensor, delegando las responsabilidades al ayuntamiento de
+                            tu ciudad.
                         </p>
 
                     </div>
-
-                </section>
-
-                <section id="contact" class="bg-white dark:bg-slate-800">
-                    <h1 class="text-4xl font-extrabold dark:text-white">Contáctanos</h1>
-                    <p class="my-4 text-lg text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet
-                        repellendus ratione aliquam adipisci ipsa eos nostrum, ea obcaecati, fugiat perferendis
-                        reprehenderit
-                        perspiciatis quibusdam quidem alias placeat labore quisquam facilis dolorem. Lorem ipsum
-                        dolor
-                        sit
-                        amet
-                        consectetur adipisicing elit. Adipisci vel nesciunt dolorem suscipit aut et cumque in
-                        officia
-                        omnis,
-                        excepturi laudantium cum rerum culpa error modi, maxime numquam earum ducimus. Lorem ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Magni, sit labore blanditiis eveniet ducimus impedit,
-                        nihil
-                        quis
-                        fugit fugiat est omnis qui? Cum minima quod libero nam in excepturi perspiciatis. Lorem
-                        ipsum
-                        dolor
-                        sit
-                        amet consectetur adipisicing elit. Quos dolorum dolor itaque reprehenderit omnis? Aut
-                        exercitationem
-                        aliquid rerum minima repellendus cumque, id alias saepe nihil nam at consequatur incidunt
-                        ad?
-                        Lorem
-                        ipsum dolor sit amet consectetur adipisicing elit. Impedit sint architecto totam fugit sunt
-                        distinctio.
-                        Ipsa cumque beatae sed earum placeat sint facilis quas, temporibus, nulla id aliquid eum
-                        vel.
-                        Lorem,
-                        ipsum dolor sit amet consectetur adipisicing elit. Sunt veniam labore aliquam, ipsa dolores
-                        quam
-                        at
-                        aliquid quisquam quis doloribus rerum dolorem sed nobis velit nulla necessitatibus
-                        recusandae
-                        culpa
-                        est!
-                    </p>
-
 
                 </section>
             </div>
@@ -601,67 +228,48 @@
                         user.nickname
                     }}</h1>
                     <!--Poner algo de texto más tarde-->
-                    <p class="md:w-2/3 text-gray-500 dark:text-gray-400">Lorem ipsum dolor, sit amet consectetur
-                        adipisicing elit.
-                        Reprehenderit aut ratione, ut, voluptatum commodi ducimus enim nobis ad ex excepturi eaque
-                        amet
-                        vitae
-                        modi quae nemo, animi quidem esse quia.</p>
+                    <p class="md:w-2/3 text-gray-500 dark:text-gray-400 mb-12">La calidad del aire que respiramos es
+                        crucial para nuestra salud y bienestar. Los gases ozono (O3) y dióxido de nitrógeno (NO2) son
+                        dos de los contaminantes del aire que pueden tener efectos negativos en nuestra salud. Aqui
+                        tienes tus datos:</p>
 
 
-                    <div class="flex justify-around flex-wrap gap-12">
-                        <div style="width: 800px;"><canvas id="estadisticaSemanaO3"></canvas></div>
-                        <div style="width: 800px;"><canvas id="estadisticaMes03"></canvas></div>
-                        <div style="width: 800px;"><canvas id="estadisticaSemanaNO2"></canvas></div>
-                        <div style="width: 800px;"><canvas id="estadisticaMesNO2"></canvas></div>
+                    <div class="flex gap-12 w-full justify-around">
+                        <div class="flex flex-col gap-6">
+                            <h1 class="text-xl md:text-2xl font-bold">Exposicion al Ozono</h1>
+                            <p>El ozono es un gas poderoso y tóxico que puede causar irritación en los ojos, garganta y
+                                pulmones. Además, puede agravar problemas respiratorios como el asma y la
+                                bronquitis. Es más común en <b>días cálidos y soleados</b>, y se produce cuando los
+                                contaminantes del aire reaccionan con la luz solar.</p>
+                            <div
+                                style="width: 100%; height: 400px; box-shadow: 0 2px 132px rgba(20, 80, 220, 0.1); border-radius: 8px; padding: 12px;">
+                                <canvas id="estadisticaSemanaO3"></canvas>
+                            </div>
+                            <i class="text-black/50">Exposición semanal.</i>
+                            <div
+                                style="width: 100%; height: 400px; box-shadow: 0 2px 132px rgba(20, 80, 220, 0.1); border-radius: 8px; padding: 12px;">
+                                <canvas id="estadisticaMes03"></canvas>
+                            </div>
+                            <i class="text-black/50">Exposición mensual.</i>
+                        </div>
+                        <div class="flex flex-col gap-6">
+                            <h1 class="text-xl md:text-2xl font-bold">Exposición al NO2</h1>
+                            <p>El dióxido de nitrógeno (NO2) es un gas producido por la quema de combustibles fósiles.
+                                El NO2 puede irritar la garganta y los pulmones, y puede agravar problemas respiratorios
+                                como el asma y la bronquitis. Además, el NO2 puede dañar el sistema respiratorio y
+                                aumentar el riesgo de enfermedades cardíacas y pulmonares.</p>
+                            <div
+                                style="width: 100%; height: 400px; box-shadow: 0 2px 182px rgba(220, 20, 80, 0.1); border-radius: 8px; padding: 12px;">
+                                <canvas id="estadisticaSemanaNO2"></canvas>
+                            </div>
+                            <i class="text-black/50">Exposición semanal.</i>
+                            <div
+                                style="width: 100%; height: 400px; box-shadow: 0 2px 182px rgba(220, 20, 80, 0.1); border-radius: 8px; padding: 12px;">
+                                <canvas id="estadisticaMesNO2"></canvas>
+                            </div>
+                            <i class="text-black/50">Exposición mensual.</i>
+                        </div>
                     </div>
-                </div>
-
-                <div class="flex justify-around flex-wrap gap-12">
-
-                    <the-card variant="image" img-src="https://developarts.com/bl-content/uploads/chart_usage.png"
-                        img-alt="Desk">
-                        <h5 class="mb-2 md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            Lorem ipsum dolor sit amet consectetur.</h5>
-                        <p class="font-normal text-gray-700 dark:text-gray-400">
-                            Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
-                            chronological
-                            order.
-                        </p>
-                    </the-card>
-
-                    <the-card variant="image" img-src="https://developarts.com/bl-content/uploads/chart_usage.png"
-                        img-alt="Desk">
-                        <h5 class="mb-2 md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            Lorem ipsum dolor sit amet consectetur.</h5>
-                        <p class="font-normal text-gray-700 dark:text-gray-400">
-                            Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
-                            chronological
-                            or
-                        </p>1
-                    </the-card>
-
-                    <the-card variant="image" img-src="https://developarts.com/bl-content/uploads/chart_usage.png"
-                        img-alt="Desk">
-                        <h5 class="mb-2 md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            Lorem ipsum dolor sit amet consectetur.</h5>
-                        <p class="font-normal text-gray-700 dark:text-gray-400">
-                            Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
-                            chronological
-                            order.
-                        </p>
-                    </the-card>
-
-                    <the-card variant="image" img-src="https://developarts.com/bl-content/uploads/chart_usage.png"
-                        img-alt="Desk">
-                        <h5 class="mb-2 md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            Lorem ipsum dolor sit amet consectetur.</h5>
-                        <p class="font-normal text-gray-700 dark:text-gray-400">
-                            Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse
-                            chronological
-                            order.
-                        </p>
-                    </the-card>
                 </div>
 
             </div>
@@ -678,7 +286,7 @@ import SearchAytosInput from '../components/SearchAytosInput.vue'
 
 import { PresentationChartLineIcon, AtSymbolIcon, MapPinIcon } from '@heroicons/vue/24/outline'
 
-import { TheCard, Input } from 'flowbite-vue'
+import { Input } from 'flowbite-vue'
 
 import L from "leaflet"
 import '../lib/leaflet-heat.js'
@@ -700,7 +308,7 @@ import { MedicionesAPI } from '@/logicaFake/resources/mediciones'
 import 'iso8601-js-period'
 import { logicaFakeAyuntamiento } from '@/logicaFake/resources/ayuntamiento'
 
-import {estaFunctions} from '../logicaFake/estadisticas_functionalities'
+import { estaFunctions } from '../logicaFake/estadisticas_functionalities'
 
 // ***************** Código del mapa
 const sessionStore = useSessionStore()
@@ -725,7 +333,7 @@ const handleSolicitarButtonClick = async () => {
     if (email.value == '' || selectedAyto.value == '') return
     loading.value = true;
     const res = await logicaFakeAyuntamiento.solicitarSensor(email.value, selectedAyto.value)
-    if(res.success) {
+    if (res.success) {
         alert("Sensor solicitado.")
         email.value = ''
     }
@@ -750,11 +358,11 @@ onMounted(async () => {
 
         L.control.layers({
             "Mapa de interpolación del O3": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoO3, mymap).addTo(mymap),
-            "Mapa de interpolación de NO2":  mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2, mymap),
-            }, 
+            "Mapa de interpolación de NO2": mapFunctions.generarMapaDeInterpolacion(medidasJsonDelUltimoDiaDelUsuarioDeTipoNO2, mymap),
+        },
             { "Tu recorrido": mapFunctions.generarRutaDeUsuarioLogeado(mapFunctions.generarGeoJson(await MedicionesAPI.obtenerTodasMedicionesDelDiaPorNickname(sessionStore.user.nickname))) },
-            {collapsed: false})
-        .addTo(mymap);
+            { collapsed: false })
+            .addTo(mymap);
 
         // Código para crear estadísticas
         estaFunctions.estadisticaDeLaSemana('estadisticaSemanaO3', await MedicionesAPI.obtenerMediaDeDatosSemanalesDelUsuarioLogeadoPorTipo(sessionStore.user.nickname, 1), "O3")
@@ -795,19 +403,63 @@ onMounted(async () => {
 }
 
 .card {
-  /* Add shadows to create the "card" effect */
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  padding: 1%;
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    padding: 1%;
 }
 
 /* On mouse-over, add a deeper shadow */
 .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Add some padding inside the card container */
 .container {
-  padding: 2px 16px;
+    padding: 2px 16px;
+}
+
+img {
+    border-radius: 6px;
+}
+
+img.halo-blue {
+    box-shadow: 0 2px 1362px rgba(20, 90, 220, 0.1);
+}
+img.halo-green {
+    box-shadow: 0 16px 1362px rgba(0, 180, 80, 0.1);
+}
+
+#leyenda {
+    z-index: 999;
+}
+
+#leyenda>span {
+    padding: 6px 16px;
+    border: 1px white solid;
+}
+
+#leyenda>span:nth-child(1) {
+    color: aliceblue;
+    border-radius: 6px 0 0 6px;
+    background: #2B83BA;
+}
+
+#leyenda>span:nth-child(2) {
+    background: #ABDdA4;
+}
+
+#leyenda>span:nth-child(3) {
+    background: #FFFFbF;
+}
+
+#leyenda>span:nth-child(4) {
+    background: #FDAE61;
+}
+
+#leyenda>span:nth-child(5) {
+    color: aliceblue;
+    border-radius: 0 6px 6px 0;
+    background: #D7191C;
 }
 </style>
